@@ -7,6 +7,7 @@ import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
+import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
@@ -25,7 +26,6 @@ import javafx.stage.Stage;
 public class GUI extends Application {
 
     String mode = "Paint";
-    Button button;
 
     @Override
     public void start(Stage stage) throws Exception {
@@ -33,73 +33,59 @@ public class GUI extends Application {
         Canvas canvas = new Canvas(840, 840);
         final GraphicsContext graphicsContext = canvas.getGraphicsContext2D();
 
+        graphicsContext.setFill(Color.WHITE);
+
         //event handler for mouse input
-        if(mode.equals("Paint")) {
-            canvas.addEventHandler(MouseEvent.MOUSE_PRESSED, 
-                new EventHandler<MouseEvent>() {
-                    @Override
-                    public void handle(MouseEvent event) {            
+        canvas.addEventHandler(MouseEvent.MOUSE_PRESSED, 
+            new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent event) {      
+                    if(mode.equals("Paint")) {
                         graphicsContext.beginPath();
                         graphicsContext.moveTo(event.getX(), event.getY());
                         graphicsContext.stroke();
+                    } else if(mode.equals("Eraser")) {
+                        graphicsContext.moveTo(event.getX(), event.getY());
+                        graphicsContext.strokeRect(event.getX(), event.getY(), 6, 6);
                     }
+                }
             });
 
-            canvas.addEventHandler(MouseEvent.MOUSE_DRAGGED, 
-                new EventHandler<MouseEvent>(){
-                    @Override
-                    public void handle(MouseEvent event) {
+        canvas.addEventHandler(MouseEvent.MOUSE_DRAGGED, 
+            new EventHandler<MouseEvent>(){
+                @Override
+                public void handle(MouseEvent event) {
+                    if(mode.equals("Paint")) {
                         graphicsContext.lineTo(event.getX(), event.getY());
                         graphicsContext.stroke();
                         graphicsContext.closePath();
                         graphicsContext.beginPath();
                         graphicsContext.moveTo(event.getX(), event.getY());
+                    } else if(mode.equals("Eraser")) {
+                        graphicsContext.lineTo(event.getX(), event.getY());
+                        graphicsContext.clearRect(event.getX(), event.getY(), 6, 6);
+                        graphicsContext.closePath();
+                        graphicsContext.beginPath();
+                        graphicsContext.moveTo(event.getX(), event.getY());
                     }
+                }
             });
 
-            canvas.addEventHandler(MouseEvent.MOUSE_RELEASED, 
-                new EventHandler<MouseEvent>(){
-                    @Override
-                    public void handle(MouseEvent event) {
+        canvas.addEventHandler(MouseEvent.MOUSE_RELEASED, 
+             new EventHandler<MouseEvent>(){
+                @Override
+                public void handle(MouseEvent event) {
+                    if(mode.equals("Paint")) { 
                         graphicsContext.lineTo(event.getX(), event.getY());
                         graphicsContext.stroke();
                         graphicsContext.closePath();
+                    } else if(mode.equals("Eraser")) {
+                        graphicsContext.lineTo(event.getX(), event.getY());
+                        graphicsContext.clearRect(event.getX(), event.getY(), 6, 6);
+                        graphicsContext.closePath();
+                    }
                 }
             });  
-        } else if(mode.equals("Eraser")) {
-            graphicsContext.setFill(Color.WHITE);
-            canvas.addEventHandler(MouseEvent.MOUSE_PRESSED, 
-                new EventHandler<MouseEvent>() {
-                    @Override
-                    public void handle(MouseEvent event) {            
-                        graphicsContext.beginPath();
-                        graphicsContext.moveTo(event.getX(), event.getY());
-                        graphicsContext.stroke();
-                    }
-            });
-
-            canvas.addEventHandler(MouseEvent.MOUSE_DRAGGED, 
-                new EventHandler<MouseEvent>(){
-                    @Override
-                    public void handle(MouseEvent event) {
-                        graphicsContext.lineTo(event.getX(), event.getY());
-                        graphicsContext.stroke();
-                        graphicsContext.closePath();
-                        graphicsContext.beginPath();
-                        graphicsContext.moveTo(event.getX(), event.getY());
-                    }
-            });
-
-            canvas.addEventHandler(MouseEvent.MOUSE_RELEASED, 
-                new EventHandler<MouseEvent>(){
-                    @Override
-                    public void handle(MouseEvent event) {
-                        graphicsContext.lineTo(event.getX(), event.getY());
-                        graphicsContext.stroke();
-                        graphicsContext.closePath();
-                }
-            });  
-        }
 
         //initialize buttons
         Button buttonNew = new Button("New");
@@ -148,10 +134,15 @@ public class GUI extends Application {
             }
         });
 
+        TextField textfield = new TextField("WERBUNG");
+        textfield.
+
+
         //sets the scene/stage and shows it
         BorderPane borderPane = new BorderPane();
         borderPane.setTop(buttons);
         borderPane.setCenter(canvas);
+        borderPane.setRight(textfield);
 
         Scene scene = new Scene(borderPane);
 
