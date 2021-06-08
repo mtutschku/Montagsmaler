@@ -154,4 +154,35 @@ public class Matrix {
         return m;
     }
 
+    /**
+     * Addiert zwei Matrizen miteinander und erzeugt eine neue Matrix
+     * @param m1 erste Matrix, welche zur Addition verwendet wird.
+     * @param m2 zweite Matrix, welche zur Addition verwendet wird.
+     
+     * @author Moritz Klose 
+     * @return   Matrix, welche sich aus der Addition von m1 und m2 zusammensetzt
+     */
+    public Matrix add(Matrix m1, Matrix m2){
+        double m1Data[][] = m1.getData();
+        double m2Data[][] = m2.getData();
+        
+        if((m1.getRows() != m2.getRows()) || (m1.getCols() != m2.getCols())){
+            System.err.println("Matrizen haben nicht die gleiche Größe");
+        }
+            
+        int sizeCols = m1.getCols();
+        int sizeRows = m1.getRows();
+
+
+        double addedData[][] = new double[sizeCols][sizeRows];
+
+        for(int i = 0; i < sizeRows; i++){
+            for(int j = 0; j < sizeCols; j++){
+                addedData[i][j] = m1Data[i][j] + m2Data[i][j]; 
+            }
+        }
+
+        Matrix addMatrix = new Matrix(addedData);
+        return addMatrix;
+    }
 }
