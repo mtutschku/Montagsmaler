@@ -43,6 +43,19 @@ public class Matrix {
 
     }
 
+    /** Konstruktor
+     * 
+     * Matrix wird durch eine 2D-Array initialisiert.
+     * 
+     * @param data Datenarray
+     */
+    public Matrix(double[][] data){
+        rows = data.length;
+        cols = data[0].length;
+        this.data = data;
+    }
+
+
     public int getRows(){
         return rows;
     }
@@ -73,6 +86,22 @@ public class Matrix {
         }
     }
 
+    /** Ändert den Wert der Matrix an Stelle [row, col].
+     * 
+     * @param row Reihe
+     * @param col Spalte
+     * @param value Wert
+     */
+    public void setValue(int row, int col, double value){
+        if(row < 0 || col < 0 || row > getRows() || col > getCols()){
+            System.err.println("Ungültige Position.");
+            return;
+        }
+
+        data[row-1][col-1] = value;
+
+    }
+
 
 
     /** Gibt die Matrix auf der Konsole aus. */
@@ -94,6 +123,12 @@ public class Matrix {
                 data[i][j] = r.nextDouble();
             }
         }
+    }
+
+    // Rechenoperationen
+
+    public static Matrix multiply(Matrix m1, Matrix m2){
+        return null;
     }
 
 }
