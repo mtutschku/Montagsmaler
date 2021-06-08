@@ -1,4 +1,4 @@
-package GUI;
+package components.gui;
 
 import javafx.application.Application;
 import javafx.event.ActionEvent;
