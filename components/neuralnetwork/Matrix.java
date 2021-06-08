@@ -162,7 +162,7 @@ public class Matrix {
      * @author Moritz Klose 
      * @return   Matrix, welche sich aus der Addition von m1 und m2 zusammensetzt
      */
-    public Matrix add(Matrix m1, Matrix m2){
+    public static Matrix add(Matrix m1, Matrix m2){
         double m1Data[][] = m1.getData();
         double m2Data[][] = m2.getData();
         
