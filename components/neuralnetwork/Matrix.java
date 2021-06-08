@@ -55,6 +55,7 @@ public class Matrix {
         this.data = data;
     }
 
+    // Getter/Setter
 
     public int getRows(){
         return rows;
@@ -160,7 +161,7 @@ public class Matrix {
      * @param m2 zweite Matrix, welche zur Addition verwendet wird.
      
      * @author Moritz Klose 
-     * @return   Matrix, welche sich aus der Addition von m1 und m2 zusammensetzt
+     * @return Matrix, welche sich aus der Addition von m1 und m2 zusammensetzt
      */
     public static Matrix add(Matrix m1, Matrix m2){
         double m1Data[][] = m1.getData();
