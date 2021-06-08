@@ -30,8 +30,14 @@ public class GUI extends Application {
     @Override
     public void start(Stage stage) throws Exception {
         
-        Canvas canvas = new Canvas(840, 840);
+        final int SIZE = 840;
+        Canvas canvas = new Canvas(SIZE, SIZE);
         final GraphicsContext graphicsContext = canvas.getGraphicsContext2D();
+
+        graphicsContext.setStroke(Color.GREY);
+        graphicsContext.setLineWidth(2);
+        graphicsContext.strokeRect(0, 0, SIZE, SIZE);
+        graphicsContext.setStroke(Color.BLACK);
 
         graphicsContext.setFill(Color.WHITE);
 
@@ -96,13 +102,14 @@ public class GUI extends Application {
     
         //horizontal allignment of all buttons
         HBox buttons = new HBox();
+        buttons.setSpacing(10);
         buttons.getChildren().addAll(buttonNew, buttonPaint, buttonEraser, buttonUndo, buttonNextWord);
         
         //event handler for buttons
         buttonNew.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                graphicsContext.clearRect(0, 0, 840, 840);
+                graphicsContext.clearRect(0, 0, SIZE, SIZE);
             }
         });
 
@@ -134,15 +141,17 @@ public class GUI extends Application {
             }
         });
 
-        TextField textfield = new TextField("WERBUNG");
-        textfield.
+        Label thingToDraw = new Label("TEST");
 
+        //vertical representation of info
+        VBox info = new VBox();
+        info.getChildren().addAll(thingToDraw);
 
         //sets the scene/stage and shows it
         BorderPane borderPane = new BorderPane();
         borderPane.setTop(buttons);
         borderPane.setCenter(canvas);
-        borderPane.setRight(textfield);
+        borderPane.setRight(info);
 
         Scene scene = new Scene(borderPane);
 
