@@ -13,6 +13,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
+import javafx.scene.text.Font;
 
 /** Grafisches Benutzerinterface für die Zeichnung, welche vom neuronalen Netzwerk erkannt werden soll.
  * 
@@ -104,7 +105,7 @@ public class GUI extends Application {
         HBox buttons = new HBox();
         buttons.setSpacing(10);
         buttons.getChildren().addAll(buttonNew, buttonPaint, buttonEraser, buttonUndo, buttonNextWord);
-        
+
         //event handler for buttons
         buttonNew.setOnAction(new EventHandler<ActionEvent>() {
             @Override
