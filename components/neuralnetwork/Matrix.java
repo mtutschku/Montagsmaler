@@ -127,8 +127,31 @@ public class Matrix {
 
     // Rechenoperationen
 
-    public static Matrix multiply(Matrix m1, Matrix m2){
-        return null;
+    /** Multipliziert zwei Matrizen.
+     * 
+     * @param a Matrix 1
+     * @param b Matrix 2
+     * @return Matrix 1 * Matrix 2
+     */
+    public static Matrix multiply(Matrix a, Matrix b){
+        if(a.getCols() != b.getRows()){
+            System.err.println("Multiplikation nicht möglich. (Spalten a != Reihen b)");
+        }
+
+        Matrix m = new Matrix(a.getRows(), b.getCols());
+
+        for(int i = 0; i < m.getRows(); i++){
+            for(int j = 0; j < m.getCols(); j++){
+                double value = 0.0;
+                for(int k = 0; k < b.getRows(); k++){
+                    value += a.getData()[i][k] * b.getData()[k][j];
+                }
+
+                m.setValue(i+1, j+1, value);
+            }
+        }
+
+        return m;
     }
 
 }
