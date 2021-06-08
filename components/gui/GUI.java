@@ -7,9 +7,10 @@ import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
-import javafx.scene.control.TextField;
+import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
@@ -39,8 +40,6 @@ public class GUI extends Application {
         graphicsContext.strokeRect(0, 0, SIZE, SIZE);
         graphicsContext.setStroke(Color.BLACK);
 
-        graphicsContext.setFill(Color.WHITE);
-
         //event handler for mouse input
         canvas.addEventHandler(MouseEvent.MOUSE_PRESSED, 
             new EventHandler<MouseEvent>() {
@@ -51,8 +50,9 @@ public class GUI extends Application {
                         graphicsContext.moveTo(event.getX(), event.getY());
                         graphicsContext.stroke();
                     } else if(mode.equals("Eraser")) {
+                        graphicsContext.beginPath();
                         graphicsContext.moveTo(event.getX(), event.getY());
-                        graphicsContext.strokeRect(event.getX(), event.getY(), 6, 6);
+                        graphicsContext.clearRect(event.getX(), event.getY(), 6, 6);
                     }
                 }
             });
@@ -110,6 +110,10 @@ public class GUI extends Application {
             @Override
             public void handle(ActionEvent event) {
                 graphicsContext.clearRect(0, 0, SIZE, SIZE);
+                graphicsContext.setStroke(Color.GREY);
+                graphicsContext.setLineWidth(2);
+                graphicsContext.strokeRect(0, 0, SIZE, SIZE);
+                graphicsContext.setStroke(Color.BLACK);
             }
         });
 
