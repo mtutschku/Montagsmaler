@@ -38,6 +38,9 @@ public class Network {
     /** Lernrate des Netzwerks (0,1) */
     final static double LR = 0.1;
 
+    /** Anzahl der Trainingsdurchläufe */
+    final static int epochs = 10000;
+
     /** Konstruktor
      * 
      * Initialisiert die Architektur des Netzwerks. Erzeugt zufällige Gewichts- und bias-Matrizen.
