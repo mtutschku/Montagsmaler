@@ -121,7 +121,7 @@ public class Matrix {
         Random r = new Random();
         for(int i = 0; i < rows; i++){
             for(int j = 0; j < cols; j++){
-                data[i][j] = r.nextDouble();
+                data[i][j] = r.nextDouble() * 2.0 - 1.0;
             }
         }
     }
@@ -168,14 +168,14 @@ public class Matrix {
         double m2Data[][] = m2.getData();
         
         if((m1.getRows() != m2.getRows()) || (m1.getCols() != m2.getCols())){
-            System.err.println("Matrizen haben nicht die gleiche Größe");
+            System.err.println("Matrizen haben nicht die gleiche Größe.");
         }
             
         int sizeCols = m1.getCols();
         int sizeRows = m1.getRows();
 
 
-        double addedData[][] = new double[sizeCols][sizeRows];
+        double addedData[][] = new double[sizeRows][sizeCols];
 
         for(int i = 0; i < sizeRows; i++){
             for(int j = 0; j < sizeCols; j++){
