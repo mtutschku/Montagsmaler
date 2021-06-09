@@ -43,6 +43,8 @@ public class Handler {
 	 * 
 	 * Initializes the variable clusterSize and the a matrix mat of specifed size.
 	 * Both parameters have to be greater than zero.
+	 * 
+	 * @author 	Jakob Hiestermann
 	 * @param matrixSideLength
 	 * @param clusterSize_
 	 */
@@ -64,6 +66,7 @@ public class Handler {
 	 * Translates a canvas into a matrix of doubles. 
 	 * These doubles each represent the average darkness inside a cluster.
 	 * 
+	 * @author 	Jakob Hiestermann
 	 * @param 	canvas Canvas to extract the data from
 	 * @return	Matrix // maybe switch to Data
 	 */
@@ -85,6 +88,7 @@ public class Handler {
 	/**
 	 * Constructs a cluster of length specified in clusterSideLength
 	 * 
+	 * @author 	Jakob Hiestermann
 	 * @param	x		x-coordinate to start clustering from
 	 * @param	y		y-coordinate to start clustering from	
 	 * @param	image	
@@ -107,6 +111,7 @@ public class Handler {
 	/**
 	 * Translates a color into a corresponding integer, only usable for colors WHITE and BLACK.
 	 * 
+	 * @author 	Jakob Hiestermann
 	 * @param	color
 	 * @return	1 if color is black, 0 if color is white
 	 */
@@ -125,6 +130,7 @@ public class Handler {
 	/**
 	 * averages out integers in a array/cluster received, correspondingly to clusterSize
 	 * 
+	 * @author 	Jakob Hiestermann
 	 * @param	cluster	
 	 * @return	average value of ints inside cluster, required to be inside [0,1]
 	 */
