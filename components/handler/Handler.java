@@ -2,7 +2,8 @@ package components.handler;
 
 import components.neuralnetwork.Matrix;
 import javafx.scene.canvas.Canvas;
-import javafx.scene.image.Image;
+import javafx.scene.image.*;
+import javafx.scene.paint.*;
 
 /**
  * This class handles transmission of data between GUI and Network
@@ -31,6 +32,9 @@ public class Handler {
     private Matrix mat;
 	
 	// /** holds the value used for width and height of a cluster */
+	private int clusterSideLength;
+
+	// /** holds overall amount of pixels inside a cluster */
 	private int clusterSize;
 
 	/** holds an image representation of drawing on a canvas. Uninitialized until translateCanvas is called */
@@ -44,19 +48,20 @@ public class Handler {
 	 * @param matrixSideLength
 	 * @param clusterSize_
 	 */
-	public Handler(int matrixSideLength, int clusterSize_) {
+	public Handler(int matrixSideLength, int clusterSideLength_) {
 		if (matrixSideLength <= 0) {
 			System.out.println("matrixSideLength needs to be greater than zero.");
 		} else {
 			this.mat = new Matrix(matrixSideLength, matrixSideLength);
 		}
-		if (clusterSize_ <= 0) {
+		if (clusterSideLength_ <= 0) {
 			System.out.println("clusterSize_ needs to be greater than zero.");
 		} else {
-			this.clusterSize = clusterSize_;
+			this.clusterSideLength = clusterSideLength_;
+			this.clusterSize = clusterSideLength_ * clusterSideLength_;
 		}
 	}
-	
+
 	/**
 	 * 
 	 */
@@ -68,10 +73,43 @@ public class Handler {
 	}
 
 	/**
+	 * Constructs a cluster of length specified in clusterSideLength
 	 * 
+	 * @param	x		
+	 * @param	y		
+	 * @param	image	
+	 * @return	array (cluster) holding pixeldata (0 for White, 1 for Black);
 	 */
-	private int[] makeCluster(int index) {
-		// TODO
+	private int[] makeCluster(int x, int y, Image image) {
+		int[] cluster = new int[this.clusterSize];
+		PixelReader pr = image.getPixelReader();
+		Color color;
+
+		for (int i = 0; i < this.clusterSideLength; i++) {
+			for (int j = 0; j < this.clusterSideLength; j++) {
+				color = pr.getColor(x + j, y + i);
+				cluster[i * this.clusterSideLength + j] = colorToInt(color);
+			}
+		}
+		return cluster;
+	}
+
+	/**
+	 * Translates a color into a corresponding integer, only usable for colors WHITE and BLACK.
+	 * 
+	 * @param	color
+	 * @return	1 if color is black, 0 if color is white
+	 */
+	private int colorToInt(Color color) {
+		if (color.equals(Color.WHITE)) {
+			return 0;
+		} else if (color.equals(Color.BLACK)) {
+			return 1;
+		} else {
+			// notify, but proceed
+			System.out.println("received color that's neither white nor black in colorToInt, Handler.java\n proceeded with return -1");
+			return -1;
+		}
 	}
 
 	/**
@@ -82,7 +120,7 @@ public class Handler {
 		for(int i : cluster) {
 			average += cluster[i];
 		}
-		average /= this.clusterSize * this.clusterSize;		// TODO: check for type-specific division error
+		average /= this.clusterSize;		// TODO: check for type-specific division error
 		return average;
 	}
 }
