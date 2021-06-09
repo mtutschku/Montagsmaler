@@ -181,7 +181,7 @@ public class Network {
     /** Trainiert das Netzwerk mittels supervised learning.
      * 
      * Inputs mit bekannten (= gewünschten) Outputs werden dem Netzwerk übergeben und
-     * die Gewichte entsprechend angepasst werden.
+     * die Gewichte entsprechend angepasst.
      * 
      * @param inputs Inputs
      * @param outputs Outputs
@@ -191,23 +191,31 @@ public class Network {
         Matrix errorO = Matrix.subtract(outputs, guess); // Fehler der Outputs
         Matrix weightsHO_t = Matrix.transpose(weightsHO);
         Matrix errorH = Matrix.multiply(weightsHO_t, errorO); // Fehler der Hidden-Layer-Neuronen
-        
-        // delta_weightsHO = LR * error * sigmoid_dx * h
+
+        // Im Folgenden werden die Gewichte der einzelnen Schichten angepasst. Hierfür wird das
+        // Gradientenverfahren benutzt, um den Fehler zu minimieren.
+        // z. B.: weights_delta = LR * error * sigmoid_dx * outputs_transponiert
+        //        bias_delta    = LR * error * sigmoid_dx
+        // weights_delta/bias_delta sind die neuen Gewichte/bias und werden zu den alten addiert:
+        // -> neue weights/bias = alte weights/bias + weights_delta/bias_delta
+
+        // Um ein neuronales Netzwerk zu erklären, bedarf es mehr als ein paar Kommentare im Code.
+        // Im Internet gibt es reichlich Infos dazu.
 
         // Gewichte und bias zwischen Output und Hidden-Layer anpassen
-        Matrix gradientHO = sigmoid_dx(MO);
-        gradientHO = Matrix.multiplyElement(gradientHO, errorO);
-        gradientHO = Matrix.scale(gradientHO, LR);
+        Matrix gradientHO = sigmoid_dx(MO);                         // weights_delta = sigmoid_dx...
+        gradientHO = Matrix.multiplyElement(gradientHO, errorO);    // ... * error 
+        gradientHO = Matrix.scale(gradientHO, LR);                  // ... * LR
 
-        Matrix ho_t = Matrix.transpose(MH); // transponierte Gewichtsmatrix zwischen Hidden-Layer und Output
+        Matrix ho_t = Matrix.transpose(MH);
         
-        Matrix weightsHO_delta = Matrix.multiply(gradientHO, ho_t);
+        Matrix weightsHO_delta = Matrix.multiply(gradientHO, ho_t); // ... * output_transponiert
 
-        weightsHO = Matrix.add(weightsHO, weightsHO_delta);
-        biasO = Matrix.add(biasO, gradientHO);
+        weightsHO = Matrix.add(weightsHO, weightsHO_delta);         // neue Gewichte = alte Gewichte + weights_delta
+        biasO = Matrix.add(biasO, gradientHO); // Gradient = bias_delta
 
         // Gewichte und bias zwischen Hidden-Layer und Inputs anpassen
-        Matrix gradientIH = sigmoid_dx(MH);
+        Matrix gradientIH = sigmoid_dx(MH);                         // weights_delta wird analog zu oben gerechnet
         gradientIH = Matrix.multiplyElement(gradientIH, errorH);
         gradientIH = Matrix.scale(gradientIH, LR);
 
