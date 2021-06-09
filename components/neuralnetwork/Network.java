@@ -152,6 +152,8 @@ public class Network {
 
     /** Funktion zum Verarbeiten einer Inputmatrix (= Pixel der Leinwand).
      * 
+     * Die Inputs werden vorwärts durch das Netzwerk "gefüttert".
+     * 
      * @param input Inputs für das Netzwerk in (INPUT_SIZE x 1)-Matrix
      * @return Klassifikation ("guess") des Netzwerks
      */
