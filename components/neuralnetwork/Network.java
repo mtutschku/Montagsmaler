@@ -72,10 +72,23 @@ public class Network {
 
     /** Gibt alle Informationen zum Netzwerk auf der Konsole aus. */
     public void print(){
-        System.out.println("\nweightsIH:");
+        System.out.println("NN-Architektur:");
+        System.out.println("  - Anzahl Inputneuronen: " + INPUT_SIZE);
+        System.out.println("  - Anzahl Hidden-Layer-Neuronen: " + HIDDEN_SIZE);
+        System.out.println("  - Anzahl Outputneuronen: " + OUTPUT_SIZE);
+        System.out.println("\nGewichte:");
+        System.out.println("  - Input-Hidden:");
         weightsIH.print();
-        System.out.println("\nweightsHO:");
+        System.out.println("  - Hidden-Output:");
         weightsHO.print();
+        System.out.println("\nbias:");
+        System.out.println("  - Input-Hidden:");
+        biasH.print();
+        System.out.println("  - Hidden-Output:");
+        biasO.print();
+        System.out.println("\nLernrate: " + LR);
+        System.out.println("Epochen: " + epochs);
+        System.out.println("Aktivierungsfunktion: Sigmoid");
     }
 
     /** Aktivierungsfunktion für das Netzwerk.
