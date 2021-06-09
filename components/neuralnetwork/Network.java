@@ -81,15 +81,41 @@ public class Network {
         return 1.0/(1.0 + Math.exp(-x));
     }
 
+    /** Aktivierungsfunktion auf einer gesamten Matrix anwenden.
+     * 
+     * @param m Matrix
+     * @return Sigmoid-Matrix
+     */
+    public static Matrix sigmoid(Matrix m){
+        Matrix output = new Matrix(m.getRows(), m.getCols());
+
+        for(int i = 0; i < m.getRows(); i++){
+            for(int j = 0; j < m.getCols(); j++){
+                output.setValue(i+1, j+1, sigmoid(m.getData()[i][j])); 
+            }
+        }
+
+        return output;
+    }
+
     /** Funktion zum Verarbeiten einer Inputmatrix (= Pixel der Leinwand). */
-    public void feedForward(Matrix input){
+    public Matrix feedForward(Matrix input){
         if(input.getRows() != INPUT_SIZE || input.getCols() != 1){
             System.err.println("Ungültiger Input. (Muss" + INPUT_SIZE + "x1 Matrix sein)");
-            return;
+            return new Matrix(0,0);
         }
         
-        // TODO
+        // Inputs -> Hidden-Layer
+        Matrix h = Matrix.multiply(weightsIH, input);
+        h = Matrix.add(h, biasH);
+        h = Network.sigmoid(h);
 
+        // Hidden-Layer -> Output
+        Matrix o = Matrix.multiply(weightsHO, h);
+        o = Matrix.add(o, biasO);
+        o = Network.sigmoid(o);
+
+        return o;
     }
 
 }
