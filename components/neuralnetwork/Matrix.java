@@ -137,6 +137,7 @@ public class Matrix {
     public static Matrix multiply(Matrix a, Matrix b){
         if(a.getCols() != b.getRows()){
             System.err.println("Multiplikation nicht möglich. (Spalten a != Reihen b)");
+            return new Matrix(0,0);
         }
 
         Matrix m = new Matrix(a.getRows(), b.getCols());
@@ -149,6 +150,30 @@ public class Matrix {
                 }
 
                 m.setValue(i+1, j+1, value);
+            }
+        }
+
+        return m;
+    }
+
+    /** Multipliziert zwei Matrizen elementar: (a,b) * (c,d) = (a*c,b*d).
+     * 
+     * @param a Matrix 1
+     * @param b Matrix 2
+     * @return Matrix 1 * Matrix 2 (elementar)
+     */
+    public static Matrix multiplyElement(Matrix a, Matrix b){
+        if(a.getRows() != b.getRows() || a.getCols() != b.getCols()){
+            System.err.println("Multiplikation nicht möglich. (Beide Matrizen müssen die gleiche Größe haben)");
+            return new Matrix(0,0);
+        }
+
+        Matrix m = new Matrix(a.getRows(), b.getCols());
+
+        for(int i = 0; i < m.getRows(); i++){
+            for(int j = 0; j < m.getCols(); j++){
+                
+                m.setValue(i+1, j+1, a.getData()[i][j] * b.getData()[i][j]);
             }
         }
 
