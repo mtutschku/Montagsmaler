@@ -6,7 +6,7 @@ package components.neuralnetwork;
  * Das Netzwerk hat zunächst eine Input-Layer (= Grauwerte der Leinwandpixel), eine Hidden-Layer und
  * Output-Layer (= Klassifikation).
  * 
- * @version 8. Juni 2021
+ * @version 9. Juni 2021
  * @author Morris Tutschku
  */
 public class Network {
@@ -31,6 +31,12 @@ public class Network {
 
     /** Matrix für bias der Output-Layer-Neuronen */
     Matrix biasO;
+
+    /** globale Matrizen zum Trainieren */
+    Matrix MI, MH, MO;
+
+    /** Lernrate des Netzwerks (0,1) */
+    final static double LR = 0.1;
 
     /** Konstruktor
      * 
@@ -98,10 +104,44 @@ public class Network {
         return output;
     }
 
-    /** Funktion zum Verarbeiten einer Inputmatrix (= Pixel der Leinwand). */
+    /** Ableitung der Sigmoidfunktion.
+     * 
+     * Benötigt zum Berechnen des Gradienten des Fehlers.
+     * ACHTUNG: Bei feedForward() wird x bereits zu sigmoid(x) umgewandelt,
+     * deswegen steht hier x statt sigmoid(x).
+     * 
+     * @param x Input
+     * @return Output (Ableitung von sigmoid(x))
+     */
+    public static double sigmoid_dx(double x){
+        return x * (1.0 - x);
+    }
+
+    /** Ableitung der Sigmoidfunktion auf einer gesamten Matrix.
+     * 
+     * @param m Input
+     * @return Output (Matrix mit Ableitung von sigmoid(x))
+     */
+    public static Matrix sigmoid_dx(Matrix m){
+        Matrix output = new Matrix(m.getRows(), m.getCols());
+
+        for(int i = 0; i < m.getRows(); i++){
+            for(int j = 0; j < m.getCols(); j++){
+                output.setValue(i+1, j+1, sigmoid_dx(m.getData()[i][j])); 
+            }
+        }
+
+        return output;
+    }
+
+    /** Funktion zum Verarbeiten einer Inputmatrix (= Pixel der Leinwand).
+     * 
+     * @param input Inputs für das Netzwerk in (INPUT_SIZE x 1)-Matrix
+     * @return Klassifikation ("guess") des Netzwerks
+     */
     public Matrix feedForward(Matrix input){
         if(input.getRows() != INPUT_SIZE || input.getCols() != 1){
-            System.err.println("Ungültiger Input. (Muss" + INPUT_SIZE + "x1 Matrix sein)");
+            System.err.println("Ungültiger Input. (Muss " + INPUT_SIZE + "x1 Matrix sein)");
             return new Matrix(0,0);
         }
         
@@ -115,7 +155,52 @@ public class Network {
         o = Matrix.add(o, biasO);
         o = Network.sigmoid(o);
 
+        MI = input;
+        MH = h;
+        MO = o;
+
         return o;
+    }
+
+    /** Trainiert das Netzwerk mittels supervised learning.
+     * 
+     * Inputs mit bekannten (= gewünschten) Outputs werden dem Netzwerk übergeben und
+     * die Gewichte entsprechend angepasst werden.
+     * 
+     * @param inputs Inputs
+     * @param outputs Outputs
+     */
+    public void train(Matrix inputs, Matrix outputs){
+        Matrix guess = feedForward(inputs);
+        Matrix errorO = Matrix.subtract(outputs, guess); // Fehler der Outputs
+        Matrix weightsHO_t = Matrix.transpose(weightsHO);
+        Matrix errorH = Matrix.multiply(weightsHO_t, errorO); // Fehler der Hidden-Layer-Neuronen
+        
+        // delta_weightsHO = LR * error * sigmoid_dx * h
+
+        // Gewichte und bias zwischen Output und Hidden-Layer anpassen
+        Matrix gradientHO = sigmoid_dx(MO);
+        gradientHO = Matrix.multiplyElement(gradientHO, errorO);
+        gradientHO = Matrix.scale(gradientHO, LR);
+
+        Matrix ho_t = Matrix.transpose(MH); // transponierte Gewichtsmatrix zwischen Hidden-Layer und Output
+        
+        Matrix weightsHO_delta = Matrix.multiply(gradientHO, ho_t);
+
+        weightsHO = Matrix.add(weightsHO, weightsHO_delta);
+        biasO = Matrix.add(biasO, gradientHO);
+
+        // Gewichte und bias zwischen Hidden-Layer und Inputs anpassen
+        Matrix gradientIH = sigmoid_dx(MH);
+        gradientIH = Matrix.multiplyElement(gradientIH, errorH);
+        gradientIH = Matrix.scale(gradientIH, LR);
+
+        Matrix ih_t = Matrix.transpose(MI);
+
+        Matrix weightsIH_delta = Matrix.multiply(gradientIH, ih_t);
+
+        weightsIH = Matrix.add(weightsIH, weightsIH_delta);
+        biasH = Matrix.add(biasH, gradientIH);
     }
 
 }
