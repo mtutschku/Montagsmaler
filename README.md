@@ -2,7 +2,7 @@
 
 Tutor Niklas Friedrich
 
-Morris Tutschku
+Morris Tutschku: Grundgerüst neuronales Netzwerk, Matrix-Stuff, Data-Klasse
 
 Moritz Klose
 
