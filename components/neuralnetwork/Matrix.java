@@ -6,7 +6,7 @@ import java.util.Random;
  * 
  * Beinhaltet Funktionen zum Rechnen mit Matrizen, die für das Netzwerk benötigt werden.
  * 
- * @version 8. Juni 2021
+ * @version 9. Juni 2021
  * @author Morris Tutschku
  */
 public class Matrix {
@@ -185,5 +185,52 @@ public class Matrix {
 
         Matrix addMatrix = new Matrix(addedData);
         return addMatrix;
+    }
+
+    /** Subtrahiert Matrix m2 von m1.
+     * 
+     * Hier wird nur das Negative der Matrix m2 zu m1 addiert: m1 - m2 = m1 + (-1) * m2.
+     * 
+     * @param m1 Minuend
+     * @param m2 Subtrahend
+     * @return m1 - m2
+     */
+    public static Matrix subtract(Matrix m1, Matrix m2){
+        return Matrix.add(m1, Matrix.scale(m2, -1));
+    }
+
+    /** Multipliziert jeden Eintrag einer Matrix mit einem Faktor.
+     * 
+     * @param m Matrix
+     * @param factor Skalierfaktor
+     * @return skalierte Matrix
+     */
+    public static Matrix scale(Matrix m, double factor){
+        Matrix out = new Matrix(m.getRows(), m.getCols());
+
+        for(int i = 0; i < m.getRows(); i++){
+            for(int j = 0; j < m.getCols(); j++){
+                out.setValue(i+1, j+1, m.getData()[i][j] * factor);
+            }
+        }
+
+        return out;
+    }
+
+    /** Transponiert eine Matrix.
+     * 
+     * @param m Matrix
+     * @return transponierte Matrix
+     */
+    public static Matrix transpose(Matrix m){
+        Matrix out = new Matrix(m.getCols(), m.getRows()); 
+        
+        for(int i = 0; i < m.getRows(); i++){
+            for(int j = 0; j < m.getCols(); j++){
+                out.setValue(j+1, i+1, m.getData()[i][j]);
+            }
+        }
+
+        return out;
     }
 }
