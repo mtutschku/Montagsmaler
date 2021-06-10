@@ -1,5 +1,7 @@
 package components.neuralnetwork;
 
+import components.handler.Data;
+
 /** Neuronales Netzwerk.
  * 
  * Funktionen zum Bedienen, Trainieren und Modifizieren des Netzwerks.
@@ -38,7 +40,7 @@ public class Network {
     /** Lernrate des Netzwerks (0,1) */
     final static double LR = 0.1;
 
-    /** Anzahl der Trainingsdurchläufe */
+    /** Anzahl der Epchen */
     final static int epochs = 10000;
 
     /** Konstruktor
@@ -228,5 +230,39 @@ public class Network {
         weightsIH = Matrix.add(weightsIH, weightsIH_delta);
         biasH = Matrix.add(biasH, gradientIH);
     }
+
+    /** Diese Methode wandelt zuerst die übergebenen Matrizen in ein Data-Array um
+     * Anschließend wird das Netzwerk solange mit der train-Methode trainiert, bis es eine gewünschte
+     * Genauigkeit erreicht hat.
+     * 
+     * @param net Netzwerk, welches Bias- und Gewichtsmatrizen beinhaltet
+     * @param input Matrizen mit input-Daten
+     * @param output Matrizen mit output-Daten
+     * @param accuracy gewünschte Genauigkeit die das Netzwerk besitzen soll
+     */
+    public void run(Network net, Matrix input, Matrix output, double accuracy){
+        
+        Data[] data = new Data[input.getRows()];
+        double[][] helpInput = new double[1][input.getCols()]; 
+        double[][] helpOutput = new double[output.getRows()][OUTPUT_SIZE];
+
+        for(int i = 0; i < input.getRows(); i++){
+            for(int j = 0; j < input.getCols(); j++){
+                helpInput[0][j] = input.getValue(i, j);
+                helpOutput[i][0] = output.getValue(i, 0);
+            }
+            data[i] = new Data(helpInput, helpOutput);
+        }
+
+        NetworkStats.getCurrentAccuracy(net, data);
+
+        while(accuracy > NetworkStats.accuracy){
+            train(input, output);
+            NetworkStats.getCurrentAccuracy(net, data);
+        }
+    }
+
+
+    
 
 }
