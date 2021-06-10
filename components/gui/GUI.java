@@ -120,9 +120,13 @@ public class GUI extends Application {
 
         //initialize buttons
         Button buttonNew = new Button("New");
+        buttonNew.setFont(new Font("Arial", 12));
         Button buttonPaint = new Button("Paint");
+        buttonPaint.setFont(new Font("Arial", 12));
         Button buttonErase = new Button("Erase");
+        buttonErase.setFont(new Font("Arial", 12));
         Button buttonNextWord = new Button("Next");
+        buttonNextWord.setFont(new Font("Arial", 12));
         
         GridPane gridPane = new GridPane();
         gridPane.setHgap(10);
