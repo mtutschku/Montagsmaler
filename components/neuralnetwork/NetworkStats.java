@@ -30,7 +30,6 @@ public class NetworkStats {
 
     /** Genauigkeit eines Netzwerks */
     static double accuracy = 0.0;
-
     /** Schneidet Nachkommastellen einer Kommazahl ab.
      * 
      * @param d Kommazahl
