@@ -100,7 +100,21 @@ public class Matrix {
         }
 
         data[row-1][col-1] = value;
-
+    }
+    
+    /** Überprüft ob die übergeben Positionen (row, col) in der Größe der Matrix liegen
+     * Anschließend wird der Wert an dieser Stelle zurückgegeben
+     * @param row
+     * @param col
+     * @return gibt den Wert an der gewünschte Stelle der Matrix zurück
+     */
+    public double getValue(int row, int col){
+        if(row < 0 || col < 0 || row > getRows() || col > getCols()){
+            System.err.println("Ungültige Position.");
+            return 0.0;
+        } else {
+            return this.data[row][col];
+        }
     }
 
 
