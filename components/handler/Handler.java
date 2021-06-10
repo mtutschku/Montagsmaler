@@ -68,9 +68,9 @@ public class Handler {
 	 * 
 	 * @author 	Jakob Hiestermann
 	 * @param 	canvas Canvas to extract the data from
-	 * @return	Matrix // maybe switch to Data
+	 * @return	Data-Objekt ohne outputs-Matrix // maybe switch to Data
 	 */
-	public Matrix translateCanvas(Canvas canvas) {
+	public Data translateCanvas(Canvas canvas) {
 		int[] cluster;
 		Double average;
 
@@ -82,7 +82,9 @@ public class Handler {
 				mat.setValue(i, j, average);
 			}
 		}
-		return mat;
+
+		Data translatedInput = new Data(mat);
+		return translatedInput;
 	}
 
 	/**
