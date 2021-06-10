@@ -10,7 +10,7 @@ import components.handler.Data;
  * Berechnen einer (fast) optimalen Architektur eines Netzwerks mit gegebenen
  * Inputs und Outputs (dank sei der Heuristik).
  * 
- * @version 9. Juni 2021
+ * @version 10. Juni 2021
  * @author Morris Tutschku
  */
 public class NetworkStats {
@@ -18,11 +18,20 @@ public class NetworkStats {
     /** Outputs für verschiedene Statistiken regulieren */
     static boolean printGCA = true;
     static boolean printGTS = true;
-
+    static boolean printGAS = true;
 
     /** Outputs optional weiter eindämmen */
-    static int skip = 80;
+    final static int skip = 80;
     static int skipCounter = 0;
+
+    /** Maß, ob Netzwerk "schnell genug" lernt */
+    final static int NO_RESULT = 500000;
+
+    /** wenn counter bis zu NO_RESULT hochzählt, lernt das Netzwerk nicht schnell genug */
+    static int noResultCounter = 0;
+
+    /** true wenn Netzwerk stecken bleibt */
+    static boolean noResult = false;
 
     /** absoluter Fehler eines Netzwerks bei bestimmtem Datenset */
     static double errorAbs = 0.0;
@@ -74,6 +83,8 @@ public class NetworkStats {
         finish = 0;
         diff = 0.0;
         eps = 0;
+        noResultCounter = 0;
+        noResult = false;
     }
 
     /** Berechnet die durchschnittliche Genauigkeit eines Netzwerks.
@@ -123,7 +134,7 @@ public class NetworkStats {
         int counter = 0;
         double oldAcc = 0.0;
 
-        System.out.println("-> Training-Statistik:");
+        if(printGTS) System.out.println("-> Training-Statistik:");
         getCurrentAccuracy(n, dataSet);
         start = System.currentTimeMillis();
 
@@ -136,7 +147,22 @@ public class NetworkStats {
             counter++;
             
             if(!String.valueOf(oldAcc).equals(String.valueOf(NetworkStats.accuracy)) && !skip()){  // Jaja, nicht schön
-                System.out.println("     " + NetworkStats.accuracy + "% Genauigkeit nach " + counter + " Epochen");
+                if(printGTS){
+                    System.out.println("     " + NetworkStats.accuracy + "% Genauigkeit nach " + counter + " Epochen");
+                    noResultCounter = 0;
+                }
+            } else {
+                noResultCounter++;
+                if(noResultCounter >= NO_RESULT){
+                    if(printGTS){
+                        System.err.println("[!] Das Netzwerk steckt fest oder lernt nicht schnell genug.");
+                        System.err.println("[!] Entweder NetworkStats.NO_RESULT hochschrauben, oder Netzwerkarchitektur ändern.");
+                    
+                        // TODO: Feststecken eines Netzwerks besser erkennen
+                    }
+                    noResult = true;
+                    break;
+                }
             }
         }
 
@@ -144,10 +170,68 @@ public class NetworkStats {
         finish = System.currentTimeMillis();
         diff = (finish - start)/1000.0;
         eps = (int) cut((double) counter/(diff), 2);
-        System.out.println("\n     " + NetworkStats.accuracy + "% Genauigkeit nach " + counter + " Epochen");
-        System.out.println("     (" +  diff + " Sekunden, " + eps + " Epochen/Sekunde)");
+        if(printGTS){
+            System.out.println("\n     " + NetworkStats.accuracy + "% Genauigkeit nach " + counter + " Epochen");
+            System.out.println("     (" +  diff + " Sekunden, " + eps + " Epochen/Sekunde)");
+        }
 
         printGCA = true;
+    }
+
+    /** Findet das Netzwerk mit der (fast) effizientesten Architektur.
+     * 
+     * @param dataSet Datenset mit bekannten Outputs
+     * @param maxNeurons maximale Anzahl an Hidden-Layer-Neuronen
+     * @param acc gewünschte Genauigkeit
+     */
+    public static void getArchStats(Data[] dataSet, int maxNeurons, double acc){
+        if(dataSet[0].getOutputs() == null){
+            System.err.println("Datenset muss bekannte Outputs enthalten.");
+            return;
+        }
+
+        if(maxNeurons <= 2){
+            System.err.println("Anzahl an Hidden-Layer-Neuronen muss mindestens 2 sein.");
+            return;
+        }
+
+        int inputSize = dataSet[0].getInputs().getRows();
+        int outputSize = dataSet[0].getOutputs().getRows();
+        double bestTime = Double.MAX_VALUE;
+        int bestNeuronCount = 0;
+        String bestStats = "";
+        printGTS = false;
+
+
+
+        if(printGAS) System.out.println("-> Architektur-Statistik:"); 
+
+        for(int hidden = 2; hidden <= maxNeurons; hidden++){
+            Network n = new Network(inputSize, hidden, outputSize);
+            getTrainingStats(n, dataSet, acc);
+            if(printGAS){
+                String arch = "(" + inputSize + "," + hidden + "," + outputSize + ")";
+                System.out.print("     - " + arch + ": ");
+                if(noResult){
+                    System.out.println("zu langsam (Abbruch nach " + NO_RESULT + " Trainings ohne Verbesserung)");
+                } else {
+                    String stats = acc + "% Genauigkeit in " + diff + " Sekunden mit " + eps + " Epochen/Sekunde";
+                    System.out.println(stats);
+                    if(diff < bestTime){
+                        bestTime = diff;
+                        bestNeuronCount = hidden;
+                        bestStats = arch + ": " + acc + "% Genauigkeit in " + diff + " Sekunden mit " + eps + " Epochen/Sekunde";    
+                    }
+                }
+            } 
+        }
+
+        if(printGAS){
+            System.out.println("\n     Das schnellste Netzwerk hatte " + bestNeuronCount + " Hidden-Layer-Neuronen:");
+            System.out.println("     " + bestStats);
+        }
+
+        printGTS = true;
     }
 
     /** Gibt an, wie wenig getTrainingStats() ausgeben soll (alle skipCounter Mal statt jedes mal) */
