@@ -15,10 +15,12 @@ import components.handler.Data;
  */
 public class NetworkStats {
 
-    /** Output auf Konsole ausgeben? (wird bei manchen Methoden false, da Output nicht immer notwendig ist) */
-    static boolean print = true;
+    /** Outputs für verschiedene Statistiken regulieren */
+    static boolean printGCA = true;
+    static boolean printGTS = true;
 
-    /** Optional kann Output gespart werden, um die Informationsflut einzudämmen */
+
+    /** Outputs optional weiter eindämmen */
     static int skip = 80;
     static int skipCounter = 0;
 
@@ -29,7 +31,19 @@ public class NetworkStats {
     static double errorRel = 0.0;
 
     /** Genauigkeit eines Netzwerks */
-    static double accuracy = 0.0;
+    public static double accuracy = 0.0;
+
+    /** Startzeit für getTrainingStats() */
+    static long start = 0;
+
+    /** Endzeit */
+    static long finish = 0;
+
+    /** Sekunden, bis Netzwerk bestimmte Genauigkeit erreicht */
+    public static double diff = 0.0;
+
+    /** Epochen pro Sekunde, die das Netzwerk erreicht (kein genaues Maß!) */
+    public static int eps = 0;
 
     /** Schneidet Nachkommastellen einer Kommazahl ab.
      * 
@@ -47,11 +61,19 @@ public class NetworkStats {
         return tmp/Math.pow(10.0, length);
     }
 
-    /** Setzt errorAbs, errorRel und accuracy auf 0. */
-    public static void reset(){
+    /** Setzt Fehlerwerte auf 0. */
+    public static void resetError(){
         errorAbs = 0.0;
         errorRel = 0.0;
         accuracy = 0.0;
+    }
+
+    /** Setzt Trainingstats auf 0. */
+    public static void resetTrainingStats(){
+        start = 0;
+        finish = 0;
+        diff = 0.0;
+        eps = 0;
     }
 
     /** Berechnet die durchschnittliche Genauigkeit eines Netzwerks.
@@ -61,7 +83,7 @@ public class NetworkStats {
      * @param print Genauigkeit auf Konsole ausgeben
      */
     public static void getCurrentAccuracy(Network n, Data[] dataSet){
-        reset();
+        resetError();
         int length = dataSet.length;
 
         for(int j = 0; j < length; j++){
@@ -74,9 +96,9 @@ public class NetworkStats {
         }
         
         errorRel = errorAbs / dataSet.length;
-        accuracy = cut((1.0 - errorRel) * 100.0, 1);    // Achtung: wird bei hohen Werten unsinnig lol
+        accuracy = cut((1.0 - errorRel) * 100.0, 1);    // Achtung: wird bei hohen errorRel-Werten unsinnig lol
 
-        if(print){
+        if(printGCA){
             System.out.println("-> Genauigkeitstest (" + dataSet.length + " Tests durchgeführt):");
             System.out.println("     - absoluter Fehler: " + errorAbs);
             System.out.println("     - relativer Fehler pro Output: " + errorRel);
@@ -96,13 +118,14 @@ public class NetworkStats {
             return;
         }
         
-        print = false;
+        resetTrainingStats();
+        printGCA = false;
         int counter = 0;
         double oldAcc = 0.0;
 
         System.out.println("-> Training-Statistik:");
         getCurrentAccuracy(n, dataSet);
-        long start = System.currentTimeMillis();
+        start = System.currentTimeMillis();
 
         while(NetworkStats.accuracy < accuracy){
             Random r = new Random();
@@ -118,12 +141,13 @@ public class NetworkStats {
         }
 
         // Achtung: Vergangene Zeit darf nur mit anderen Zeiten von getTrainingStats() verglichen werden, sonst kein sinnvolles Maß für Effizienz.
-        long finish = System.currentTimeMillis();
-        double diff = (finish - start)/1000.0;
+        finish = System.currentTimeMillis();
+        diff = (finish - start)/1000.0;
+        eps = (int) cut((double) counter/(diff), 2);
         System.out.println("\n     " + NetworkStats.accuracy + "% Genauigkeit nach " + counter + " Epochen");
-        System.out.println("     (" +  diff + " Sekunden, " + (int) cut((double) counter/(diff), 2) + " Epochen/Sekunde)");
+        System.out.println("     (" +  diff + " Sekunden, " + eps + " Epochen/Sekunde)");
 
-        print = true;
+        printGCA = true;
     }
 
     /** Gibt an, wie wenig getTrainingStats() ausgeben soll (alle skipCounter Mal statt jedes mal) */
