@@ -33,6 +33,9 @@ public class NetworkStats {
     /** true wenn Netzwerk stecken bleibt */
     static boolean noResult = false;
 
+    /** zur Berechnung der Abbruch-Wahrscheinlichkeit (= Feststecken eines Netzwerks) */
+    static double maxQuotient = 0.0;
+
     /** absoluter Fehler eines Netzwerks bei bestimmtem Datenset */
     static double errorAbs = 0.0;
 
@@ -85,6 +88,7 @@ public class NetworkStats {
         eps = 0;
         noResultCounter = 0;
         noResult = false;
+        maxQuotient = 0.0;
     }
 
     /** Berechnet die durchschnittliche Genauigkeit eines Netzwerks.
@@ -153,6 +157,8 @@ public class NetworkStats {
                 }
             } else {
                 noResultCounter++;
+                double currentQuotient = Double.valueOf(noResultCounter) / Double.valueOf(NO_RESULT);
+                if(currentQuotient > maxQuotient) maxQuotient = cut(currentQuotient, 3);
                 if(noResultCounter >= NO_RESULT){
                     if(printGTS){
                         System.err.println("[!] Das Netzwerk steckt fest oder lernt nicht schnell genug.");
@@ -215,12 +221,12 @@ public class NetworkStats {
                 if(noResult){
                     System.out.println("zu langsam (Abbruch nach " + NO_RESULT + " Trainings ohne Verbesserung)");
                 } else {
-                    String stats = acc + "% Genauigkeit in " + diff + " Sekunden mit " + eps + " Epochen/Sekunde";
+                    String stats = acc + "% Genauigkeit in " + diff + " Sekunden mit " + eps + " Epochen/Sekunde, Abbruchniveau: " + cut(maxQuotient * 100.0, 1) + "%";
                     System.out.println(stats);
                     if(diff < bestTime){
                         bestTime = diff;
                         bestNeuronCount = hidden;
-                        bestStats = arch + ": " + acc + "% Genauigkeit in " + diff + " Sekunden mit " + eps + " Epochen/Sekunde";    
+                        bestStats = arch + ": " + stats;    
                     }
                 }
             } 
