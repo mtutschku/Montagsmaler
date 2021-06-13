@@ -1,6 +1,7 @@
 import java.util.Random;
 
-import components.handler.Data;
+import components.gui.*;
+import components.handler.*;
 import components.neuralnetwork.Matrix;
 import components.neuralnetwork.Network;
 import components.neuralnetwork.NetworkStats;
@@ -40,6 +41,20 @@ public class Main {
         System.out.println("\n" + NetworkStats.accuracy); // nur Genauigkeit als Wert bekommen.
                                                           // Dafür muss aber zuerst getTrainingStats() ausgeführt werden,
                                                           // damit accuracy upgedated wird.
+
+        // @author Jakob Hiestermann - test Array-class:
+
+        System.out.println("------------\nMeta test:");
+
+        Meta meta = new Meta();
+        System.out.println(meta.toString());
+        String metaRandom1 = meta.getRandomNext(false);
+        System.out.println(metaRandom1);
+        System.out.println(meta.toString());
+        
+        String metaRandom2 = meta.getRandomNext(true);
+        System.out.println(metaRandom2);
+        System.out.println(meta.toString());
     }
 
 }
