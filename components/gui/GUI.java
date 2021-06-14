@@ -1,7 +1,5 @@
 package components.gui;
 
-import java.util.Random;
-
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -29,20 +27,19 @@ import javafx.stage.Stage;
  */
 public class GUI extends Application {
 
-    String mode = "Paint";
-    int counter = 0;
-    int maxTurns = 6;
+    private String mode = "Paint";
+    private int counter = 0;
+    private int maxTurns = 6;
+
+    public void setMaxTurns(int turns) {
+        this.maxTurns = turns;
+    }
 
     public void counter() {
         counter++;
     }
 
-    String[] toDraw = new String[] {"Banane", "Auto", "Palme", "Brille", "Fahrrad", "Sonne", "Flugzeug"};
-
-    public String getRandom(String[] input) {
-        int random = new Random().nextInt(input.length);
-        return input[random];  
-    }
+    private Meta toDraw = new Meta();
 
     @Override
     public void start(Stage stage) throws Exception {
@@ -68,7 +65,7 @@ public class GUI extends Application {
                     } else if(mode.equals("Erase")) {
                         graphicsContext.beginPath();
                         graphicsContext.moveTo(event.getX(), event.getY());
-                        graphicsContext.clearRect(event.getX(), event.getY(), 6, 6);
+                        graphicsContext.clearRect(event.getX(), event.getY(), 10, 10);
                     }
                 }
             });
@@ -85,7 +82,7 @@ public class GUI extends Application {
                         graphicsContext.moveTo(event.getX(), event.getY());
                     } else if(mode.equals("Erase")) {
                         graphicsContext.lineTo(event.getX(), event.getY());
-                        graphicsContext.clearRect(event.getX(), event.getY(), 6, 6);
+                        graphicsContext.clearRect(event.getX(), event.getY(), 10, 10);
                         graphicsContext.closePath();
                         graphicsContext.beginPath();
                         graphicsContext.moveTo(event.getX(), event.getY());
@@ -103,13 +100,15 @@ public class GUI extends Application {
                         graphicsContext.closePath();
                     } else if(mode.equals("Erase")) {
                         graphicsContext.lineTo(event.getX(), event.getY());
-                        graphicsContext.clearRect(event.getX(), event.getY(), 6, 6);
+                        graphicsContext.clearRect(event.getX(), event.getY(), 10, 10);
                         graphicsContext.closePath();
                     }
                 }
             });  
+        
 
-        Label thingToDraw = new Label(getRandom(toDraw));
+        //Label declaration
+        Label thingToDraw = new Label(toDraw.getRandomNext(true));
         thingToDraw.setFont(new Font("Arial", 24));
         
         Label counterMax = new Label("/" + Integer.toString(maxTurns));
@@ -170,7 +169,7 @@ public class GUI extends Application {
         buttonNextWord.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                thingToDraw.setText(getRandom(toDraw));
+                thingToDraw.setText(toDraw.getRandomNext(true));
                 counter();
                 count.setText("Word: " + Integer.toString(counter));
             }
