@@ -50,7 +50,7 @@ public class Meta {
 	 * @return 	a randomly selected element/name
 	 */
 	public String getRandomNext(Boolean remove) {
-		int randomIndex = rand.nextInt(this.Meta.size() - 1);
+		int randomIndex = rand.nextInt(this.Meta.size());
 		String RandomNext = String.valueOf(this.Meta.get(randomIndex));
 		if (remove) {
 			this.Meta.remove(randomIndex);
