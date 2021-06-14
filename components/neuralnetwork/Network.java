@@ -262,7 +262,22 @@ public class Network {
         }
     }
 
+    // Getter für die Gewichtsmatrizen
 
-    
+    public Matrix getWeightsIH(){
+        return weightsIH;
+    }
+
+    public Matrix getWeightsHO(){
+        return weightsHO;
+    }
+
+    public Matrix getBiasH(){
+        return biasH;
+    }
+
+    public Matrix getBiasO(){
+        return biasO;
+    }
 
 }
