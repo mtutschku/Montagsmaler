@@ -30,6 +30,9 @@ public class GUI extends Application {
     private String mode = "Paint";
     private int counter = 0;
     private int maxTurns = 6;
+    private static final int TIMERSTART = 20;
+    private Integer time = TIMERSTART;
+
 
     public void setMaxTurns(int turns) {
         this.maxTurns = turns;
@@ -114,19 +117,32 @@ public class GUI extends Application {
         Label counterMax = new Label("/" + Integer.toString(maxTurns));
         counterMax.setFont(new Font("Arial", 24));
 
-        Label count = new Label("Word: " + Integer.toString(counter));
+        Label count = new Label("Try: " + Integer.toString(counter));
         count.setFont(new Font("Arial", 24));
+
+        Label guess = new Label("Guess: " + "Guess1");
+        guess.setFont(new Font("Arial", 24));
+
+        Label timer = new Label("Time: " + time.toString());
+        timer.setFont(new Font("Arial", 24));
 
         //initialize buttons
         Button buttonNew = new Button("New");
         buttonNew.setFont(new Font("Arial", 12));
+
         Button buttonPaint = new Button("Paint");
         buttonPaint.setFont(new Font("Arial", 12));
+
         Button buttonErase = new Button("Erase");
         buttonErase.setFont(new Font("Arial", 12));
+
         Button buttonNextWord = new Button("Next");
         buttonNextWord.setFont(new Font("Arial", 12));
         
+        Button buttonGuess = new Button("Guess");
+        buttonGuess.setFont(new Font("Arial", 12));
+
+        //setup gridpane with all buttons and labels
         GridPane gridPane = new GridPane();
         gridPane.setHgap(10);
         gridPane.add(buttonNew, 0, 0, 1, 1);
@@ -134,8 +150,11 @@ public class GUI extends Application {
         gridPane.add(buttonErase, 2, 0, 1, 1);
         gridPane.add(buttonNextWord, 3, 0, 1, 1);
         gridPane.add(thingToDraw, 10, 0, 1, 1);
+        gridPane.add(buttonGuess, 11, 0, 1, 1);
         gridPane.add(count, 15, 0, 1, 1);
         gridPane.add(counterMax, 16, 0, 1, 1);
+        gridPane.add(guess, 20, 0, 1, 1);
+        gridPane.add(timer, 25, 0, 1, 1);
 
         //horizontal allignment of all buttons and info
         HBox topBar = new HBox(gridPane);
@@ -169,11 +188,28 @@ public class GUI extends Application {
         buttonNextWord.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                thingToDraw.setText(toDraw.getRandomNext(true));
-                counter();
-                count.setText("Word: " + Integer.toString(counter));
+                if(counter <= maxTurns) {
+                    thingToDraw.setText(toDraw.getRandomNext(true));
+                    counter();
+                    count.setText("Try: " + Integer.toString(counter));
+                    graphicsContext.clearRect(0, 0, SIZE, SIZE);
+                    graphicsContext.setStroke(Color.GREY);
+                    graphicsContext.setLineWidth(2);
+                    graphicsContext.strokeRect(0, 0, SIZE, SIZE);
+                    graphicsContext.setStroke(Color.BLACK);
+                } else {
+                    stage.close();
+                }
+                
             }
         });
+
+        buttonGuess.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+            }
+        });
+
 
         //sets the scene/stage and shows it
         BorderPane borderPane = new BorderPane();
@@ -189,9 +225,4 @@ public class GUI extends Application {
         stage.setScene(scene);
         stage.show();
     }
-
-    public static void main(String[] args) {
-        launch(args);
-    }
-    
 }

@@ -5,6 +5,8 @@ import components.handler.*;
 import components.neuralnetwork.Matrix;
 import components.neuralnetwork.Network;
 import components.neuralnetwork.NetworkStats;
+import javafx.application.Application;
+
 
 public class Main {
     
@@ -55,6 +57,11 @@ public class Main {
         String metaRandom2 = meta.getRandomNext(true);
         System.out.println(metaRandom2);
         System.out.println(meta.toString());
+
+        // @author Pascal Uhlendorff - GUI 
+
+        Application.launch(GUI.class, args);
+        
     }
 
 }
