@@ -11,6 +11,21 @@ import javafx.application.Application;
 public class Main {
     
     public static void main(String[] args){
+        ////////////////////////////
+        // @author Jakob Hiestermann
+        
+        /** holds constant value m that defines the mxm matrix size used in this project */
+        final int M = 28;
+        
+        Handler handler = new Handler(M, M);
+        Network nw = new Network(M*M, 4, 7); // for now an arbitrary number of hidden layers chosen, to be changed adequately
+        
+        
+        
+        
+        
+        
+        ////////////////////////////
         Network n = new Network(2,4,1);
         
         double[][] i1 = {{1},{0}};
@@ -47,7 +62,6 @@ public class Main {
         // @author Pascal Uhlendorff - GUI 
 
         Application.launch(GUI.class, args);
-        
     }
 
 }
