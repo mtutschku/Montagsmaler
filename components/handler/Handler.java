@@ -78,6 +78,7 @@ public class Handler {
 			}
 		}
 
+		// TODO turn mxm matrix into 1x(m*m) matrix
 		Data translatedInput = new Data(mat);
 		return translatedInput;
 	}
@@ -136,7 +137,7 @@ public class Handler {
 		for(int i : cluster) {
 			average += cluster[i];
 		}
-		average /= this.clusterSize;		// TODO: check for type-specific division error
+		average /= this.clusterSize;		
 		assert(average <= 1 && average >= 0);
 		return average;
 	}
