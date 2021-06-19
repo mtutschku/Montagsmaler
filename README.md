@@ -10,4 +10,4 @@ Moritz Klose: W1: Arbeit an der Network- und der Matrix-Klasse
 Pascal Uhlendorff: GUI Implementation
 
 Jakob Hiestermann:	W1: Arbeit an Handler, d.h Schnittstelle zwischen GUI und Netzwerk, Arbeit an Meta (ArrayList)
-					W2:
+					W2: Main-Funktion, Einbindung von Handler und Meta in GUI
