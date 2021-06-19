@@ -1,5 +1,8 @@
 package components.gui;
 
+import components.handler.Handler;
+import components.neuralnetwork.Network;
+
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -26,6 +29,8 @@ import javafx.stage.Stage;
  * @author Pascal Uhlendorff
  */
 public class GUI extends Application {
+    private Handler handler;
+    private Network network;
 
     private String mode = "Paint";
     private static final int TIMERSTART = 20;
@@ -34,6 +39,11 @@ public class GUI extends Application {
     private Meta toDraw = new Meta();
     private int maxTurns = toDraw.getMETA().length;
     private int counter = 1;
+
+    public GUI(Handler h, Network n) {
+        this.handler = h;
+        this.network = n;
+    }
 
     @Override
     public void start(Stage stage) throws Exception {
