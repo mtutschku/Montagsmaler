@@ -5,23 +5,64 @@ import components.handler.*;
 import components.neuralnetwork.Matrix;
 import components.neuralnetwork.Network;
 import components.neuralnetwork.NetworkStats;
+
 import javafx.application.Application;
+import java.io.File;
+import java.io.IOException;
+import java.awt.image.BufferedImage;
+import javax.imageio.ImageIO;
 
 
 public class Main {
     
-    public static void main(String[] args){
+    public static void main(String[] args) throws IOException {
+
         ////////////////////////////
         // @author Jakob Hiestermann
         
         /** holds constant value m that defines the mxm matrix size used in this project */
         final int M = 28;
+
+        /** constant image dimension, IM_DIMENSIONxIM_DIMENSION */
+        final int IM_DIMENSION = 28 * 28;
+
+        /** holds file location of current drawing created inside GUI */
+        final String D_LOCATION = "";
         
         Handler handler = new Handler(M, M);
-        Network nw = new Network(M*M, 4, 7); // for now an arbitrary number of hidden layers chosen, to be changed adequately
+        Network network = new Network(M*M, 4, 7); // for now an arbitrary number of hidden layers (and outputs) chosen, to be changed adequately
+        Data translatedInput;
+        Matrix networkGuessM;
+        String netWorkGuess;
         
-        
-        
+        Application.launch(GUI.class, args);
+
+        BufferedImage image_before = null;
+        BufferedImage image_current = null;
+        File f = null;
+
+        try {
+            f = new File(D_LOCATION);
+            image_before = new BufferedImage(IM_DIMENSION, IM_DIMENSION, BufferedImage.TYPE_INT_ARGB);
+            image_before = ImageIO.read(f);
+            image_current = new BufferedImage(IM_DIMENSION, IM_DIMENSION, BufferedImage.TYPE_INT_ARGB);
+        } catch(IOException e) {
+            System.out.println("Error: " + e);
+        }
+
+        while(true) {
+            try {
+                image_current = ImageIO.read(f);
+            } catch(IOException e) {
+                System.out.println("Error: " + e);
+            }
+            if (!image_current.equals(image_before)) {
+                image_before = image_current;
+                translatedInput = handler.translateImage(image_current); // TODO handler für BufferedImage anpassen
+                networkGuessM = network.feedForward(translatedInput.getInputs());
+                //TODO translate Matrix into String stating the drawn object
+            }
+        }
         
         
         
@@ -59,9 +100,6 @@ public class Main {
                                                           // Dafür muss aber zuerst getTrainingStats() ausgeführt werden,
                                                           // damit accuracy upgedated wird.
 
-        // @author Pascal Uhlendorff - GUI 
-
-        Application.launch(GUI.class, args);
     }
 
 }
