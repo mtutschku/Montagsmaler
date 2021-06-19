@@ -1,7 +1,6 @@
 package components.handler;
 
 import components.neuralnetwork.Matrix;
-import javafx.scene.canvas.Canvas;
 import javafx.scene.image.*;
 import javafx.scene.paint.*;
 import java.lang.Double;
@@ -22,7 +21,7 @@ import java.lang.Double;
  * 
  * 
  * @author Jakob Hiestermann
- * @version 08 May 2021
+ * @version 19 May 2021
  * 
  */
 public class Handler {
@@ -34,9 +33,6 @@ public class Handler {
 
 	// /** holds overall amount of pixels inside a cluster */
 	private int clusterSize;
-
-	/** holds an image representation of drawing on a canvas. Uninitialized until translateCanvas is called */
-	private Image image;
 
 	/**
 	 * Constructor method.
@@ -63,18 +59,17 @@ public class Handler {
 	}
 
 	/**
-	 * Translates a canvas into a matrix of doubles. 
+	 * Translates an image into a matrix of doubles. 
 	 * These doubles each represent the average darkness inside a cluster.
 	 * 
 	 * @author 	Jakob Hiestermann
-	 * @param 	canvas Canvas to extract the data from
-	 * @return	Data-Objekt ohne outputs-Matrix // maybe switch to Data
+	 * @param 	image
+	 * @return	Data-Objekt ohne outputs parameter
 	 */
-	public Data translateCanvas(Canvas canvas) {
+	public Data translateImage(Image image) {
 		int[] cluster;
 		Double average;
 
-		this.image = canvas.snapshot(null, null);
 		for (int i = 0; i < image.getHeight() / this.clusterSideLength; i++) {
 			for (int j = 0; j < image.getWidth() / this.clusterSideLength; j++) {
 				cluster = makeCluster(j * this.clusterSideLength % (int) image.getWidth(), i * this.clusterSideLength % (int) image.getHeight(), image);
@@ -83,6 +78,7 @@ public class Handler {
 			}
 		}
 
+		// TODO turn mxm matrix into 1x(m*m) matrix
 		Data translatedInput = new Data(mat);
 		return translatedInput;
 	}
@@ -141,7 +137,7 @@ public class Handler {
 		for(int i : cluster) {
 			average += cluster[i];
 		}
-		average /= this.clusterSize;		// TODO: check for type-specific division error
+		average /= this.clusterSize;		
 		assert(average <= 1 && average >= 0);
 		return average;
 	}

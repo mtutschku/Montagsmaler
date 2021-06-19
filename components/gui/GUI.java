@@ -4,6 +4,8 @@ import java.io.File;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
+import components.handler.Handler;
+import components.neuralnetwork.Network;
 
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -33,7 +35,7 @@ import javafx.util.Duration;
  * sowie zum Rückgängigmachen der letzten Aktion und zum Überspringen des aktuell geforderten Objekts enthalten.
  * 
  * @version 19. Juni 2021
- * @author Pascal Uhlendorff
+ * @author Pascal Uhlendorff, Jakob Hiestermann
  */
 public class GUI extends Application {
 
