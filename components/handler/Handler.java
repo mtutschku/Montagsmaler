@@ -1,7 +1,6 @@
 package components.handler;
 
 import components.neuralnetwork.Matrix;
-import javafx.scene.canvas.Canvas;
 import javafx.scene.image.*;
 import javafx.scene.paint.*;
 import java.lang.Double;
@@ -60,14 +59,14 @@ public class Handler {
 	}
 
 	/**
-	 * Translates a canvas into a matrix of doubles. 
+	 * Translates an image into a matrix of doubles. 
 	 * These doubles each represent the average darkness inside a cluster.
 	 * 
 	 * @author 	Jakob Hiestermann
 	 * @param 	image
 	 * @return	Data-Objekt ohne outputs parameter
 	 */
-	public Data translateCanvas(Image image) {
+	public Data translateImage(Image image) {
 		int[] cluster;
 		Double average;
 
