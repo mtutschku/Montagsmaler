@@ -22,7 +22,7 @@ import java.lang.Double;
  * 
  * 
  * @author Jakob Hiestermann
- * @version 08 May 2021
+ * @version 19 May 2021
  * 
  */
 public class Handler {
@@ -64,8 +64,8 @@ public class Handler {
 	 * These doubles each represent the average darkness inside a cluster.
 	 * 
 	 * @author 	Jakob Hiestermann
-	 * @param 	canvas Canvas to extract the data from
-	 * @return	Data-Objekt ohne outputs-Matrix // maybe switch to Data
+	 * @param 	image
+	 * @return	Data-Objekt ohne outputs parameter
 	 */
 	public Data translateCanvas(Image image) {
 		int[] cluster;
