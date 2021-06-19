@@ -4,7 +4,8 @@ Tutor Niklas Friedrich
 
 Morris Tutschku: Grundgerüst neuronales Netzwerk, Matrix-Stuff, Data-Klasse
 
-Moritz Klose: Arbeit an der Network- und der Matrix-Klasse 
+Moritz Klose: W1: Arbeit an der Network- und der Matrix-Klasse 
+			  W2: Einbindung von Gradle 
 
 Pascal Uhlendorff: GUI Implementation
 
