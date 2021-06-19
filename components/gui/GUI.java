@@ -3,6 +3,8 @@ package components.gui;
 import components.handler.Handler;
 import components.neuralnetwork.Network;
 
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -18,6 +20,7 @@ import javafx.scene.text.Font;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 
 /** Grafisches Benutzerinterface für die Zeichnung, welche vom neuronalen Netzwerk erkannt werden soll.
  * 
@@ -30,17 +33,20 @@ import javafx.stage.Stage;
  */
 public class GUI extends Application {
 
+    //Felder initialisieren, Variablen setzen
     private String mode = "Paint";
-    private static final int TIMERSTART = 20;
+
+    //Variablen fuer Timer
+    private static final int TIMERSTART = 5;
     private Integer time = TIMERSTART;
     
     private Meta toDraw = new Meta();
-    private int maxTurns = toDraw.getMETA().length;
     private int counter = 1;
+    private int maxTurns = toDraw.getMETA().length;
 
     @Override
     public void start(Stage stage) throws Exception {
-        
+
         final int SIZE = 840;
         Canvas canvas = new Canvas(SIZE, SIZE);
         final GraphicsContext graphicsContext = canvas.getGraphicsContext2D();
@@ -117,8 +123,8 @@ public class GUI extends Application {
         Label guess = new Label("Guess: " + "Guess1");
         guess.setFont(new Font("Arial", 24));
 
-        Label timer = new Label("Time: " + time.toString());
-        timer.setFont(new Font("Arial", 24));
+        Label timerLabel = new Label("Time: " + time.toString());
+        timerLabel.setFont(new Font("Arial", 24));
 
         //initialize buttons
         Button buttonNew = new Button("New");
@@ -148,11 +154,26 @@ public class GUI extends Application {
         gridPane.add(count, 15, 0, 1, 1);
         gridPane.add(counterMax, 16, 0, 1, 1);
         gridPane.add(guess, 20, 0, 1, 1);
-        gridPane.add(timer, 25, 0, 1, 1);
+        gridPane.add(timerLabel, 25, 0, 1, 1);
 
         //horizontal allignment of all buttons and info
         HBox topBar = new HBox(gridPane);
-        
+
+        //timer 
+        Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(1), new EventHandler<ActionEvent>(){
+            @Override
+            public void handle(ActionEvent event) {
+                if(time > 0){
+                time--;
+                timerLabel.setText("Time: " + time.toString());
+                } else {
+                    buttonNextWord.fire();
+                }
+            }
+        }));
+        timeline.setCycleCount(Timeline.INDEFINITE);
+        timeline.play();
+
         //event handler for buttons
         buttonNew.setOnAction(new EventHandler<ActionEvent>() {
             @Override
@@ -184,7 +205,7 @@ public class GUI extends Application {
             public void handle(ActionEvent event) {
                 if(!toDraw.getMeta().isEmpty()) {
                     thingToDraw.setText(toDraw.getRandomNext(true));
-                    count.setText("Word: " + Integer.toString(++counter));
+                    count.setText("Try: " + Integer.toString(++counter));
                     if (counter == maxTurns) {
                         buttonNextWord.setText("Exit");
                     }
@@ -193,6 +214,7 @@ public class GUI extends Application {
                     graphicsContext.setLineWidth(2);
                     graphicsContext.strokeRect(0, 0, SIZE, SIZE);
                     graphicsContext.setStroke(Color.BLACK);
+                    time = TIMERSTART + 1;
                 } else {
                     stage.close();
                 }
@@ -205,7 +227,6 @@ public class GUI extends Application {
             public void handle(ActionEvent event) {
             }
         });
-
 
         //sets the scene/stage and shows it
         BorderPane borderPane = new BorderPane();
