@@ -44,20 +44,6 @@ public class Main {
                                                           // Dafür muss aber zuerst getTrainingStats() ausgeführt werden,
                                                           // damit accuracy upgedated wird.
 
-        // @author Jakob Hiestermann - test Array-class:
-
-        System.out.println("------------\nMeta test:");
-
-        Meta meta = new Meta();
-        System.out.println(meta.toString());
-        String metaRandom1 = meta.getRandomNext(false);
-        System.out.println(metaRandom1);
-        System.out.println(meta.toString());
-        
-        String metaRandom2 = meta.getRandomNext(true);
-        System.out.println(metaRandom2);
-        System.out.println(meta.toString());
-
         // @author Pascal Uhlendorff - GUI 
 
         Application.launch(GUI.class, args);
