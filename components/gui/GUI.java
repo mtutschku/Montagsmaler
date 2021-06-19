@@ -25,12 +25,10 @@ import javafx.stage.Stage;
  * Weiterhin sind Buttons für das Umschalten zwischen Zeichnen und Radieren, 
  * sowie zum Rückgängigmachen der letzten Aktion und zum Überspringen des aktuell geforderten Objekts enthalten.
  * 
- * @version 9. Juni 2021
- * @author Pascal Uhlendorff
+ * @version 19. Juni 2021
+ * @author Pascal Uhlendorff, Jakob Hiestermann
  */
 public class GUI extends Application {
-    private Handler handler;
-    private Network network;
 
     private String mode = "Paint";
     private static final int TIMERSTART = 20;
@@ -39,11 +37,6 @@ public class GUI extends Application {
     private Meta toDraw = new Meta();
     private int maxTurns = toDraw.getMETA().length;
     private int counter = 1;
-
-    public GUI(Handler h, Network n) {
-        this.handler = h;
-        this.network = n;
-    }
 
     @Override
     public void start(Stage stage) throws Exception {
