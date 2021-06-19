@@ -1,5 +1,7 @@
 package components.gui;
 
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -15,6 +17,7 @@ import javafx.scene.text.Font;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 
 /** Grafisches Benutzerinterface für die Zeichnung, welche vom neuronalen Netzwerk erkannt werden soll.
  * 
@@ -22,31 +25,29 @@ import javafx.stage.Stage;
  * Weiterhin sind Buttons für das Umschalten zwischen Zeichnen und Radieren, 
  * sowie zum Rückgängigmachen der letzten Aktion und zum Überspringen des aktuell geforderten Objekts enthalten.
  * 
- * @version 9. Juni 2021
+ * @version 19. Juni 2021
  * @author Pascal Uhlendorff
  */
 public class GUI extends Application {
 
+    //Felder initialisieren, Variablen setzen
     private String mode = "Paint";
     private int counter = 0;
     private int maxTurns = 6;
-    private static final int TIMERSTART = 20;
-    private Integer time = TIMERSTART;
 
+    //Variablen fuer Timer
+    private static final int TIMERSTART = 5;
+    private Integer time = TIMERSTART;
 
     public void setMaxTurns(int turns) {
         this.maxTurns = turns;
-    }
-
-    public void counter() {
-        counter++;
     }
 
     private Meta toDraw = new Meta();
 
     @Override
     public void start(Stage stage) throws Exception {
-        
+
         final int SIZE = 840;
         Canvas canvas = new Canvas(SIZE, SIZE);
         final GraphicsContext graphicsContext = canvas.getGraphicsContext2D();
@@ -123,8 +124,8 @@ public class GUI extends Application {
         Label guess = new Label("Guess: " + "Guess1");
         guess.setFont(new Font("Arial", 24));
 
-        Label timer = new Label("Time: " + time.toString());
-        timer.setFont(new Font("Arial", 24));
+        Label timerLabel = new Label("Time: " + time.toString());
+        timerLabel.setFont(new Font("Arial", 24));
 
         //initialize buttons
         Button buttonNew = new Button("New");
@@ -154,11 +155,26 @@ public class GUI extends Application {
         gridPane.add(count, 15, 0, 1, 1);
         gridPane.add(counterMax, 16, 0, 1, 1);
         gridPane.add(guess, 20, 0, 1, 1);
-        gridPane.add(timer, 25, 0, 1, 1);
+        gridPane.add(timerLabel, 25, 0, 1, 1);
 
         //horizontal allignment of all buttons and info
         HBox topBar = new HBox(gridPane);
-        
+
+        //timer 
+        Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(1), new EventHandler<ActionEvent>(){
+            @Override
+            public void handle(ActionEvent event) {
+                if(time > 0){
+                time--;
+                timerLabel.setText("Time: " + time.toString());
+                } else {
+                    buttonNextWord.fire();
+                }
+            }
+        }));
+        timeline.setCycleCount(Timeline.INDEFINITE);
+        timeline.play();
+
         //event handler for buttons
         buttonNew.setOnAction(new EventHandler<ActionEvent>() {
             @Override
@@ -190,13 +206,14 @@ public class GUI extends Application {
             public void handle(ActionEvent event) {
                 if(counter <= maxTurns) {
                     thingToDraw.setText(toDraw.getRandomNext(true));
-                    counter();
+                    counter++;
                     count.setText("Try: " + Integer.toString(counter));
                     graphicsContext.clearRect(0, 0, SIZE, SIZE);
                     graphicsContext.setStroke(Color.GREY);
                     graphicsContext.setLineWidth(2);
                     graphicsContext.strokeRect(0, 0, SIZE, SIZE);
                     graphicsContext.setStroke(Color.BLACK);
+                    time = TIMERSTART + 1;
                 } else {
                     stage.close();
                 }
@@ -209,7 +226,6 @@ public class GUI extends Application {
             public void handle(ActionEvent event) {
             }
         });
-
 
         //sets the scene/stage and shows it
         BorderPane borderPane = new BorderPane();
