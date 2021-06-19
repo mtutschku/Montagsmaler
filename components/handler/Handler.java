@@ -35,9 +35,6 @@ public class Handler {
 	// /** holds overall amount of pixels inside a cluster */
 	private int clusterSize;
 
-	/** holds an image representation of drawing on a canvas. Uninitialized until translateCanvas is called */
-	private Image image;
-
 	/**
 	 * Constructor method.
 	 * 
@@ -70,11 +67,10 @@ public class Handler {
 	 * @param 	canvas Canvas to extract the data from
 	 * @return	Data-Objekt ohne outputs-Matrix // maybe switch to Data
 	 */
-	public Data translateCanvas(Canvas canvas) {
+	public Data translateCanvas(Image image) {
 		int[] cluster;
 		Double average;
 
-		this.image = canvas.snapshot(null, null);
 		for (int i = 0; i < image.getHeight() / this.clusterSideLength; i++) {
 			for (int j = 0; j < image.getWidth() / this.clusterSideLength; j++) {
 				cluster = makeCluster(j * this.clusterSideLength % (int) image.getWidth(), i * this.clusterSideLength % (int) image.getHeight(), image);
