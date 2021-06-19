@@ -28,21 +28,12 @@ import javafx.stage.Stage;
 public class GUI extends Application {
 
     private String mode = "Paint";
-    private int counter = 0;
-    private int maxTurns = 6;
     private static final int TIMERSTART = 20;
     private Integer time = TIMERSTART;
-
-
-    public void setMaxTurns(int turns) {
-        this.maxTurns = turns;
-    }
-
-    public void counter() {
-        counter++;
-    }
-
+    
     private Meta toDraw = new Meta();
+    private int maxTurns = toDraw.getMETA().length;
+    private int counter = 1;
 
     @Override
     public void start(Stage stage) throws Exception {
@@ -117,7 +108,7 @@ public class GUI extends Application {
         Label counterMax = new Label("/" + Integer.toString(maxTurns));
         counterMax.setFont(new Font("Arial", 24));
 
-        Label count = new Label("Try: " + Integer.toString(counter));
+        Label count = new Label("Word: " + Integer.toString(counter));
         count.setFont(new Font("Arial", 24));
 
         Label guess = new Label("Guess: " + "Guess1");
@@ -188,10 +179,12 @@ public class GUI extends Application {
         buttonNextWord.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                if(counter <= maxTurns) {
+                if(!toDraw.getMeta().isEmpty()) {
                     thingToDraw.setText(toDraw.getRandomNext(true));
-                    counter();
-                    count.setText("Try: " + Integer.toString(counter));
+                    count.setText("Word: " + Integer.toString(++counter));
+                    if (counter == maxTurns) {
+                        buttonNextWord.setText("Exit");
+                    }
                     graphicsContext.clearRect(0, 0, SIZE, SIZE);
                     graphicsContext.setStroke(Color.GREY);
                     graphicsContext.setLineWidth(2);
