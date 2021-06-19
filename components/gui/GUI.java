@@ -1,8 +1,14 @@
 package components.gui;
 
+import java.io.File;
+import java.io.IOException;
+
+import javax.imageio.ImageIO;
+
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;
+import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
@@ -10,6 +16,7 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.image.WritableImage;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
@@ -32,14 +39,13 @@ public class GUI extends Application {
 
     //Felder initialisieren, Variablen setzen
     private String mode = "Paint";
+    private Meta toDraw = new Meta();
+    private int counter = 1;
+    private int maxTurns = toDraw.getMETA().length;
 
     //Variablen fuer Timer
     private static final int TIMERSTART = 5;
     private Integer time = TIMERSTART;
-    
-    private Meta toDraw = new Meta();
-    private int counter = 1;
-    private int maxTurns = toDraw.getMETA().length;
 
     @Override
     public void start(Stage stage) throws Exception {
@@ -52,6 +58,71 @@ public class GUI extends Application {
         graphicsContext.setLineWidth(2);
         graphicsContext.strokeRect(0, 0, SIZE, SIZE);
         graphicsContext.setStroke(Color.BLACK);
+
+        
+        //Label declaration
+        Label thingToDraw = new Label(toDraw.getRandomNext(true));
+        thingToDraw.setFont(new Font("Arial", 24));
+        
+        Label counterMax = new Label("/" + Integer.toString(maxTurns));
+        counterMax.setFont(new Font("Arial", 24));
+
+        Label count = new Label("Word: " + Integer.toString(counter));
+        count.setFont(new Font("Arial", 24));
+
+        Label guess = new Label("Guess: " + "None"); 
+        guess.setFont(new Font("Arial", 24));
+
+        Label timerLabel = new Label("Time: " + time.toString());
+        timerLabel.setFont(new Font("Arial", 24));
+
+        //initialize buttons
+        Button buttonNew = new Button("New");
+        buttonNew.setFont(new Font("Arial", 12));
+
+        Button buttonPaint = new Button("Paint");
+        buttonPaint.setFont(new Font("Arial", 12));
+
+        Button buttonErase = new Button("Erase");
+        buttonErase.setFont(new Font("Arial", 12));
+
+        Button buttonNextWord = new Button("Next");
+        buttonNextWord.setFont(new Font("Arial", 12));
+        
+        Button buttonGuess = new Button("Guess");
+        buttonGuess.setFont(new Font("Arial", 12));
+
+        //setup gridpane with all buttons and labels
+        GridPane gridPane = new GridPane();
+        gridPane.setHgap(10);
+        gridPane.add(buttonNew, 0, 0, 1, 1);
+        gridPane.add(buttonPaint, 1, 0, 1, 1);
+        gridPane.add(buttonErase, 2, 0, 1, 1);
+        gridPane.add(buttonNextWord, 3, 0, 1, 1);
+        gridPane.add(thingToDraw, 10, 0, 1, 1);
+        gridPane.add(buttonGuess, 11, 0, 1, 1);
+        gridPane.add(count, 15, 0, 1, 1);
+        gridPane.add(counterMax, 16, 0, 1, 1);
+        gridPane.add(guess, 20, 0, 1, 1);
+        gridPane.add(timerLabel, 25, 0, 1, 1);
+
+        //horizontal allignment of all buttons and info
+        HBox topBar = new HBox(gridPane);
+
+        //timer 
+        Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(1), new EventHandler<ActionEvent>(){
+            @Override
+            public void handle(ActionEvent event) {
+                if(time > 0){
+                time--;
+                timerLabel.setText("Time: " + time.toString());
+                } else {
+                    buttonNextWord.fire();
+                }
+            }
+        }));
+        timeline.setCycleCount(Timeline.INDEFINITE);
+        timeline.play();
 
         //event handler for mouse input
         canvas.addEventHandler(MouseEvent.MOUSE_PRESSED, 
@@ -107,69 +178,6 @@ public class GUI extends Application {
             });  
         
 
-        //Label declaration
-        Label thingToDraw = new Label(toDraw.getRandomNext(true));
-        thingToDraw.setFont(new Font("Arial", 24));
-        
-        Label counterMax = new Label("/" + Integer.toString(maxTurns));
-        counterMax.setFont(new Font("Arial", 24));
-
-        Label count = new Label("Word: " + Integer.toString(counter));
-        count.setFont(new Font("Arial", 24));
-
-        Label guess = new Label("Guess: " + "Guess1");
-        guess.setFont(new Font("Arial", 24));
-
-        Label timerLabel = new Label("Time: " + time.toString());
-        timerLabel.setFont(new Font("Arial", 24));
-
-        //initialize buttons
-        Button buttonNew = new Button("New");
-        buttonNew.setFont(new Font("Arial", 12));
-
-        Button buttonPaint = new Button("Paint");
-        buttonPaint.setFont(new Font("Arial", 12));
-
-        Button buttonErase = new Button("Erase");
-        buttonErase.setFont(new Font("Arial", 12));
-
-        Button buttonNextWord = new Button("Next");
-        buttonNextWord.setFont(new Font("Arial", 12));
-        
-        Button buttonGuess = new Button("Guess");
-        buttonGuess.setFont(new Font("Arial", 12));
-
-        //setup gridpane with all buttons and labels
-        GridPane gridPane = new GridPane();
-        gridPane.setHgap(10);
-        gridPane.add(buttonNew, 0, 0, 1, 1);
-        gridPane.add(buttonPaint, 1, 0, 1, 1);
-        gridPane.add(buttonErase, 2, 0, 1, 1);
-        gridPane.add(buttonNextWord, 3, 0, 1, 1);
-        gridPane.add(thingToDraw, 10, 0, 1, 1);
-        gridPane.add(buttonGuess, 11, 0, 1, 1);
-        gridPane.add(count, 15, 0, 1, 1);
-        gridPane.add(counterMax, 16, 0, 1, 1);
-        gridPane.add(guess, 20, 0, 1, 1);
-        gridPane.add(timerLabel, 25, 0, 1, 1);
-
-        //horizontal allignment of all buttons and info
-        HBox topBar = new HBox(gridPane);
-
-        //timer 
-        Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(1), new EventHandler<ActionEvent>(){
-            @Override
-            public void handle(ActionEvent event) {
-                if(time > 0){
-                time--;
-                timerLabel.setText("Time: " + time.toString());
-                } else {
-                    buttonNextWord.fire();
-                }
-            }
-        }));
-        timeline.setCycleCount(Timeline.INDEFINITE);
-        timeline.play();
 
         //event handler for buttons
         buttonNew.setOnAction(new EventHandler<ActionEvent>() {
@@ -218,10 +226,23 @@ public class GUI extends Application {
                 
             }
         });
-
+        
         buttonGuess.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
+                WritableImage writableImage = canvas.snapshot(null, null);
+                
+                File saved_canvas = new File("components/gui/saved_canvas/saved_canves.png");
+                //saved_canvas.deleteOnExit();
+
+                try{
+                    ImageIO.write(SwingFXUtils.fromFXImage(writableImage, null), "png", saved_canvas);
+                } catch (IOException exception) {
+                    System.out.println(exception.toString());
+                }
+
+                
+                                                        //TODO: guess.setText(getInfo Handler)
             }
         });
 
@@ -239,4 +260,5 @@ public class GUI extends Application {
         stage.setScene(scene);
         stage.show();
     }
+    
 }
