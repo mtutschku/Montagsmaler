@@ -2,7 +2,8 @@
 
 Tutor Niklas Friedrich
 
-Morris Tutschku: Grundgerüst neuronales Netzwerk, Matrix-Stuff, Data-Klasse
+Morris Tutschku: W1: Grundgerüst neuronales Netzwerk, Matrix-Stuff, Data-Klasse
+				 W2: Training.java: Trainieren des Netzwerks mit Trainingssets von quickdraw
 
 Moritz Klose: W1: Arbeit an der Network- und der Matrix-Klasse 
 			  W2: Einbindung von Gradle 
