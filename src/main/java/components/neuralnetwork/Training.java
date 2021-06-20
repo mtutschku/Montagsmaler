@@ -1,4 +1,4 @@
-package src.main.java.components.neuralnetwork;
+package components.neuralnetwork;
 
 import java.awt.image.BufferedImage;
 
