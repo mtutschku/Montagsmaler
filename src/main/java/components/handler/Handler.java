@@ -1,9 +1,10 @@
 package components.handler;
 
 import components.neuralnetwork.Matrix;
-import javafx.scene.image.*;
-import javafx.scene.paint.*;
+
 import java.lang.Double;
+import java.awt.image.BufferedImage;
+import java.awt.Color;
 
 /**
  * This class handles transmission of data between GUI and Network
@@ -66,7 +67,7 @@ public class Handler {
 	 * @param 	image
 	 * @return	Data-Objekt ohne outputs parameter
 	 */
-	public Data translateImage(Image image) {
+	public Data translateImage(BufferedImage image) {
 		int[] cluster;
 		Double average;
 
@@ -78,7 +79,7 @@ public class Handler {
 			}
 		}
 
-		// TODO turn mxm matrix into 1x(m*m) matrix
+		mat = Matrix.toSingleColumn(mat);
 		Data translatedInput = new Data(mat);
 		return translatedInput;
 	}
@@ -92,15 +93,14 @@ public class Handler {
 	 * @param	image	
 	 * @return	array (cluster) holding pixeldata (0 for White, 1 for Black);
 	 */
-	private int[] makeCluster(int x, int y, Image image) {
+	private int[] makeCluster(int x, int y, BufferedImage image) {
 		int[] cluster = new int[this.clusterSize];
-		PixelReader pr = image.getPixelReader();
-		Color color;
+		int rgb;
 
 		for (int i = 0; i < this.clusterSideLength; i++) {
 			for (int j = 0; j < this.clusterSideLength; j++) {
-				color = pr.getColor(x + j, y + i);
-				cluster[i * this.clusterSideLength + j] = colorToInt(color);
+				rgb = image.getRGB(x + j, y + i);
+				cluster[i * this.clusterSideLength + j] = convertRGB(rgb);
 			}
 		}
 		return cluster;
@@ -113,10 +113,10 @@ public class Handler {
 	 * @param	color
 	 * @return	1 if color is black, 0 if color is white
 	 */
-	private int colorToInt(Color color) {
-		if (color.equals(Color.WHITE)) {
+	private int convertRGB(int rgb) {
+		if (rgb == Color.WHITE.getRGB()) {
 			return 0;
-		} else if (color.equals(Color.BLACK)) {
+		} else if (rgb == Color.BLACK.getRGB()) {
 			return 1;
 		} else {
 			// notify, but proceed
