@@ -235,7 +235,7 @@ public class GUI extends Application {
             public void handle(ActionEvent event) {
                 WritableImage writableImage = canvas.snapshot(null, null);
                 
-                File saved_canvas = new File("src\\main\\java/components/gui/saved_canvas/saved_canves.png");
+                File saved_canvas = new File("src/main/java/components/gui/saved_canvas/saved_canves.png");
                 //saved_canvas.deleteOnExit();
 
                 BufferedImage bufferedImage = SwingFXUtils.fromFXImage(writableImage, null);
