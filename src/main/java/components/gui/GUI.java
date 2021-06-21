@@ -2,6 +2,7 @@ package components.gui;
 
 import java.io.File;
 import java.io.IOException;
+import java.awt.image.BufferedImage;
 
 import javax.imageio.ImageIO;
 import components.handler.Handler;
@@ -237,10 +238,11 @@ public class GUI extends Application {
                 File saved_canvas = new File("components/gui/saved_canvas/saved_canves.png");
                 //saved_canvas.deleteOnExit();
 
+                BufferedImage bufferedImage = SwingFXUtils.fromFXImage(writableImage, null);
                 try{
-                    ImageIO.write(SwingFXUtils.fromFXImage(writableImage, null), "png", saved_canvas);
+                    ImageIO.write(bufferedImage, "png", saved_canvas);
                 } catch (IOException exception) {
-                    System.out.println(exception.toString());
+                    throw new RuntimeException(exception);
                 }
 
                 
