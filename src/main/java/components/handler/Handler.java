@@ -110,7 +110,7 @@ public class Handler {
 	 * Translates a color into a corresponding integer, only usable for colors WHITE and BLACK.
 	 * 
 	 * @author 	Jakob Hiestermann
-	 * @param	color
+	 * @param	rgb
 	 * @return	1 if color is black, 0 if color is white
 	 */
 	private int convertRGB(int rgb) {
