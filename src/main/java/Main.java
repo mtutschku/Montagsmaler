@@ -27,42 +27,42 @@ public class Main {
         /** holds file location of current drawing created inside GUI */
         final String D_LOCATION = "";
         
-        Handler handler = new Handler(M, M);
-        Network network = new Network(M*M, 4, 7); // for now an arbitrary number of hidden layers (and outputs) chosen, to be changed adequately
-        Data translatedInput;
-        Matrix networkGuessM;
-        String netWorkGuess;
+        // Handler handler = new Handler(M, M);
+        // Network network = new Network(M*M, 4, 7); // for now an arbitrary number of hidden layers (and outputs) chosen, to be changed adequately
+        // Data translatedInput;
+        // Matrix networkGuessM;
+        // String netWorkGuess;
         
-        Application.launch(GUI.class, args);
-        /*
-        BufferedImage image_before = null;
-        BufferedImage image_current = null;
-        File f = null;
-
-        try {
-            f = new File(D_LOCATION);
-            image_before = new BufferedImage(IM_DIMENSION, IM_DIMENSION, BufferedImage.TYPE_INT_ARGB);
-            image_before = ImageIO.read(f);
-            image_current = new BufferedImage(IM_DIMENSION, IM_DIMENSION, BufferedImage.TYPE_INT_ARGB);
-        } catch(IOException e) {
-            System.out.println("Error: " + e);
-        }
-
-        while(true) {
-            try {
-                image_current = ImageIO.read(f);
-            } catch(IOException e) {
-                System.out.println("Error: " + e);
-            }
-            if (!image_current.equals(image_before)) {
-                image_before = image_current;
-                translatedInput = handler.translateImage(image_current); // TODO handler für BufferedImage anpassen
-                networkGuessM = network.feedForward(translatedInput.getInputs());
-                //TODO translate Matrix into String stating the drawn object
-            }
-        }
+        // Application.launch(GUI.class, args);
         
-        */
+        // BufferedImage image_before = null;
+        // BufferedImage image_current = null;
+        // File f = null;
+
+        // try {
+        //     f = new File(D_LOCATION);
+        //     image_before = new BufferedImage(IM_DIMENSION, IM_DIMENSION, BufferedImage.TYPE_INT_ARGB);
+        //     image_before = ImageIO.read(f);
+        //     image_current = new BufferedImage(IM_DIMENSION, IM_DIMENSION, BufferedImage.TYPE_INT_ARGB);
+        // } catch(IOException e) {
+        //     System.out.println("Error: " + e);
+        // }
+
+        // while(true) {
+        //     try {
+        //         image_current = ImageIO.read(f);
+        //     } catch(IOException e) {
+        //         System.out.println("Error: " + e);
+        //     }
+        //     if (!image_current.equals(image_before)) {
+        //         image_before = image_current;
+        //         translatedInput = handler.translateImage(image_current);
+        //         networkGuessM = network.feedForward(translatedInput.getInputs());
+        //         //TODO translate Matrix into String stating the drawn object, depending on training data.
+        //     }
+        // }
+        
+        
         
         ////////////////////////////
         Network n = new Network(2,4,1);

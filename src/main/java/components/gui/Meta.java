@@ -1,5 +1,7 @@
 package components.gui;
 
+import components.neuralnetwork.Matrix;
+
 import java.util.ArrayList;
 import java.util.Random;
 
