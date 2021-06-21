@@ -28,6 +28,8 @@ public class Main {
         /** holds file location of current drawing created inside GUI */
         final String D_LOCATION = "";
         
+        
+        Application.launch(GUI.class, args);
         /*
         Handler handler = new Handler(M, M);
         Network network = new Network(M*M, 4, 7); // for now an arbitrary number of hidden layers (and outputs) chosen, to be changed adequately
@@ -35,7 +37,6 @@ public class Main {
         Matrix networkGuessM;
         String netWorkGuess;
         
-        Application.launch(GUI.class, args);
         
         BufferedImage image_before = null;
         BufferedImage image_current = null;
