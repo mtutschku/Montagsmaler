@@ -2,11 +2,14 @@
 
 Tutor Niklas Friedrich
 
-Morris Tutschku: Grundgerüst neuronales Netzwerk, Matrix-Stuff, Data-Klasse
+Morris Tutschku: W1: Grundgerüst neuronales Netzwerk, Matrix-Stuff, Data-Klasse
+				 W2: Training.java: Trainieren des Netzwerks mit Trainingssets von quickdraw
 
-Moritz Klose: Arbeit an der Network- und der Matrix-Klasse 
+Moritz Klose: W1: Arbeit an der Network- und der Matrix-Klasse 
+			  W2: Einbindung von Gradle 
 
-Pascal Uhlendorff: GUI Implementation
+Pascal Uhlendorff: 	W1: GUI Implementation
+				   	W2: GUI überarbeitet, weitere Funktionen zum GUI hinzugefügt(Timer, Try, Output für Handler)
 
 Jakob Hiestermann:	W1: Arbeit an Handler, d.h Schnittstelle zwischen GUI und Netzwerk, Arbeit an Meta (ArrayList)
-					W2:
+					W2: Main-Funktion, Einbindung von Handler und Meta in GUI

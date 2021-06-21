@@ -1,9 +1,9 @@
 package components.handler;
 
 import components.neuralnetwork.Matrix;
-import javafx.scene.canvas.Canvas;
-import javafx.scene.image.*;
-import javafx.scene.paint.*;
+
+import java.awt.Color;
+import java.awt.image.BufferedImage;
 import java.lang.Double;
 
 /**
@@ -22,7 +22,7 @@ import java.lang.Double;
  * 
  * 
  * @author Jakob Hiestermann
- * @version 08 May 2021
+ * @version 19 May 2021
  * 
  */
 public class Handler {
@@ -34,9 +34,6 @@ public class Handler {
 
 	// /** holds overall amount of pixels inside a cluster */
 	private int clusterSize;
-
-	/** holds an image representation of drawing on a canvas. Uninitialized until translateCanvas is called */
-	private Image image;
 
 	/**
 	 * Constructor method.
@@ -63,18 +60,17 @@ public class Handler {
 	}
 
 	/**
-	 * Translates a canvas into a matrix of doubles. 
+	 * Translates an image into a matrix of doubles. 
 	 * These doubles each represent the average darkness inside a cluster.
 	 * 
 	 * @author 	Jakob Hiestermann
-	 * @param 	canvas Canvas to extract the data from
-	 * @return	Data-Objekt ohne outputs-Matrix // maybe switch to Data
+	 * @param 	image
+	 * @return	Data-Objekt ohne outputs parameter
 	 */
-	public Data translateCanvas(Canvas canvas) {
+	public Data translateImage(BufferedImage image) {
 		int[] cluster;
 		Double average;
 
-		this.image = canvas.snapshot(null, null);
 		for (int i = 0; i < image.getHeight() / this.clusterSideLength; i++) {
 			for (int j = 0; j < image.getWidth() / this.clusterSideLength; j++) {
 				cluster = makeCluster(j * this.clusterSideLength % (int) image.getWidth(), i * this.clusterSideLength % (int) image.getHeight(), image);
@@ -83,6 +79,7 @@ public class Handler {
 			}
 		}
 
+		mat = Matrix.toSingleColumn(mat);
 		Data translatedInput = new Data(mat);
 		return translatedInput;
 	}
@@ -96,15 +93,14 @@ public class Handler {
 	 * @param	image	
 	 * @return	array (cluster) holding pixeldata (0 for White, 1 for Black);
 	 */
-	private int[] makeCluster(int x, int y, Image image) {
+	private int[] makeCluster(int x, int y, BufferedImage image) {
 		int[] cluster = new int[this.clusterSize];
-		PixelReader pr = image.getPixelReader();
-		Color color;
+		int rgb;
 
 		for (int i = 0; i < this.clusterSideLength; i++) {
 			for (int j = 0; j < this.clusterSideLength; j++) {
-				color = pr.getColor(x + j, y + i);
-				cluster[i * this.clusterSideLength + j] = colorToInt(color);
+				rgb = image.getRGB(x + j, y + i);
+				cluster[i * this.clusterSideLength + j] = convertRGB(rgb);
 			}
 		}
 		return cluster;
@@ -114,13 +110,13 @@ public class Handler {
 	 * Translates a color into a corresponding integer, only usable for colors WHITE and BLACK.
 	 * 
 	 * @author 	Jakob Hiestermann
-	 * @param	color
+	 * @param	rgb
 	 * @return	1 if color is black, 0 if color is white
 	 */
-	private int colorToInt(Color color) {
-		if (color.equals(Color.WHITE)) {
+	private int convertRGB(int rgb) {
+		if (rgb == Color.WHITE.getRGB()) {
 			return 0;
-		} else if (color.equals(Color.BLACK)) {
+		} else if (rgb == Color.BLACK.getRGB()) {
 			return 1;
 		} else {
 			// notify, but proceed
@@ -141,7 +137,7 @@ public class Handler {
 		for(int i : cluster) {
 			average += cluster[i];
 		}
-		average /= this.clusterSize;		// TODO: check for type-specific division error
+		average /= this.clusterSize;		
 		assert(average <= 1 && average >= 0);
 		return average;
 	}
