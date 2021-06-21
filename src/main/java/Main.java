@@ -14,9 +14,10 @@ import javafx.application.Application;
 public class Main {
     
     public static void main(String[] args) throws IOException {
-
+        
         ////////////////////////////
         // @author Jakob Hiestermann
+        
         
         /** holds constant value m that defines the mxm matrix size used in this project */
         final int M = 28;
@@ -27,6 +28,7 @@ public class Main {
         /** holds file location of current drawing created inside GUI */
         final String D_LOCATION = "";
         
+        /*
         Handler handler = new Handler(M, M);
         Network network = new Network(M*M, 4, 7); // for now an arbitrary number of hidden layers (and outputs) chosen, to be changed adequately
         Data translatedInput;
@@ -34,7 +36,7 @@ public class Main {
         String netWorkGuess;
         
         Application.launch(GUI.class, args);
-        /*
+        
         BufferedImage image_before = null;
         BufferedImage image_current = null;
         File f = null;
@@ -56,13 +58,11 @@ public class Main {
             }
             if (!image_current.equals(image_before)) {
                 image_before = image_current;
-                translatedInput = handler.translateImage(image_current); // TODO handler für BufferedImage anpassen
+                translatedInput = handler.translateImage(image_current);
                 networkGuessM = network.feedForward(translatedInput.getInputs());
                 //TODO translate Matrix into String stating the drawn object
             }
-        }
-        
-        */
+        } */
         
         ////////////////////////////
         Network n = new Network(2,4,1);
