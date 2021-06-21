@@ -272,4 +272,24 @@ public class Matrix {
 
         return out;
     }
+
+    /** Konvertiert eine n x n Matrix in eine n^2 x 1 Matrix.
+     * 
+     * @param in Eingabematrix
+     * @return konvertierte Matrix
+     */
+    public static Matrix toSingleColumn(Matrix in){
+        Matrix m = new Matrix(in.getRows() * in.getCols(), 1);
+        int counter = 0;
+        
+        for(int x = 0; x < in.getCols(); x++){
+            for(int y = 0; y < in.getRows(); y++){
+                counter++;
+                m.setValue(counter, 1, in.getData()[x][y]);
+            }
+            
+        }
+        
+        return m;
+    }
 }
