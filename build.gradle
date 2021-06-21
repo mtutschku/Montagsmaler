@@ -17,11 +17,12 @@ repositories {
 }
 
 dependencies {
+    implementation files('src/main/libs/javafx-swing-11-linux.jar')
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.7.0'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.7.0'
 }
 
 javafx {
-    version = "11"
-    modules = ['javafx.controls', 'javafx.fxml']
+    version = "11.0.2"
+    modules = ['javafx.controls', 'javafx.fxml', 'javafx.swing']
 }
