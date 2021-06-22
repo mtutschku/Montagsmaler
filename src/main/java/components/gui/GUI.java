@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.IOException;
 import java.awt.image.BufferedImage;
 
-import javax.imageio.ImageIO;
 import components.handler.Handler;
 import components.neuralnetwork.Network;
 
@@ -14,6 +13,7 @@ import javafx.application.Application;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javax.imageio.ImageIO;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -233,19 +233,25 @@ public class GUI extends Application {
         buttonGuess.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
+
                 WritableImage writableImage = canvas.snapshot(null, null);
                 
-                File saved_canvas = new File("src/main/java/components/gui/saved_canvas/saved_canves.png");
-                //saved_canvas.deleteOnExit();
+                File saved_canvas;
+
+                try {
+                saved_canvas = File.createTempFile("Montagsmaler-", ".png");
+                
+                } catch (IOException e1) {
+                    throw new RuntimeException(e1);
+                }
 
                 BufferedImage bufferedImage = SwingFXUtils.fromFXImage(writableImage, null);
                 try{
                     ImageIO.write(bufferedImage, "png", saved_canvas);
-                } catch (IOException exception) {
-                    throw new RuntimeException(exception);
+                } catch (IOException e2) {
+                    throw new RuntimeException(e2);
                 }
-
-                
+                saved_canvas.deleteOnExit();
                                                         //TODO: guess.setText(getInfo Handler)
             }
         });
