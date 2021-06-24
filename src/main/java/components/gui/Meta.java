@@ -81,6 +81,11 @@ public class Meta {
 	public String[] getMETA() {
 		return this.META;
 	}
+
+	/** get-method for specified element of private constant */
+	public String getMETAIndex(int i) {
+		return this.META[i];
+	}
 	
 	@Override
 	public String toString() {
