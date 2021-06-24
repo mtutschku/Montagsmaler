@@ -82,7 +82,7 @@ public class Meta {
 		return this.META;
 	}
 
-	/** get-method for specified element of private constant */
+	/** get-method for specified element of private constant META. */
 	public String getMETAIndex(int i) {
 		return this.META[i];
 	}
