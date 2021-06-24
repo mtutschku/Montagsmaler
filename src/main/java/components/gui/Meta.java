@@ -18,7 +18,7 @@ public class Meta {
 	private final Random rand = new Random();
 	
 	/** Hardcoded array holding training data objects, hence all objects that can potentially be drawn in general. */
-	private final String[] META = {"EX1", "EX2", "EX3", "EX4", "EX5", "EX6", "EX7"};
+	private final static String[] META = {"Banana", "Car", "Human", "Smiley", "Flower", "Crown", "Pants"};
 	
 	/**
 	 * Dynamic (i.e. alterable) array.
@@ -34,7 +34,7 @@ public class Meta {
 	 * @author Jakob Hiestermann
 	 */
 	public Meta() {
-		Meta = new ArrayList<String>(this.META.length);
+		Meta = new ArrayList<String>(META.length);
 		for (String i : META) {
 			Meta.add(i);
 		}
@@ -78,8 +78,13 @@ public class Meta {
 	 * 
 	 * @return unalterable
 	 */
-	public String[] getMETA() {
-		return this.META;
+	public static String[] getMETA() {
+		return META;
+	}
+
+	/** get-method for specified element of private constant META. */
+	public static String getMETAIndex(int i) {
+		return META[i];
 	}
 	
 	@Override

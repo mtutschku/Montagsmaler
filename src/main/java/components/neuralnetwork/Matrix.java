@@ -117,6 +117,50 @@ public class Matrix {
         }
     }
 
+    /**
+     * Scans a matrix for its highest value.
+     * Returns the row-index for the first instance of a value in case of multiple instances of the highest value.
+     * 
+     * @author Jakob Hiestermann
+     * @return row-index of highest value position 
+     */
+    public int getHighestValueRow() {
+        int currentMax = -1;
+        int row = 0;
+        for (int i = 0; i < getRows(); i++) {
+            for (int j = 0; j < getCols(); j++) {
+                if (this.data[i][j] > currentMax) {
+                    row = i;
+                }
+            }
+        }
+        return row;
+    }
+
+    /**
+     * Scans a matrix for its highest value.
+     * Returns the col-index for the first instance of a value in case of multiple instances of the highest value.
+     * 
+     * @author Jakob Hiestermann
+     * @return col-index of highest value position 
+     */
+    public int getHighestValueCol() {
+        transpose(this);
+        int col = getHighestValueRow();
+        transpose(this);
+        return col;
+    }
+
+    /**
+     * Scans a matrix for its highest value.
+     * 
+     * @author Jakob Hiestermann
+     * @return the highest value inside a matrix
+     */
+    public double getHighestValue() {
+        return this.data[getHighestValueRow()][getHighestValueCol()];
+    }
+
 
 
     /** Gibt die Matrix auf der Konsole aus. */
