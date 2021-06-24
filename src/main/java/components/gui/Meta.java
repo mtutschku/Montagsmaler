@@ -83,7 +83,7 @@ public class Meta {
 	}
 
 	/** get-method for specified element of private constant META. */
-	public static String getMETAIndex(int i) {
+	public static String getCertainMETA(int i) {
 		return META[i];
 	}
 	
