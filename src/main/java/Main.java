@@ -71,40 +71,37 @@ public class Main {
         
         Application.launch(GUI.class, args);
         
-    //     Handler handler = new Handler(M, M);
-    //     Network network = new Network(M*M, 4, 7); // for now an arbitrary number of hidden layers (and outputs) chosen, to be changed adequately
-    //     Data translatedInput;
-    //     Matrix networkGuessM;
-    //     String networkGuess;
+        // Handler handler = new Handler(M, M);
+        // Network network = new Network(M*M, 4, 7); // for now an arbitrary number of hidden layers (and outputs) chosen, to be changed adequately
+        // Data translatedInput;
+        // Matrix networkGuessM;
+        // String networkGuess;
         
         
-    //     BufferedImage image_before = null;
-    //     BufferedImage image_current = null;
-    //     File f = null;
+        // BufferedImage image = null;
+        // File f = null;
+        
+        // try {
+        //     f = new File(D_LOCATION);
+        //     image = new BufferedImage(IM_DIMENSION, IM_DIMENSION, BufferedImage.TYPE_INT_ARGB);
+        //     image = ImageIO.read(f);
+        // } catch(IOException e) {
+        //     System.out.println("Error: " + e);
+        // }
+        
+        // translatedInput = handler.translateImage(image);
+        // translatedInput.getInputs().print();
 
-    //     try {
-    //         f = new File(D_LOCATION);
-    //         image_before = new BufferedImage(IM_DIMENSION, IM_DIMENSION, BufferedImage.TYPE_INT_ARGB);
-    //         image_before = ImageIO.read(f);
-    //         image_current = new BufferedImage(IM_DIMENSION, IM_DIMENSION, BufferedImage.TYPE_INT_ARGB);
-    //     } catch(IOException e) {
-    //         System.out.println("Error: " + e);
-    //     }
+        // // uncomment this, as soon as network has been trained and can be fed actual drawings
+        //     // networkGuessM = network.feedForward(translatedInput.getInputs());
+        //     // networkGuess = Meta.getCertainMETA(networkGuessM.getHighestValueRow());
 
-    //     while(true) {
-    //         try {
-    //             image_current = ImageIO.read(f);
-    //         } catch(IOException e) {
-    //             System.out.println("Error: " + e);
-    //         }
-    //         if (!image_current.equals(image_before)) {
-    //             image_before = image_current;
-    //             translatedInput = handler.translateImage(image_current);
-    //             networkGuessM = network.feedForward(translatedInput.getInputs());
-    //             networkGuess = Meta.getCertainMETA(networkGuessM.getHighestValueRow());
-    //             // TODO: setMethod for GUI, to set Label-Text to networkGuess
-    //         }
-    //     }
+        //     // to check what network guesses for now
+        //     // networkGuessM.print();
+        //     // System.out.println(networkGuess);
+
+        // // TODO: setMethod for GUI, to set Label-Text to networkGuess
+        
 
     }
 
