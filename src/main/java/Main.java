@@ -9,6 +9,7 @@ import components.gui.*;
 import components.handler.*;
 import components.neuralnetwork.*;
 import javafx.application.Application;
+import javafx.application.Platform;
 
 
 public class Main {
@@ -50,6 +51,7 @@ public class Main {
         System.out.println("\n" + NetworkStats.accuracy); // nur Genauigkeit als Wert bekommen.
                                                           // Dafür muss aber zuerst getTrainingStats() ausgeführt werden,
                                                           // damit accuracy upgedated wird.
+        //Application.launch(NetworkPlot.class, args);
 
 
 
@@ -104,6 +106,6 @@ public class Main {
     //         }
     //     }
 
-    // }
+    }
 
 }
