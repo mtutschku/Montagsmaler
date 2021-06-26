@@ -1,5 +1,6 @@
 package components.handler;
 
+import components.neuralnetwork.Training;
 import components.neuralnetwork.Matrix;
 
 import java.awt.Color;
@@ -68,7 +69,7 @@ public class Handler {
 	 * @return	Data-Objekt ohne outputs parameter
 	 */
 	public Data translateImage(BufferedImage image) {
-		int[] cluster;
+		double[] cluster;
 		Double average;
 
 		for (int i = 0; i < image.getHeight() / this.clusterSideLength; i++) {
@@ -93,14 +94,14 @@ public class Handler {
 	 * @param	image	
 	 * @return	array (cluster) holding pixeldata (0 for White, 1 for Black);
 	 */
-	private int[] makeCluster(int x, int y, BufferedImage image) {
-		int[] cluster = new int[this.clusterSize];
+	private double[] makeCluster(int x, int y, BufferedImage image) {
+		double[] cluster = new double[this.clusterSize];
 		int rgb;
 
 		for (int i = 0; i < this.clusterSideLength; i++) {
 			for (int j = 0; j < this.clusterSideLength; j++) {
 				rgb = image.getRGB(x + j, y + i);
-				cluster[i * this.clusterSideLength + j] = convertRGB(rgb);
+				cluster[i * this.clusterSideLength + j] = Training.getGrayscale(rgb);
 			}
 		}
 		return cluster;
@@ -132,9 +133,9 @@ public class Handler {
 	 * @param	cluster	
 	 * @return	average value of ints inside cluster, required to be inside [0,1]
 	 */
-	private double averageArray(int[] cluster) {
+	private double averageArray(double[] cluster) {
 		double average = 0.0;
-		for(int i : cluster) {
+		for(int i = 0; i < cluster.length; i++) {
 			average += cluster[i];
 		}
 		average /= this.clusterSize;		
