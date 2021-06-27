@@ -8,6 +8,7 @@ Morris Tutschku: W1: Grundgerüst neuronales Netzwerk, Matrix-Stuff, Data-Klasse
 
 Moritz Klose: W1: Arbeit an der Network- und der Matrix-Klasse 
 			  W2: Einbindung von Gradle 
+			  W3: Visualisierung des Neuronalen Netzes 
 
 Pascal Uhlendorff: 	W1: GUI Implementation
 				   	W2: GUI überarbeitet, weitere Funktionen zum GUI hinzugefügt(Timer, Try, Output für Handler)
