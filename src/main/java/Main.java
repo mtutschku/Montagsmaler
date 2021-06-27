@@ -66,7 +66,7 @@ public class Main {
         final int IM_DIMENSION = 28 * 28;
 
         /** holds file location of current drawing created inside GUI */
-        final String D_LOCATION = "";
+        final String D_LOCATION = "";       // TODO make it possible to locate file in position relative to classpath
         
         
         Application.launch(GUI.class, args);
@@ -95,12 +95,13 @@ public class Main {
         // // uncomment this, as soon as network has been trained and can be fed actual drawings
         //     // networkGuessM = network.feedForward(translatedInput.getInputs());
         //     // networkGuess = Meta.getCertainMETA(networkGuessM.getHighestValueRow());
+        //     // GUI.setGuessLabelText(networkGuess);
 
-        //     // to check what network guesses for now
-        //     // networkGuessM.print();
-        //     // System.out.println(networkGuess);
+        // // uncomment to check Network Guess Matrix
+        // // networkGuessM.print();
+        
+        ///////////////////////////////////
 
-        // // TODO: setMethod for GUI, to set Label-Text to networkGuess
         
         /** vorerst auskommentierter Launch-Befehl für den Plot des Netzwerks */
         //Application.launch(NetworkPlot.class, args);
