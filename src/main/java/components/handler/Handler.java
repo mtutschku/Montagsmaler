@@ -107,24 +107,25 @@ public class Handler {
 		return cluster;
 	}
 
-	/**
-	 * Translates a color into a corresponding integer, only usable for colors WHITE and BLACK.
-	 * 
-	 * @author 	Jakob Hiestermann
-	 * @param	rgb
-	 * @return	1 if color is black, 0 if color is white
-	 */
-	private int convertRGB(int rgb) {
-		if (rgb == Color.WHITE.getRGB()) {
-			return 0;
-		} else if (rgb == Color.BLACK.getRGB()) {
-			return 1;
-		} else {
-			// notify, but proceed
-			System.out.println("received color that's neither white nor black in colorToInt, Handler.java\n proceeded with return -1");
-			return -1;
-		}
-	}
+	// currently unused, may be discarded later after safety-check
+	// /**
+	//  * Translates a color into a corresponding integer, only usable for colors WHITE and BLACK.
+	//  * 
+	//  * @author 	Jakob Hiestermann
+	//  * @param	rgb
+	//  * @return	1 if color is black, 0 if color is white
+	//  */
+	// private int convertRGB(int rgb) {
+	// 	if (rgb == Color.WHITE.getRGB()) {
+	// 		return 0;
+	// 	} else if (rgb == Color.BLACK.getRGB()) {
+	// 		return 1;
+	// 	} else {
+	// 		// notify, but proceed
+	// 		System.out.println("received color that's neither white nor black in colorToInt, Handler.java\n proceeded with return -1");
+	// 		return -1;
+	// 	}
+	// }
 
 	/**
 	 * averages out integers in a array/cluster received, correspondingly to clusterSize
