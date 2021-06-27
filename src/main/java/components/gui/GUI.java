@@ -41,7 +41,7 @@ import javafx.util.Duration;
 public class GUI extends Application {
 
     //Felder initialisieren, Variablen setzen
-    private String guessLabelText = "None";
+    private static String guessLabelText = "None";
     private String mode = "Paint";
     private Meta toDraw = new Meta();
     private int counter = 1;
@@ -52,8 +52,8 @@ public class GUI extends Application {
     private Integer time = TIMERSTART;
 
     //setter für GuessLabel
-    void setGuessLabelText (String text) {
-        this.guessLabelText = text;
+    public static void setGuessLabelText (String text) {
+        guessLabelText = text;
     }
 
     @Override
