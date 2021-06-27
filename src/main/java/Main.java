@@ -102,7 +102,8 @@ public class Main {
 
         // // TODO: setMethod for GUI, to set Label-Text to networkGuess
         
-
+        /** vorerst auskommentierter Launch-Befehl für den Plot des Netzwerks */
+        //Application.launch(NetworkPlot.class, args);
     }
 
 }
