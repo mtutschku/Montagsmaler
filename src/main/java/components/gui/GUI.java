@@ -41,6 +41,7 @@ import javafx.util.Duration;
 public class GUI extends Application {
 
     //Felder initialisieren, Variablen setzen
+    private String guessLabelText = "None";
     private String mode = "Paint";
     private Meta toDraw = new Meta();
     private int counter = 1;
@@ -49,6 +50,11 @@ public class GUI extends Application {
     //Variablen fuer Timer
     private static final int TIMERSTART = 5;
     private Integer time = TIMERSTART;
+
+    //setter für GuessLabel
+    void setGuessLabelText (String text) {
+        this.guessLabelText = text;
+    }
 
     @Override
     public void start(Stage stage) throws Exception {
@@ -73,7 +79,7 @@ public class GUI extends Application {
         Label count = new Label("Word: " + Integer.toString(counter));
         count.setFont(new Font("Arial", 24));
 
-        Label guess = new Label("Guess: " + "None"); 
+        Label guess = new Label("Guess: " + guessLabelText); 
         guess.setFont(new Font("Arial", 24));
 
         Label timerLabel = new Label("Time: " + time.toString());
@@ -234,6 +240,8 @@ public class GUI extends Application {
             @Override
             public void handle(ActionEvent event) {
 
+                guess.setText("Guess: " + guessLabelText);
+
                 WritableImage writableImage = canvas.snapshot(null, null);
                 
                 File saved_canvas;
@@ -252,7 +260,6 @@ public class GUI extends Application {
                     throw new RuntimeException(e2);
                 }
                 saved_canvas.deleteOnExit();
-                                                        //TODO: guess.setText(getInfo Handler)
             }
         });
 
