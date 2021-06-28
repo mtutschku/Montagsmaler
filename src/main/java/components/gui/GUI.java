@@ -45,7 +45,10 @@ public class GUI extends Application {
     private String mode = "Paint";
     private Meta toDraw = new Meta();
     private int counter = 1;
-    private int maxTurns = toDraw.getMETA().length;
+    private int maxTurns = toDraw.getMeta().size();
+    private static File saved_canvas;
+    private static Handler handler;
+    private static Network network;
 
     //Variablen fuer Timer
     private static final int TIMERSTART = 5;
@@ -54,6 +57,14 @@ public class GUI extends Application {
     //setter für GuessLabel
     public static void setGuessLabelText (String text) {
         guessLabelText = text;
+    }
+
+    public static void setHandler (Handler h) {
+        handler = h;
+    }
+
+    public static void setNetwork (Network n) {
+        network = n;
     }
 
     @Override
@@ -244,8 +255,6 @@ public class GUI extends Application {
 
                 WritableImage writableImage = canvas.snapshot(null, null);
                 
-                File saved_canvas;
-
                 try {
                 saved_canvas = File.createTempFile("Montagsmaler-", ".png");
                 
