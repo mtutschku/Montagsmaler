@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.IOException;
 import java.awt.image.BufferedImage;
 
-import javax.imageio.ImageIO;
 import components.handler.Handler;
 import components.neuralnetwork.Network;
 
@@ -14,6 +13,7 @@ import javafx.application.Application;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javax.imageio.ImageIO;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -41,14 +41,31 @@ import javafx.util.Duration;
 public class GUI extends Application {
 
     //Felder initialisieren, Variablen setzen
+    private static String guessLabelText = "None";
     private String mode = "Paint";
     private Meta toDraw = new Meta();
     private int counter = 1;
-    private int maxTurns = toDraw.getMETA().length;
+    private int maxTurns = toDraw.getMeta().size();
+    private static File saved_canvas;
+    private static Handler handler;
+    private static Network network;
 
     //Variablen fuer Timer
     private static final int TIMERSTART = 5;
     private Integer time = TIMERSTART;
+
+    //setter für GuessLabel
+    public static void setGuessLabelText (String text) {
+        guessLabelText = text;
+    }
+
+    public static void setHandler (Handler h) {
+        handler = h;
+    }
+
+    public static void setNetwork (Network n) {
+        network = n;
+    }
 
     @Override
     public void start(Stage stage) throws Exception {
@@ -73,7 +90,7 @@ public class GUI extends Application {
         Label count = new Label("Word: " + Integer.toString(counter));
         count.setFont(new Font("Arial", 24));
 
-        Label guess = new Label("Guess: " + "None"); 
+        Label guess = new Label("Guess: " + guessLabelText); 
         guess.setFont(new Font("Arial", 24));
 
         Label timerLabel = new Label("Time: " + time.toString());
@@ -233,20 +250,25 @@ public class GUI extends Application {
         buttonGuess.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
+
+                guess.setText("Guess: " + guessLabelText);
+
                 WritableImage writableImage = canvas.snapshot(null, null);
                 
-                File saved_canvas = new File("src/main/java/components/gui/saved_canvas/saved_canves.png");
-                //saved_canvas.deleteOnExit();
+                try {
+                saved_canvas = File.createTempFile("Montagsmaler-", ".png");
+                
+                } catch (IOException e1) {
+                    throw new RuntimeException(e1);
+                }
 
                 BufferedImage bufferedImage = SwingFXUtils.fromFXImage(writableImage, null);
                 try{
                     ImageIO.write(bufferedImage, "png", saved_canvas);
-                } catch (IOException exception) {
-                    throw new RuntimeException(exception);
+                } catch (IOException e2) {
+                    throw new RuntimeException(e2);
                 }
-
-                
-                                                        //TODO: guess.setText(getInfo Handler)
+                saved_canvas.deleteOnExit();
             }
         });
 
