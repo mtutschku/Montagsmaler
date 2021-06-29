@@ -75,7 +75,7 @@ public class GUI extends Application {
     @Override
     public void start(Stage stage) throws Exception {
 
-        final int SIZE = 840;
+        final int SIZE = 784;
         Canvas canvas = new Canvas(SIZE, SIZE);
         final GraphicsContext graphicsContext = canvas.getGraphicsContext2D();
 
@@ -235,10 +235,12 @@ public class GUI extends Application {
 
                     WritableImage writableImage = canvas.snapshot(null, null);
 
-                    BufferedImage bufferedImage = SwingFXUtils.fromFXImage(writableImage, null);
+                    final int IM_DIMENSION = 28 * 28;
+                    BufferedImage bufferedImage = new BufferedImage(IM_DIMENSION, IM_DIMENSION, BufferedImage.TYPE_INT_ARGB);
+                    SwingFXUtils.fromFXImage(writableImage, bufferedImage);
 
                     Data translatedInput;
-                    //translatedInput = handler.translateImage(bufferedImage);
+                    //translatedInput = handler.translateImage(bufferedImage); TODO: fix out of index error??
                     //translatedInput.getInputs().print();
 
                     setGuessLabelText("Car"); //TODO: get a guess from network

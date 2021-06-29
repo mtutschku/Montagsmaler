@@ -56,9 +56,6 @@ public class Main {
         /** holds constant value m that defines the mxm matrix size used in this project */
         final int M = 28;
 
-        /** constant image dimension, IM_DIMENSIONxIM_DIMENSION */
-        final int IM_DIMENSION = 28 * 28;
-
         /** GUI setup and launch */
         Handler handler = new Handler(M, M);
         Network network = new Network(M*M, 4, 7); // for now an arbitrary number of hidden layers (and outputs) chosen, to be changed adequately 
