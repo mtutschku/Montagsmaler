@@ -1,16 +1,10 @@
-import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
 import java.util.Random;
-
-import javax.imageio.ImageIO;
 
 import components.gui.*;
 import components.handler.*;
 import components.neuralnetwork.*;
 import javafx.application.Application;
-import javafx.application.Platform;
-
 
 public class Main {
     
@@ -65,14 +59,15 @@ public class Main {
         /** constant image dimension, IM_DIMENSIONxIM_DIMENSION */
         final int IM_DIMENSION = 28 * 28;
 
-        /** holds file location of current drawing created inside GUI */
-        final String D_LOCATION = "";       // TODO make it possible to locate file in position relative to classpath
-        
-        
+        /** GUI setup and launch */
+        Handler handler = new Handler(M, M);
+        Network network = new Network(M*M, 4, 7); // for now an arbitrary number of hidden layers (and outputs) chosen, to be changed adequately 
+                                                //TODO: change values 
+        GUI.setHandler(handler);
+        GUI.setNetwork(network);
         Application.launch(GUI.class, args);
         
-        // Handler handler = new Handler(M, M);
-        // Network network = new Network(M*M, 4, 7); // for now an arbitrary number of hidden layers (and outputs) chosen, to be changed adequately
+        
         // Data translatedInput;
         // Matrix networkGuessM;
         // String networkGuess;

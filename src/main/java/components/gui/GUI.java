@@ -1,9 +1,8 @@
 package components.gui;
 
-import java.io.File;
-import java.io.IOException;
 import java.awt.image.BufferedImage;
 
+import components.handler.Data;
 import components.handler.Handler;
 import components.neuralnetwork.Network;
 
@@ -13,7 +12,6 @@ import javafx.application.Application;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import javax.imageio.ImageIO;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -24,8 +22,10 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
+import javafx.scene.text.Text;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
+import javafx.stage.Popup;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
@@ -35,23 +35,26 @@ import javafx.util.Duration;
  * Weiterhin sind Buttons für das Umschalten zwischen Zeichnen und Radieren, 
  * sowie zum Rückgängigmachen der letzten Aktion und zum Überspringen des aktuell geforderten Objekts enthalten.
  * 
- * @version 19. Juni 2021
+ * @version 29. Juni 2021
  * @author Pascal Uhlendorff, Jakob Hiestermann
  */
 public class GUI extends Application {
 
     //Felder initialisieren, Variablen setzen
-    private static String guessLabelText = "None";
     private String mode = "Paint";
-    private Meta toDraw = new Meta();
+
+    private static String guessLabelText = "None";
+    private Meta toDrawList = new Meta();
+    private String ToDrawNow = toDrawList.getRandomNext(true);
+
     private int counter = 1;
-    private int maxTurns = toDraw.getMeta().size();
-    private static File saved_canvas;
+    private int maxTurns = toDrawList.getMeta().size() + 1;
+
     private static Handler handler;
     private static Network network;
 
     //Variablen fuer Timer
-    private static final int TIMERSTART = 5;
+    private static final int TIMERSTART = 30;
     private Integer time = TIMERSTART;
 
     //setter für GuessLabel
@@ -59,10 +62,12 @@ public class GUI extends Application {
         guessLabelText = text;
     }
 
+    //Setter für Handler
     public static void setHandler (Handler h) {
         handler = h;
     }
 
+    //Setter für Network
     public static void setNetwork (Network n) {
         network = n;
     }
@@ -81,7 +86,7 @@ public class GUI extends Application {
 
         
         //Label declaration
-        Label thingToDraw = new Label(toDraw.getRandomNext(true));
+        Label thingToDraw = new Label(ToDrawNow);
         thingToDraw.setFont(new Font("Arial", 24));
         
         Label counterMax = new Label("/" + Integer.toString(maxTurns));
@@ -108,9 +113,6 @@ public class GUI extends Application {
 
         Button buttonNextWord = new Button("Next");
         buttonNextWord.setFont(new Font("Arial", 12));
-        
-        Button buttonGuess = new Button("Guess");
-        buttonGuess.setFont(new Font("Arial", 12));
 
         //setup gridpane with all buttons and labels
         GridPane gridPane = new GridPane();
@@ -120,7 +122,6 @@ public class GUI extends Application {
         gridPane.add(buttonErase, 2, 0, 1, 1);
         gridPane.add(buttonNextWord, 3, 0, 1, 1);
         gridPane.add(thingToDraw, 10, 0, 1, 1);
-        gridPane.add(buttonGuess, 11, 0, 1, 1);
         gridPane.add(count, 15, 0, 1, 1);
         gridPane.add(counterMax, 16, 0, 1, 1);
         gridPane.add(guess, 20, 0, 1, 1);
@@ -129,7 +130,7 @@ public class GUI extends Application {
         //horizontal allignment of all buttons and info
         HBox topBar = new HBox(gridPane);
 
-        //timer 
+        //timeline for timer on gui
         Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(1), new EventHandler<ActionEvent>(){
             @Override
             public void handle(ActionEvent event) {
@@ -143,6 +144,43 @@ public class GUI extends Application {
         }));
         timeline.setCycleCount(Timeline.INDEFINITE);
         timeline.play();
+
+        //creating a popup for the right guess
+        Popup rightGuess = new Popup();
+        rightGuess.setX(stage.getWidth());
+        rightGuess.setY(stage.getHeight());
+        
+        /*
+        ///timeline for guessing the drawn image
+        Timeline guessTimeline = new Timeline(new KeyFrame(Duration.millis(20), new EventHandler<ActionEvent>(){
+            @Override
+            public void handle(ActionEvent event) {
+                WritableImage writableImage = canvas.snapshot(null, null);
+
+                BufferedImage bufferedImage = SwingFXUtils.fromFXImage(writableImage, null);
+
+                Data translatedInput;
+                //translatedInput = handler.translateImage(bufferedImage);
+                //translatedInput.getInputs().print();
+
+                setGuessLabelText("Car"); //TODO: get a guess from network
+                guess.setText("Guess: " + guessLabelText);
+
+                if(guessLabelText.equals(ToDrawNow)) { //TODO: get a guess from network
+                Text currentGuess = new Text("It is a " + "Car"); //TODO: get a guess from network
+                currentGuess.setFont(new Font("Arial", 30));
+                rightGuess.getContent().add(currentGuess); 
+                rightGuess.show(stage);
+
+                //TODO: we need multiple threads here so we can stop one thread for say 2 seconds to show the popup for that duration but still run the other parts uninterrupted
+                //rightGuess.hide();
+                //buttonNextWord.fire();
+                }
+            }
+        }));
+        guessTimeline.setCycleCount(Timeline.INDEFINITE);
+        guessTimeline.play();
+        */
 
         //event handler for mouse input
         canvas.addEventHandler(MouseEvent.MOUSE_PRESSED, 
@@ -194,6 +232,28 @@ public class GUI extends Application {
                         graphicsContext.clearRect(event.getX(), event.getY(), 10, 10);
                         graphicsContext.closePath();
                     }
+
+                    WritableImage writableImage = canvas.snapshot(null, null);
+
+                    BufferedImage bufferedImage = SwingFXUtils.fromFXImage(writableImage, null);
+
+                    Data translatedInput;
+                    //translatedInput = handler.translateImage(bufferedImage);
+                    //translatedInput.getInputs().print();
+
+                    setGuessLabelText("Car"); //TODO: get a guess from network
+                    guess.setText("Guess: " + guessLabelText);
+
+                    if(guessLabelText.equals(ToDrawNow)) { //TODO: get a guess from network
+                    Text currentGuess = new Text("It is a " + "Car"); //TODO: get a guess from network
+                    currentGuess.setFont(new Font("Arial", 30));
+                    rightGuess.getContent().add(currentGuess); 
+                    rightGuess.show(stage);
+
+                    //TODO: we need multiple threads here so we can stop one thread for say 2 seconds to show the popup for that duration but still run the other parts uninterrupted
+                    //rightGuess.hide();
+                    //buttonNextWord.fire();
+                    }
                 }
             });  
         
@@ -228,8 +288,9 @@ public class GUI extends Application {
         buttonNextWord.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                if(!toDraw.getMeta().isEmpty()) {
-                    thingToDraw.setText(toDraw.getRandomNext(true));
+                if(!toDrawList.getMeta().isEmpty()) {
+                (ToDrawNow) = toDrawList.getRandomNext(true);
+                    thingToDraw.setText(ToDrawNow);
                     count.setText("Try: " + Integer.toString(++counter));
                     if (counter == maxTurns) {
                         buttonNextWord.setText("Exit");
@@ -244,31 +305,6 @@ public class GUI extends Application {
                     stage.close();
                 }
                 
-            }
-        });
-        
-        buttonGuess.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-
-                guess.setText("Guess: " + guessLabelText);
-
-                WritableImage writableImage = canvas.snapshot(null, null);
-                
-                try {
-                saved_canvas = File.createTempFile("Montagsmaler-", ".png");
-                
-                } catch (IOException e1) {
-                    throw new RuntimeException(e1);
-                }
-
-                BufferedImage bufferedImage = SwingFXUtils.fromFXImage(writableImage, null);
-                try{
-                    ImageIO.write(bufferedImage, "png", saved_canvas);
-                } catch (IOException e2) {
-                    throw new RuntimeException(e2);
-                }
-                saved_canvas.deleteOnExit();
             }
         });
 
