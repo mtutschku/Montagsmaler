@@ -333,7 +333,6 @@ public class GUI extends Application {
 
 
         /** Ab hier wird die graphische Darstellung des Netzwerks implementiert */
-        /** Ab hier wird der Lernprozess des Netzwerks graphisch dargestellt */
         
         Stage stage = new Stage();
         /** Lernprozess in Prozent */
