@@ -247,8 +247,8 @@ public class GUI extends Application {
                     SwingFXUtils.fromFXImage(writableImage, bufferedImage);
 
                     Data translatedInput;
-                    //translatedInput = handler.translateImage(bufferedImage); TODO: fix out of index error??
-                    //translatedInput.getInputs().print();
+                    translatedInput = handler.translateImage(bufferedImage);
+                    // translatedInput.getInputs().print();
 
                     setGuessLabelText("Car"); //TODO: get a guess from network
                     guess.setText("Guess: " + guessLabelText);

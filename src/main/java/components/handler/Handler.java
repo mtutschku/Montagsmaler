@@ -6,6 +6,7 @@ import components.neuralnetwork.Matrix;
 import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.lang.Double;
+import java.util.Arrays;
 
 /**
  * This class handles transmission of data between GUI and Network
@@ -72,14 +73,23 @@ public class Handler {
 		double[] cluster;
 		Double average;
 
+		mat = new Matrix(28, 28);
+
 		for (int i = 0; i < image.getHeight() / this.clusterSideLength; i++) {
 			for (int j = 0; j < image.getWidth() / this.clusterSideLength; j++) {
-				cluster = makeCluster(j * this.clusterSideLength % (int) image.getWidth(), i * this.clusterSideLength % (int) image.getHeight(), image);
+				cluster = makeCluster(j * this.clusterSideLength, i * this.clusterSideLength, image);
 				average = averageArray(cluster);
-				mat.setValue(i, j, average);
+				average = average == 0.0 ? 0.0 : 1.0;
+				if (i == 0 || i == 27 || j == 0 || j == 27) {		// alter black border, might be changed after new GUI push
+					average = 0.0;
+				}
+				mat.setValue(i + 1, j + 1, average);
 			}
 		}
 
+		mat.print();
+		System.out.println(mat.getCols());
+		System.out.println(mat.getRows());
 		mat = Matrix.toSingleColumn(mat);
 		Data translatedInput = new Data(mat);
 		return translatedInput;
@@ -106,26 +116,6 @@ public class Handler {
 		}
 		return cluster;
 	}
-
-	// currently unused, may be discarded later after safety-check
-	// /**
-	//  * Translates a color into a corresponding integer, only usable for colors WHITE and BLACK.
-	//  * 
-	//  * @author 	Jakob Hiestermann
-	//  * @param	rgb
-	//  * @return	1 if color is black, 0 if color is white
-	//  */
-	// private int convertRGB(int rgb) {
-	// 	if (rgb == Color.WHITE.getRGB()) {
-	// 		return 0;
-	// 	} else if (rgb == Color.BLACK.getRGB()) {
-	// 		return 1;
-	// 	} else {
-	// 		// notify, but proceed
-	// 		System.out.println("received color that's neither white nor black in colorToInt, Handler.java\n proceeded with return -1");
-	// 		return -1;
-	// 	}
-	// }
 
 	/**
 	 * averages out integers in a array/cluster received, correspondingly to clusterSize
