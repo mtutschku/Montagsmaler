@@ -1,11 +1,12 @@
 package components.gui;
 
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 
 import components.handler.Data;
 import components.handler.Handler;
 import components.neuralnetwork.Network;
-
+import components.neuralnetwork.NetworkStats;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;
@@ -15,6 +16,9 @@ import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.chart.LineChart;
+import javafx.scene.chart.NumberAxis;
+import javafx.scene.chart.XYChart;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.WritableImage;
@@ -34,9 +38,11 @@ import javafx.util.Duration;
  * Beinhaltet eine Implementation für ein Fenster, in welchem gezeichnet werden kann.
  * Weiterhin sind Buttons für das Umschalten zwischen Zeichnen und Radieren, 
  * sowie zum Rückgängigmachen der letzten Aktion und zum Überspringen des aktuell geforderten Objekts enthalten.
+ * Außerdem wird in dieser Klasse eine graphische Darstellung des Lernprozesses für das neuronale Netzwerkes implementiert.
+ * Dabei wird die Genauigkeit des Netzwerkes in Prozent über die Anzahl der Lernepochen aufgetragen.
  * 
- * @version 29. Juni 2021
- * @author Pascal Uhlendorff, Jakob Hiestermann
+ * @version 01. Juli 2021
+ * @author Pascal Uhlendorff, Jakob Hiestermann, Moritz Klose
  */
 public class GUI extends Application {
 
@@ -73,8 +79,9 @@ public class GUI extends Application {
     }
 
     @Override
-    public void start(Stage stage) throws Exception {
+    public void start(Stage primaryStage) throws Exception {
 
+        /** Ab hier wird die GUI implementiert */
         final int SIZE = 784;
         Canvas canvas = new Canvas(SIZE, SIZE);
         final GraphicsContext graphicsContext = canvas.getGraphicsContext2D();
@@ -147,8 +154,8 @@ public class GUI extends Application {
 
         //creating a popup for the right guess
         Popup rightGuess = new Popup();
-        rightGuess.setX(stage.getWidth());
-        rightGuess.setY(stage.getHeight());
+        rightGuess.setX(primaryStage.getWidth());
+        rightGuess.setY(primaryStage.getHeight());
         
         /*
         ///timeline for guessing the drawn image
@@ -170,7 +177,7 @@ public class GUI extends Application {
                 Text currentGuess = new Text("It is a " + "Car"); //TODO: get a guess from network
                 currentGuess.setFont(new Font("Arial", 30));
                 rightGuess.getContent().add(currentGuess); 
-                rightGuess.show(stage);
+                rightGuess.show(primaryStage);
 
                 //TODO: we need multiple threads here so we can stop one thread for say 2 seconds to show the popup for that duration but still run the other parts uninterrupted
                 //rightGuess.hide();
@@ -250,7 +257,7 @@ public class GUI extends Application {
                     Text currentGuess = new Text("It is a " + "Car"); //TODO: get a guess from network
                     currentGuess.setFont(new Font("Arial", 30));
                     rightGuess.getContent().add(currentGuess); 
-                    rightGuess.show(stage);
+                    rightGuess.show(primaryStage);
 
                     //TODO: we need multiple threads here so we can stop one thread for say 2 seconds to show the popup for that duration but still run the other parts uninterrupted
                     //rightGuess.hide();
@@ -304,24 +311,60 @@ public class GUI extends Application {
                     graphicsContext.setStroke(Color.BLACK);
                     time = TIMERSTART + 1;
                 } else {
-                    stage.close();
+                    primaryStage.close();
                 }
                 
             }
         });
 
-        //sets the scene/stage and shows it
+        //sets the scene/primaryStage and shows it
         BorderPane borderPane = new BorderPane();
         borderPane.setTop(topBar);
         borderPane.setCenter(canvas);
 
         Scene scene = new Scene(borderPane);
 
-        stage.setTitle("Paint It");
-        stage.setWidth(1000);
-        stage.setHeight(1000);
-        stage.setResizable(false);
-        stage.setScene(scene);
+        primaryStage.setTitle("Paint It");
+        primaryStage.setWidth(1000);
+        primaryStage.setHeight(1000);
+        primaryStage.setResizable(false);
+        primaryStage.setScene(scene);
+        primaryStage.show();
+
+
+        /** Ab hier wird die graphische Darstellung des Netzwerks implementiert */
+        /** Ab hier wird der Lernprozess des Netzwerks graphisch dargestellt */
+        
+        Stage stage = new Stage();
+        /** Lernprozess in Prozent */
+        ArrayList<Double> percentData = NetworkStats.percentData;
+
+        /** Anzahl der Epochen bezogen auf den Lernprozess */
+        ArrayList<Integer> epochData = NetworkStats.epochData;
+        
+        HBox root = new HBox();
+
+        NumberAxis xAxis = new NumberAxis();
+        xAxis.setLabel("Epochs");
+
+        NumberAxis yAxis = new NumberAxis();
+        yAxis.setLabel("Accuracy in Percent(%)");
+
+        LineChart<Number, Number> lineChart = new LineChart<Number, Number>(xAxis, yAxis);
+        lineChart.setTitle("Accuracy of the Learning Process");
+
+        XYChart.Series<Number, Number> data = new XYChart.Series<>();
+        data.setName("Network Accuracy");
+
+        for(int i = 0; i < epochData.size(); i++) {
+            data.getData().add(new XYChart.Data<Number, Number>(epochData.get(i), percentData.get(i)));
+        }
+
+        lineChart.getData().add(data);
+        root.getChildren().add(lineChart);
+
+        stage.setTitle("Accuracy of the Learning Process");
+        stage.setScene(new Scene(root, 550, 550));
         stage.show();
     }
     
