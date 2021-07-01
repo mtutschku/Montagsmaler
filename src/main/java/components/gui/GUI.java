@@ -5,6 +5,7 @@ import java.util.ArrayList;
 
 import components.handler.Data;
 import components.handler.Handler;
+import components.neuralnetwork.Matrix;
 import components.neuralnetwork.Network;
 import components.neuralnetwork.NetworkStats;
 import javafx.animation.KeyFrame;
@@ -49,7 +50,7 @@ public class GUI extends Application {
     //Felder initialisieren, Variablen setzen
     private String mode = "Paint";
 
-    private static String guessLabelText = "None";
+    private String guessLabelText = "None";
     private Meta toDrawList = new Meta();
     private String ToDrawNow = toDrawList.getRandomNext(true);
 
@@ -64,7 +65,7 @@ public class GUI extends Application {
     private Integer time = TIMERSTART;
 
     //setter für GuessLabel
-    public static void setGuessLabelText (String text) {
+    public void setGuessLabelText (String text) {
         guessLabelText = text;
     }
 
@@ -240,6 +241,8 @@ public class GUI extends Application {
                         graphicsContext.closePath();
                     }
 
+
+                    //this part translates the canvas into a matrix that is forwarded to the network which returns a guess as String
                     WritableImage writableImage = canvas.snapshot(null, null);
 
                     final int IM_DIMENSION = 28 * 28;
@@ -248,20 +251,32 @@ public class GUI extends Application {
 
                     Data translatedInput;
                     translatedInput = handler.translateImage(bufferedImage);
-                    // translatedInput.getInputs().print();
+                    translatedInput.getInputs().print();
 
-                    setGuessLabelText("Car"); //TODO: get a guess from network
+                    Matrix networkGuessM;
+                    String networkGuess;
+
+                    networkGuessM = network.feedForward(translatedInput.getInputs());
+                    networkGuess = Meta.getCertainMETA(networkGuessM.getHighestValueRow());
+
+                    setGuessLabelText(networkGuess);
                     guess.setText("Guess: " + guessLabelText);
 
-                    if(guessLabelText.equals(ToDrawNow)) { //TODO: get a guess from network
-                    Text currentGuess = new Text("It is a " + "Car"); //TODO: get a guess from network
+                    if(guessLabelText.equals(ToDrawNow)) {
+                    Text currentGuess = new Text("It is a " + guessLabelText);
                     currentGuess.setFont(new Font("Arial", 30));
                     rightGuess.getContent().add(currentGuess); 
                     rightGuess.show(primaryStage);
-
-                    //TODO: we need multiple threads here so we can stop one thread for say 2 seconds to show the popup for that duration but still run the other parts uninterrupted
-                    //rightGuess.hide();
-                    //buttonNextWord.fire();
+                    
+                    /*
+                    try{
+                        Thread.sleep(10000);
+                    }
+                    catch(InterruptedException ex) {
+                    }
+                    rightGuess.hide();
+                    buttonNextWord.fire();
+                    */
                     }
                 }
             });  
@@ -309,6 +324,10 @@ public class GUI extends Application {
                     graphicsContext.setLineWidth(2);
                     graphicsContext.strokeRect(0, 0, SIZE, SIZE);
                     graphicsContext.setStroke(Color.BLACK);
+
+                    setGuessLabelText("None");
+                    guess.setText("Guess: " + guessLabelText);
+
                     time = TIMERSTART + 1;
                 } else {
                     primaryStage.close();
