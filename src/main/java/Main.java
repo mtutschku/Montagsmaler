@@ -94,9 +94,6 @@ public class Main {
         
         ///////////////////////////////////
 
-        
-        /** vorerst auskommentierter Launch-Befehl für den Plot des Netzwerks */
-        //Application.launch(NetworkPlot.class, args);
     }
 
 }
