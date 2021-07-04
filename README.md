@@ -19,4 +19,4 @@ Pascal Uhlendorff: 	W1: GUI Implementation
 Jakob Hiestermann:	W1: Arbeit an Handler, d.h Schnittstelle zwischen GUI und Netzwerk, Arbeit an Meta (ArrayList)
 					W2: Main-Funktion, Einbindung von Handler und Meta in GUI
 					W3:	Main-Funktion, Auslesen des gemalten Bildes und Interpretation der Netzwerkausgabe, kleine		 Matrixklassenerweiterung
-					W4: Schnittstelle beendet, Main angepasst
+					W4: Schnittstelle beenden, Main anpassen, Icon hinzufügen
