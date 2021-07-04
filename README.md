@@ -14,6 +14,7 @@ Moritz Klose: W1: Arbeit an der Network- und der Matrix-Klasse
 Pascal Uhlendorff: 	W1: GUI Implementation
 				   	W2: GUI überarbeitet, weitere Funktionen zum GUI hinzugefügt(Timer, Try, Output für Handler)
 					W3: kleinere GUI-Anpassungen, Einarbeitung in Scene Builder
+					W4: Raten in der GUI auf Mouse-Release, Verknüpfung GUI, Handler und Netzwerk, Multithreading
 
 Jakob Hiestermann:	W1: Arbeit an Handler, d.h Schnittstelle zwischen GUI und Netzwerk, Arbeit an Meta (ArrayList)
 					W2: Main-Funktion, Einbindung von Handler und Meta in GUI
