@@ -368,12 +368,15 @@ public class GUI extends Application {
 
         NumberAxis xAxis = new NumberAxis();
         xAxis.setLabel("Epochs");
+        xAxis.setTickLabelFont(new Font("Arial", 16));
 
         NumberAxis yAxis = new NumberAxis();
         yAxis.setLabel("Accuracy in Percent(%)");
+        yAxis.setTickLabelFont(new Font("Arial", 16));
 
         LineChart<Number, Number> lineChart = new LineChart<Number, Number>(xAxis, yAxis);
         lineChart.setTitle("Accuracy of the Learning Process");
+        //lineChart.setFont(new Font("Arial", 16));
 
         XYChart.Series<Number, Number> data = new XYChart.Series<>();
         data.setName("Network Accuracy");
@@ -386,6 +389,7 @@ public class GUI extends Application {
         root.getChildren().add(lineChart);
 
         stage.setTitle("Accuracy of the Learning Process");
+        //stage.setFont("Arial", 16);
         stage.setScene(new Scene(root, 550, 550));
         stage.show();
     }
