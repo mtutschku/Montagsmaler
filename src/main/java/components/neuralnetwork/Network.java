@@ -8,7 +8,7 @@ import components.handler.Data;
  * Das Netzwerk hat zunächst eine Input-Layer (= Grauwerte der Leinwandpixel), eine Hidden-Layer und
  * Output-Layer (= Klassifikation).
  * 
- * @version 9. Juni 2021
+ * @version 2. Juli 2021
  * @author Morris Tutschku
  */
 public class Network {
@@ -278,6 +278,34 @@ public class Network {
 
     public Matrix getBiasO(){
         return biasO;
+    }
+
+    /** Legt spezifische bias- und Gewichtsmatrizen fest.
+     * 
+     * @param biasH HL-bias-Matrix
+     * @param biasO Output-bias-Matrix
+     * @param weightsIH HL-Gewichtsmatrix
+     * @param weightsHO Output-Gewichtsmatrix
+     */
+    public void setParams(Matrix biasH, Matrix biasO, Matrix weightsIH, Matrix weightsHO){
+        if(this.biasH.getCols() != biasH.getCols() || this.biasH.getRows() != biasH.getRows()){
+            System.err.println("Maße von biasH stimmen nicht überein.");
+            return;
+        } else if(this.biasO.getCols() != biasO.getCols() || this.biasO.getRows() != biasO.getRows()){
+            System.err.println("Maße von biasO stimmen nicht überein.");
+            return;
+        } else if(this.weightsIH.getCols() != weightsIH.getCols() || this.weightsIH.getRows() != weightsIH.getRows()){
+            System.err.println("Maße von weightsIH stimmen nicht überein.");
+            return;
+        } else if(this.weightsHO.getCols() != weightsHO.getCols() || this.weightsHO.getRows() != weightsHO.getRows()){
+            System.err.println("Maße von weightsHO stimmen nicht überein.");
+            return;
+        } else {
+            this.biasH = biasH;
+            this.biasO = biasO;
+            this.weightsIH = weightsIH;
+            this.weightsHO = weightsHO;
+        }
     }
 
 }

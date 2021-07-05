@@ -19,10 +19,10 @@ import javafx.application.Application;
 public class NetworkStats {
 
     /** Lernprozess des Netzwerks in Prozent */
-    static ArrayList<Double> percentData = new ArrayList<Double>();
+    public static ArrayList<Double> percentData = new ArrayList<Double>();
     
     /** Anzahl der Epochen bezogen auf den Lernprozess */
-    static ArrayList<Integer> epochData = new ArrayList<Integer>();
+    public static ArrayList<Integer> epochData = new ArrayList<Integer>();
 
 
 
