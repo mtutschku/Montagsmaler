@@ -125,12 +125,13 @@ public class Matrix {
      * @return row-index of highest value position 
      */
     public int getHighestValueRow() {
-        int currentMax = -1;
+        double currentMax = -1.0;
         int row = 0;
         for (int i = 0; i < getRows(); i++) {
             for (int j = 0; j < getCols(); j++) {
                 if (this.data[i][j] > currentMax) {
                     row = i;
+                    currentMax = this.data[i][j];
                 }
             }
         }

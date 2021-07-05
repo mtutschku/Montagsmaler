@@ -44,7 +44,6 @@ public class Main {
                                                           // damit accuracy upgedated wird.
 
         ////////////////////////////
-        // @author Jakob Hiestermann
         
         /** holds constant value m that defines the mxm matrix size used in this project. */
         final int M = 28;
