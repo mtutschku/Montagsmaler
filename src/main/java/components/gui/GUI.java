@@ -12,8 +12,10 @@ import components.neuralnetwork.Matrix;
 import components.neuralnetwork.Network;
 import components.neuralnetwork.NetworkStats;
 import javafx.animation.KeyFrame;
+import javafx.animation.PauseTransition;
 import javafx.animation.Timeline;
 import javafx.application.Application;
+import javafx.concurrent.Task;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -161,38 +163,6 @@ public class GUI extends Application {
         Popup rightGuess = new Popup();
         rightGuess.setX(primaryStage.getWidth());
         rightGuess.setY(primaryStage.getHeight());
-        
-        /*
-        ///timeline for guessing the drawn image
-        Timeline guessTimeline = new Timeline(new KeyFrame(Duration.millis(20), new EventHandler<ActionEvent>(){
-            @Override
-            public void handle(ActionEvent event) {
-                WritableImage writableImage = canvas.snapshot(null, null);
-
-                BufferedImage bufferedImage = SwingFXUtils.fromFXImage(writableImage, null);
-
-                Data translatedInput;
-                //translatedInput = handler.translateImage(bufferedImage);
-                //translatedInput.getInputs().print();
-
-                setGuessLabelText("Car"); //TODO: get a guess from network
-                guess.setText("Guess: " + guessLabelText);
-
-                if(guessLabelText.equals(ToDrawNow)) { //TODO: get a guess from network
-                Text currentGuess = new Text("It is a " + "Car"); //TODO: get a guess from network
-                currentGuess.setFont(new Font("Arial", 30));
-                rightGuess.getContent().add(currentGuess); 
-                rightGuess.show(primaryStage);
-
-                //TODO: we need multiple threads here so we can stop one thread for say 2 seconds to show the popup for that duration but still run the other parts uninterrupted
-                //rightGuess.hide();
-                //buttonNextWord.fire();
-                }
-            }
-        }));
-        guessTimeline.setCycleCount(Timeline.INDEFINITE);
-        guessTimeline.play();
-        */
 
         //event handler for mouse input
         canvas.addEventHandler(MouseEvent.MOUSE_PRESSED, 
@@ -264,24 +234,53 @@ public class GUI extends Application {
 
                     setGuessLabelText(networkGuess);
                     guess.setText("Guess: " + guessLabelText);
-
-                    if(guessLabelText.equals(ToDrawNow)) {
-                    Text currentGuess = new Text("It is a " + guessLabelText);
-                    currentGuess.setFont(new Font("Arial", 30));
-                    rightGuess.getContent().add(currentGuess); 
-                    rightGuess.show(primaryStage);
                     
+                    if(guessLabelText.equals(ToDrawNow)) {
+                        Text currentGuess = new Text("It is a " + guessLabelText);
+                        currentGuess.setFont(new Font("Arial", 30));
+                        rightGuess.getContent().add(currentGuess); 
+                        rightGuess.show(primaryStage);
+                        
+                        PauseTransition delay = new PauseTransition(Duration.seconds(2));
+                        
+                        delay.setOnFinished(new EventHandler<ActionEvent>(){
+                            @Override
+                            public void handle(ActionEvent event) {
+                                rightGuess.hide();
+                                buttonNextWord.fire();
+                                rightGuess.getContent().remove(currentGuess);
+                            }
+                        });
+                        delay.play();
+                    }
+
                     /*
-                    try{
-                        Thread.sleep(10000);
-                    }
-                    catch(InterruptedException ex) {
-                    }
-                    rightGuess.hide();
-                    buttonNextWord.fire();
+                    Task<Void> popupTask = new Task<Void>() {
+                      
+                        @Override 
+                        protected Void call() throws Exception{
+                            if(guessLabelText.equals(ToDrawNow)) {
+                                Text currentGuess = new Text(guessLabelText);
+                                currentGuess.setFont(new Font("Arial", 30));
+                                rightGuess.getContent().add(currentGuess); 
+
+                                rightGuess.show(primaryStage);
+                                Thread.sleep(5000);
+                                rightGuess.hide();
+                                buttonNextWord.fire();
+                            } 
+                            return null;
+                        }
+                    };
+
+                    Thread popupThread = new Thread(popupTask);
+                    popupThread.setDaemon(true);
+                    popupThread.start();
                     */
-                    }
+                    
+                    
                 }
+   
             });  
         
 
