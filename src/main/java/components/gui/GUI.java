@@ -1,6 +1,9 @@
 package components.gui;
 
 import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
 import java.util.ArrayList;
 
 import components.handler.Data;
@@ -22,6 +25,7 @@ import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
 import javafx.scene.image.WritableImage;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
@@ -251,7 +255,6 @@ public class GUI extends Application {
 
                     Data translatedInput;
                     translatedInput = handler.translateImage(bufferedImage);
-                    translatedInput.getInputs().print();
 
                     Matrix networkGuessM;
                     String networkGuess;
@@ -344,6 +347,7 @@ public class GUI extends Application {
         Scene scene = new Scene(borderPane);
 
         primaryStage.setTitle("Paint It");
+        //primaryStage.getIcons().add(new Image(getClass().getResourceAsStream("brushicon.jpg")));
         primaryStage.setWidth(1000);
         primaryStage.setHeight(1000);
         primaryStage.setResizable(false);

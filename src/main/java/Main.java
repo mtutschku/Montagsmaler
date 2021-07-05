@@ -44,15 +44,21 @@ public class Main {
                                                           // damit accuracy upgedated wird.
 
         ////////////////////////////
-        // @author Jakob Hiestermann
         
         /** holds constant value m that defines the mxm matrix size used in this project. */
         final int M = 28;
 
         /** GUI setup and launch */
         Handler handler = new Handler(M, M);
-        Network network = new Network(M*M, 2, 7); // for now an arbitrary number of hidden layers (and outputs) chosen, to be changed adequately 
-                                                //TODO: change values 
+        Network network = new Network(M*M, 8, 4); // to be changed to actual number of categories
+
+        Matrix biasH = PreTrained.getTrainedBiasH();
+        Matrix biasO = PreTrained.getTrainedBiasO();
+        Matrix weightsIH = PreTrained.getTrainedWeightsIH();
+        Matrix weightsHO = PreTrained.getTrainedWeightsHO();
+
+        network.setParams(biasH, biasO, weightsIH, weightsHO);
+
         GUI.setHandler(handler);
         GUI.setNetwork(network);
         Application.launch(GUI.class, args);
