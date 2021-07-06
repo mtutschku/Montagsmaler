@@ -1,5 +1,17 @@
 package components.neuralnetwork;
 
+/** Die Klasse stellt ein trainiertes Netzwerk zur Verfügung.
+ * 
+ * Ein trainiertes Netzwerk mit einer Hidden-Layer wird durch vier Matrizen definiert.
+ * (Gewichts- und bias-Matrix der I->H und H->O Ebene)
+ * Diese werden hier bereitgestellt.
+ * 
+ * Die Architektur des trainierten Netzwerks ist hardgecodet.
+ * -> Die Integration ins Spiel funktioniert nur bei gleicher NW-Architektur!
+ * 
+ * @version 6. Juli 2021
+ * @author Morris Tutschku
+ */
 public class PreTrained {
 
     public static Matrix getTrainedBiasH() {
