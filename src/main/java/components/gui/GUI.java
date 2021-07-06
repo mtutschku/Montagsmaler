@@ -346,7 +346,7 @@ public class GUI extends Application {
         Scene scene = new Scene(borderPane);
 
         primaryStage.setTitle("Paint It");
-        //primaryStage.getIcons().add(new Image(getClass().getResourceAsStream("brushicon.jpg")));
+        primaryStage.getIcons().add(new Image(getClass().getClassLoader().getResourceAsStream("brushicon.jpg")));
         primaryStage.setWidth(1000);
         primaryStage.setHeight(1000);
         primaryStage.setResizable(false);
