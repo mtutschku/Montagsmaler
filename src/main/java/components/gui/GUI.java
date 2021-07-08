@@ -15,7 +15,6 @@ import javafx.animation.KeyFrame;
 import javafx.animation.PauseTransition;
 import javafx.animation.Timeline;
 import javafx.application.Application;
-import javafx.concurrent.Task;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -65,6 +64,8 @@ public class GUI extends Application {
 
     private static Handler handler;
     private static Network network;
+
+    boolean ignore = false;
 
     //Variablen fuer Timer
     private static final int TIMERSTART = 30;
@@ -168,7 +169,10 @@ public class GUI extends Application {
         canvas.addEventHandler(MouseEvent.MOUSE_PRESSED, 
             new EventHandler<MouseEvent>() {
                 @Override
-                public void handle(MouseEvent event) {      
+                public void handle(MouseEvent event) {
+                    if(ignore) {
+                        return;
+                    }      
                     if(mode.equals("Paint")) {
                         graphicsContext.beginPath();
                         graphicsContext.moveTo(event.getX(), event.getY());
@@ -185,6 +189,9 @@ public class GUI extends Application {
             new EventHandler<MouseEvent>(){
                 @Override
                 public void handle(MouseEvent event) {
+                    if(ignore) {
+                        return;
+                    }  
                     if(mode.equals("Paint")) {
                         graphicsContext.lineTo(event.getX(), event.getY());
                         graphicsContext.stroke();
@@ -205,6 +212,9 @@ public class GUI extends Application {
              new EventHandler<MouseEvent>(){
                 @Override
                 public void handle(MouseEvent event) {
+                    if(ignore) {
+                        return;
+                    }
                     if(mode.equals("Paint")) { 
                         graphicsContext.lineTo(event.getX(), event.getY());
                         graphicsContext.stroke();
@@ -236,6 +246,7 @@ public class GUI extends Application {
                     guess.setText("Guess: " + guessLabelText);
                     
                     if(guessLabelText.equals(ToDrawNow)) {
+                        ignore = true;
                         Text currentGuess = new Text("It is a " + guessLabelText);
                         currentGuess.setFont(new Font("Arial", 30));
                         rightGuess.getContent().add(currentGuess); 
@@ -249,36 +260,11 @@ public class GUI extends Application {
                                 rightGuess.hide();
                                 buttonNextWord.fire();
                                 rightGuess.getContent().remove(currentGuess);
+                                ignore = false;
                             }
                         });
                         delay.play();
                     }
-
-                    /*
-                    Task<Void> popupTask = new Task<Void>() {
-                      
-                        @Override 
-                        protected Void call() throws Exception{
-                            if(guessLabelText.equals(ToDrawNow)) {
-                                Text currentGuess = new Text(guessLabelText);
-                                currentGuess.setFont(new Font("Arial", 30));
-                                rightGuess.getContent().add(currentGuess); 
-
-                                rightGuess.show(primaryStage);
-                                Thread.sleep(5000);
-                                rightGuess.hide();
-                                buttonNextWord.fire();
-                            } 
-                            return null;
-                        }
-                    };
-
-                    Thread popupThread = new Thread(popupTask);
-                    popupThread.setDaemon(true);
-                    popupThread.start();
-                    */
-                    
-                    
                 }
    
             });  
