@@ -1,9 +1,6 @@
 package components.gui;
 
 import java.awt.image.BufferedImage;
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.URL;
 import java.util.ArrayList;
 
 import components.gui.Speech;
@@ -40,68 +37,73 @@ import javafx.stage.Popup;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
-/** Grafisches Benutzerinterface für die Zeichnung, welche vom neuronalen Netzwerk erkannt werden soll.
+/** Grafisches Benutzerinterface fuer die Zeichnung, welche vom neuronalen Netzwerk erkannt werden soll.
  * 
- * Beinhaltet eine Implementation für ein Fenster, in welchem gezeichnet werden kann.
- * Weiterhin sind Buttons für das Umschalten zwischen Zeichnen und Radieren, 
- * sowie zum Rückgängigmachen der letzten Aktion und zum Überspringen des aktuell geforderten Objekts enthalten.
+ * Beinhaltet eine Implementation fuer ein Fenster, in welchem gezeichnet werden kann.
+ * Weiterhin sind Buttons fuer das Umschalten zwischen Zeichnen und Radieren, 
+ * sowie zum Ueberspringen des aktuell geforderten Objekts enthalten.
  * Außerdem wird in dieser Klasse eine graphische Darstellung des Lernprozesses für das neuronale Netzwerkes implementiert.
- * Dabei wird die Genauigkeit des Netzwerkes in Prozent über die Anzahl der Lernepochen aufgetragen.
+ * Dabei wird die Genauigkeit des Netzwerkes in Prozent ueber die Anzahl der Lernepochen aufgetragen.
  * 
- * @version 01. Juli 2021
+ * @version 10. Juli 2021
  * @author Pascal Uhlendorff, Jakob Hiestermann, Moritz Klose
  */
 public class GUI extends Application {
 
-    //Felder initialisieren, Variablen setzen
-    private String mode = "Paint";
+    /** Felder initialisieren, globale Variablen setzen */
+    private String mode = "Paint"; /** Modus fuer das Umschalten zwischen Zeichnen und Radieren */
 
     private String guessLabelText = "None";
     private Meta toDrawList = new Meta();
     private String ToDrawNow = toDrawList.getRandomNext(true);
+    
+    /** Zaehlvariablen fuer die Statistik bezueglich Vermutungen/Erratenem */
+    private int succesfulTries = 0;
+    private int numberOfGuesses = 0;
 
-    private int counter = 1;
-    private int maxTurns = toDrawList.getMeta().size() + 1;
+    private int counter = 1; /** Zaehlvariable fuer die Versuche */
+    private int maxTurns = toDrawList.getMeta().size() + 1; /** Maximale Anzahl an Versuchen */
 
     private static Handler handler;
     private static Network network;
 
-    boolean ignore = false;
+    boolean ignore = false; /** Flagge fuer das Blockieren der Nutzereingabe */
 
-    //Variablen fuer Timer
+    /** Variablen fuer Timer */
     private static final int TIMERSTART = 30;
     private Integer time = TIMERSTART;
 
-    //setter für GuessLabel
+    /** setter fuer GuessLabel */
     public void setGuessLabelText (String text) {
         guessLabelText = text;
     }
 
-    //Setter für Handler
+    /** Setter fuer Handler */
     public static void setHandler (Handler h) {
         handler = h;
     }
 
-    //Setter für Network
+    /** Setter fuer Network */
     public static void setNetwork (Network n) {
         network = n;
     }
 
+    /** */
     @Override
     public void start(Stage primaryStage) throws Exception {
 
         /** Ab hier wird die GUI implementiert */
-        final int SIZE = 784;
+        final int SIZE = 784; 
         Canvas canvas = new Canvas(SIZE, SIZE);
         final GraphicsContext graphicsContext = canvas.getGraphicsContext2D();
 
+        /** Rahmen um das Canvas */
         graphicsContext.setStroke(Color.GREY);
         graphicsContext.setLineWidth(2);
         graphicsContext.strokeRect(0, 0, SIZE, SIZE);
         graphicsContext.setStroke(Color.BLACK);
 
-        
-        //Label declaration
+        /** Label deklariert */ 
         Label thingToDraw = new Label(ToDrawNow);
         thingToDraw.setFont(new Font("Arial", 24));
         
@@ -117,9 +119,9 @@ public class GUI extends Application {
         Label timerLabel = new Label("Time: " + time.toString());
         timerLabel.setFont(new Font("Arial", 24));
 
-        //initialize buttons
-        Button buttonNew = new Button("New");
-        buttonNew.setFont(new Font("Arial", 12));
+        /** Buttons initialisieren */ 
+        Button buttonClear = new Button("Clear");
+        buttonClear.setFont(new Font("Arial", 12));
 
         Button buttonPaint = new Button("Paint");
         buttonPaint.setFont(new Font("Arial", 12));
@@ -130,10 +132,10 @@ public class GUI extends Application {
         Button buttonNextWord = new Button("Next");
         buttonNextWord.setFont(new Font("Arial", 12));
 
-        //setup gridpane with all buttons and labels
+        /** Gridpane mit allen Buttons und Labels verknuepft */ 
         GridPane gridPane = new GridPane();
         gridPane.setHgap(10);
-        gridPane.add(buttonNew, 0, 0, 1, 1);
+        gridPane.add(buttonClear, 0, 0, 1, 1);
         gridPane.add(buttonPaint, 1, 0, 1, 1);
         gridPane.add(buttonErase, 2, 0, 1, 1);
         gridPane.add(buttonNextWord, 3, 0, 1, 1);
@@ -143,10 +145,10 @@ public class GUI extends Application {
         gridPane.add(guess, 20, 0, 1, 1);
         gridPane.add(timerLabel, 25, 0, 1, 1);
 
-        //horizontal allignment of all buttons and info
+        /** Horizontale Ausrichtung aller Buttons/Label */
         HBox topBar = new HBox(gridPane);
 
-        //timeline for timer on gui
+        /** Timeline fuer den Timer der waehrend des Spiels ablaeuft */
         Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(1), new EventHandler<ActionEvent>(){
             @Override
             public void handle(ActionEvent event) {
@@ -161,17 +163,17 @@ public class GUI extends Application {
         timeline.setCycleCount(Timeline.INDEFINITE);
         timeline.play();
 
-        //creating a popup for the right guess
+        /** Popup fuer den richtigen Tipp erstellen */
         Popup rightGuess = new Popup();
         rightGuess.setX(primaryStage.getWidth());
         rightGuess.setY(primaryStage.getHeight());
 
-        //event handler for mouse input
+        /** Handler fuer Input von der Maus. Erste Phase beim Druecken der linken Maustaste. */
         canvas.addEventHandler(MouseEvent.MOUSE_PRESSED, 
             new EventHandler<MouseEvent>() {
                 @Override
                 public void handle(MouseEvent event) {
-                    if(ignore) {
+                    if(ignore) { /** Flagge fuer das Ingorieren von Nutzereingaben */
                         return;
                     }      
                     if(mode.equals("Paint")) {
@@ -185,12 +187,13 @@ public class GUI extends Application {
                     }
                 }
             });
-
+        
+        /** Handler fuer das Ziehen des Mauszeigers */
         canvas.addEventHandler(MouseEvent.MOUSE_DRAGGED, 
             new EventHandler<MouseEvent>(){
                 @Override
                 public void handle(MouseEvent event) {
-                    if(ignore) {
+                    if(ignore) { /** Flagge fuers Ignorieren von Nutzereingaben */
                         return;
                     }  
                     if(mode.equals("Paint")) {
@@ -209,6 +212,7 @@ public class GUI extends Application {
                 }
             });
 
+        /** Handler fuer das Loslassen der linken Maustaste. Enthaelt das Raten des Netzwerks */
         canvas.addEventHandler(MouseEvent.MOUSE_RELEASED, 
              new EventHandler<MouseEvent>(){
                 @Override
@@ -227,48 +231,61 @@ public class GUI extends Application {
                     }
 
 
-                    //this part translates the canvas into a matrix that is forwarded to the network which returns a guess as String
+                    /** Raten des Gemalten */
                     WritableImage writableImage = canvas.snapshot(null, null);
 
-                    final int IM_DIMENSION = 28 * 28;
-                    BufferedImage bufferedImage = new BufferedImage(IM_DIMENSION, IM_DIMENSION, BufferedImage.TYPE_INT_ARGB);
-                    SwingFXUtils.fromFXImage(writableImage, bufferedImage);
+                    /** Groeße des Bildes entspricht der Groeße des Canvas */
+                    BufferedImage bufferedImage = new BufferedImage(SIZE, SIZE, BufferedImage.TYPE_INT_ARGB);
+                    
+                    /** Uebertragen des WriteableImage in ein BufferedImage */
+                    SwingFXUtils.fromFXImage(writableImage, bufferedImage); 
 
-                    Data translatedInput;
-                    translatedInput = handler.translateImage(bufferedImage);
-
+                    /** Uebersetzen des BufferedImage in eine Matrix */
+                    Data translatedInput; 
+                    translatedInput = handler.translateImage(bufferedImage); 
+                    
+                    /** Netzwerk verarbeitet den Input und gibt eine Vermutung zurueck*/
                     Matrix networkGuessM;
                     String networkGuess;
 
-                    networkGuessM = network.feedForward(translatedInput.getInputs());
+                    networkGuessM = network.feedForward(translatedInput.getInputs()); 
                     networkGuess = Meta.getCertainMETA(networkGuessM.getHighestValueRow());
 
+                    /** Anzeige auf Aktuelle Vermutung setzen */
                     setGuessLabelText(networkGuess);
                     guess.setText("Guess: " + guessLabelText);
 
                     /** Initalisierung der Sprachausgabe */
                     Speech speech = new Speech();
                     speech.text(guessLabelText);
+
+                    /** Zaehlt wie oft das Netzwerk geraten hat */
+                    numberOfGuesses++; 
                     
+                    /** Anzeige des Popups, wenn die Vermutung richtig war */
                     if(guessLabelText.equals(ToDrawNow)) {
-                        ignore = true;
-                        Text currentGuess = new Text("It is a " + guessLabelText);
+                        succesfulTries++;
+                        ignore = true; /** Nutzereingabe deaktivieren */
+                        timeline.stop(); /** Timer anhalten */
+                        Text currentGuess = new Text("It is a/an " + guessLabelText);
                         currentGuess.setFont(new Font("Arial", 30));
                         rightGuess.getContent().add(currentGuess); 
                         rightGuess.show(primaryStage);
                         
+                        /** Popup wird mit Verzögerung ausgblendet */
                         PauseTransition delay = new PauseTransition(Duration.seconds(2));
                         
                         delay.setOnFinished(new EventHandler<ActionEvent>(){
                             @Override
                             public void handle(ActionEvent event) {
                                 rightGuess.hide();
-                                buttonNextWord.fire();
-                                rightGuess.getContent().remove(currentGuess);
-                                ignore = false;
+                                buttonNextWord.fire(); /** Wechsel zur naechsten zu malenden Sache */
+                                rightGuess.getContent().remove(currentGuess); /** Zuruecksetzen des Labels */
+                                ignore = false; /** Nutzereingabe wieder aktivieren */
+                                timeline.play(); /** Timer wieder aktivieren */
                             }
                         });
-                        delay.play();
+                        delay.play(); 
                     }
                 }
    
@@ -276,8 +293,10 @@ public class GUI extends Application {
         
 
 
-        //event handler for buttons
-        buttonNew.setOnAction(new EventHandler<ActionEvent>() {
+        /** Handler fuer die Buttons */
+
+        /** Handler fuer den Button zum Zuruecksetzen des Canvas */
+        buttonClear.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
                 graphicsContext.clearRect(0, 0, SIZE, SIZE);
@@ -285,9 +304,11 @@ public class GUI extends Application {
                 graphicsContext.setLineWidth(2);
                 graphicsContext.strokeRect(0, 0, SIZE, SIZE);
                 graphicsContext.setStroke(Color.BLACK);
+                buttonPaint.fire(); /** nach dem Zuruecksetzen des Canvas Rueckkehr in den Zeichenmodus */
             }
         });
 
+        /** Handler fuer den Button zum Zeichnen */
         buttonPaint.setOnAction(new EventHandler<ActionEvent>() {
             @Override 
             public void handle(ActionEvent event) {
@@ -295,6 +316,7 @@ public class GUI extends Application {
             }
         });
 
+        /** Handler fuer den Button zum Radieren */
         buttonErase.setOnAction(new EventHandler<ActionEvent>() {
             @Override 
             public void handle(ActionEvent event) {
@@ -302,40 +324,39 @@ public class GUI extends Application {
             }
         });
         
+        /** Handler fuer den Button zum Weiterschalten der zu malenden Sache */
         buttonNextWord.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                if(!toDrawList.getMeta().isEmpty()) {
+                if(!(toDrawList.getMeta().isEmpty()) || counter != maxTurns + 1) { /** Check, ob das Spiel zu ende ist */
                 (ToDrawNow) = toDrawList.getRandomNext(true);
                     thingToDraw.setText(ToDrawNow);
                     count.setText("Try: " + Integer.toString(++counter));
-                    if (counter == maxTurns) {
+                    if (counter == maxTurns) { /** Im letzen Versuch wird der ButtonNextWord umbenannt */
                         buttonNextWord.setText("Exit");
                     }
-                    graphicsContext.clearRect(0, 0, SIZE, SIZE);
-                    graphicsContext.setStroke(Color.GREY);
-                    graphicsContext.setLineWidth(2);
-                    graphicsContext.strokeRect(0, 0, SIZE, SIZE);
-                    graphicsContext.setStroke(Color.BLACK);
+                    buttonClear.fire(); /** Zuruecksetzen des Canvas */
 
                     setGuessLabelText("None");
                     guess.setText("Guess: " + guessLabelText);
 
-                    time = TIMERSTART + 1;
+                    time = TIMERSTART + 1; /** Zuruecksetzen des Timers */
                 } else {
-                    primaryStage.close();
+                    double proportionGuessesToRight = succesfulTries / numberOfGuesses * 100;
+                    String percentRightGuesses = String.format("The network guessed right in %f%% of cases. The total number of tries was: %d.", proportionGuessesToRight, numberOfGuesses);
+                    primaryStage.close(); //TODO: hier koennten wir eine Statistik und die Anzahl der richtig erratenen Sachen anzeigen lassen
                 }
                 
             }
         });
 
-        //sets the scene/primaryStage and shows it
+        /** Zusammenfuegen von Zeichenflaeche und Kontrollleiste */
         BorderPane borderPane = new BorderPane();
         borderPane.setTop(topBar);
         borderPane.setCenter(canvas);
-
         Scene scene = new Scene(borderPane);
 
+        /** Fenster erstellen */
         primaryStage.setTitle("Paint It");
         primaryStage.getIcons().add(new Image(getClass().getClassLoader().getResourceAsStream("brushicon.jpg")));
         primaryStage.setWidth(1000);

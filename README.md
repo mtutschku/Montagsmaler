@@ -13,10 +13,22 @@ Moritz Klose: W1: Arbeit an der Network- und der Matrix-Klasse
 			  W4: Netzworkplot in die GUI integriert. Erstellung von zwei Stages für GUI und Plot.
 			  W5: Speech.java: Methode zur Sprachausgabe des, von dem Netzwerk, erratenen Wortes.
 
-Pascal Uhlendorff: 	W1: GUI Implementation
-				   	W2: GUI überarbeitet, weitere Funktionen zum GUI hinzugefügt(Timer, Try, Output für Handler)
-					W3: kleinere GUI-Anpassungen, Einarbeitung in Scene Builder
-					W4: Raten in der GUI auf Mouse-Release, Verknüpfung GUI, Handler und Netzwerk, Multithreading
+Pascal Uhlendorff: 	W1: Die GUI in ihrer Basisform per Hand mit JavaFX implementiert. Das Grundgerüst samt Buttons und Labels aufgestellt. 
+						Zeichnen und radieren sind bereits möglich. Außerdem kann die Zeichenfläche zurückgesetzt werden und 
+						es kann die zu zeichnende Sache per Knopfdruck weitergeschaltet werden, sollte der Anwender die aktuell geforderte Sache nicht zeichnen können/wollen.
+						
+					W2: GUI weiter überarbeitet und zusätzliche Funtkionen hinzugefügt. Die GUI beinhaltet nun einen maximale Zeit die zum Zeichnen pro Sache 
+						zur Verfügung steht und schaltet bei Ablauf dieser Zeit weiter zur nächsten Sache. Hinzu kommen die Implementierung einer Anzeige für die Anzahl der Versuche 
+						und die Anzahl der maximalen Versuche. 
+						
+					W3: Kleinere GUI-Anpassungen und Bug-Fixes. Einarbeitung in Scene Builder und Vorbereitung des Outputs für den Handler. Das Raten als Placeholder implementiert.
+
+					W4: Hinzufügen der korrekten Rate-Funktionalität in der GUI. Dafür wurde die GUI mit dem Handler und dem Netzwerk verbunden und der Event Handler für das Loslassen der
+						Maustaste erweitert. Außerdem wurde ein Popup erstellt, welches die richtige Vermutung anzeigt und einen Prozess zum Weiterschalten/Zurücksetzen anstößt.
+
+					W5: Den Code in der GUI-Klasse optimiert und mit zusätzlichen Kommentaren versehen. Weitere Bugs behoben, die zu doppeltem Raten und Überspringen von Wörtern führten. 
+						Eine kleine Ergänzung, um am Ende anzuzeigen, wie genau das Netzwerk geraten hat und wie viele Sachen vom Netzwerk erkannt wurden.
+
 
 Jakob Hiestermann:	W1: Arbeit an Handler, d.h Schnittstelle zwischen GUI und Netzwerk, Arbeit an Meta (ArrayList)
 					W2: Main-Funktion, Einbindung von Handler und Meta in GUI
