@@ -11,6 +11,7 @@ Moritz Klose: W1: Arbeit an der Network- und der Matrix-Klasse
 			  W2: Einbindung von Gradle 
 			  W3: Visualisierung des Neuronalen Netzes 
 			  W4: Netzworkplot in die GUI integriert. Erstellung von zwei Stages für GUI und Plot.
+			  W5: Speech.java: Methode zur Sprachausgabe des, von dem Netzwerk, erratenen Wortes.
 
 Pascal Uhlendorff: 	W1: GUI Implementation
 				   	W2: GUI überarbeitet, weitere Funktionen zum GUI hinzugefügt(Timer, Try, Output für Handler)

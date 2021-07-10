@@ -6,6 +6,7 @@ import java.io.InputStream;
 import java.net.URL;
 import java.util.ArrayList;
 
+import components.gui.Speech;
 import components.handler.Data;
 import components.handler.Handler;
 import components.neuralnetwork.Matrix;
@@ -244,6 +245,10 @@ public class GUI extends Application {
 
                     setGuessLabelText(networkGuess);
                     guess.setText("Guess: " + guessLabelText);
+
+                    /** Initalisierung der Sprachausgabe */
+                    Speech speech = new Speech();
+                    speech.text(guessLabelText);
                     
                     if(guessLabelText.equals(ToDrawNow)) {
                         ignore = true;
