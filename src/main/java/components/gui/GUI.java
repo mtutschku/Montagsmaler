@@ -4,8 +4,7 @@ import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
 import components.gui.Speech;
-import components.handler.Data;
-import components.handler.Handler;
+import components.handler.*;
 import components.neuralnetwork.Matrix;
 import components.neuralnetwork.Network;
 import components.neuralnetwork.NetworkStats;
@@ -64,7 +63,7 @@ public class GUI extends Application {
     private int counter = 1; /** Zaehlvariable fuer die Versuche */
     private int maxTurns = toDrawList.getMeta().size() + 1; /** Maximale Anzahl an Versuchen */
 
-    private static Handler handler;
+    private static Translator translator;
     private static Network network;
 
     boolean ignore = false; /** Flagge fuer das Blockieren der Nutzereingabe */
@@ -78,9 +77,9 @@ public class GUI extends Application {
         guessLabelText = text;
     }
 
-    /** Setter fuer Handler */
-    public static void setHandler (Handler h) {
-        handler = h;
+    /** Setter fuer Translator */
+    public static void setTranslator (Translator h) {
+        translator = h;
     }
 
     /** Setter fuer Network */
@@ -242,7 +241,7 @@ public class GUI extends Application {
 
                     /** Uebersetzen des BufferedImage in eine Matrix */
                     Data translatedInput; 
-                    translatedInput = handler.translateImage(bufferedImage); 
+                    translatedInput = translator.translateImage(bufferedImage); 
                     
                     /** Netzwerk verarbeitet den Input und gibt eine Vermutung zurueck*/
                     Matrix networkGuessM;
