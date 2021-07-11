@@ -6,6 +6,7 @@ Morris Tutschku: W1: Grundgerüst neuronales Netzwerk, Matrix-Stuff, Data-Klasse
 				 W2: Training.java: Trainieren des Netzwerks mit Trainingssets von quickdraw
 				 W3: PyBuilder.java: Automatisches Python-Skript erstellen mit bestimmten Trainingssets
 				 W4: Fehlerbehebung Schnittstelle, Training.java erweitert, PreTrained.java erstellt: Trainiertes Netzwerk kann integriert werden
+				 W5: Verschiedene Netzwerke mit unterschiedlichen Kategorien trainiert. Letztendliches Netzwerk steht noch aus. 
 
 Moritz Klose: W1: Arbeit an der Network- und der Matrix-Klasse 
 			  W2: Einbindung von Gradle 
