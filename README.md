@@ -35,3 +35,4 @@ Jakob Hiestermann:	W1: Arbeit an Handler, d.h Schnittstelle zwischen GUI und Net
 					W2: Main-Funktion, Einbindung von Handler und Meta in GUI
 					W3:	Main-Funktion, Auslesen des gemalten Bildes und Interpretation der Netzwerkausgabe, kleine		 Matrixklassenerweiterung
 					W4: Schnittstelle beenden, Main anpassen, Icon hinzufügen
+					W5: Bild zentrieren
