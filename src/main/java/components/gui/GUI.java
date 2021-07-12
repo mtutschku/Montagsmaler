@@ -168,6 +168,11 @@ public class GUI extends Application {
         rightGuess.setX(primaryStage.getWidth());
         rightGuess.setY(primaryStage.getHeight());
 
+        /** Popup fuer die finale Anzeige */
+        Popup finalData = new Popup();
+        finalData.setX(primaryStage.getWidth());
+        finalData.setY(primaryStage.getHeight());
+
         /** Handler fuer Input von der Maus. Erste Phase beim Druecken der linken Maustaste. */
         canvas.addEventHandler(MouseEvent.MOUSE_PRESSED, 
             new EventHandler<MouseEvent>() {
@@ -344,7 +349,9 @@ public class GUI extends Application {
                 } else {
                     double proportionGuessesToRight = succesfulTries / numberOfGuesses * 100;
                     String percentRightGuesses = String.format("The network guessed right in %f%% of cases. The total number of tries was: %d.", proportionGuessesToRight, numberOfGuesses);
-                    primaryStage.close(); //TODO: hier koennten wir eine Statistik und die Anzahl der richtig erratenen Sachen anzeigen lassen
+                    Text endData = new Text(percentRightGuesses);
+                    endData.setFont(new Font("Arial", 25));
+                    finalData.getContent().add(endData);
                 }
                 
             }
