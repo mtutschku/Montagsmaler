@@ -2,6 +2,7 @@ package components.gui;
 
 import javazoom.jl.player.Player;
 
+import java.io.File;
 import java.io.FileInputStream;
 
 import javax.swing.JOptionPane;
@@ -49,12 +50,13 @@ public class Speech {
      */
     public void playText(String word){
         try{
-            FileInputStream fs = new FileInputStream(getClass().getClassLoader().getResource(word).getFile());
+            FileInputStream fs = new FileInputStream(new File("src/main/resources/" + word));
             Player player = new Player(fs);
             player.play();
       
         } catch (Exception e){
             JOptionPane.showMessageDialog(null, "Error");
+            e.printStackTrace();
         }
     }
 }
