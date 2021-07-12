@@ -49,8 +49,8 @@ public class Main {
         final int M = 28;
 
         /** GUI setup and launch */
-        Handler handler = new Handler(M, M);
-        Network network = new Network(M*M, 8, 4); // to be changed to actual number of categories
+        Translator translator = new Translator(M);
+        Network network = new Network(M*M, 8, 4); // TODO: to be changed to actual number of categories
 
         Matrix biasH = PreTrained.getTrainedBiasH();
         Matrix biasO = PreTrained.getTrainedBiasO();
@@ -59,7 +59,7 @@ public class Main {
 
         network.setParams(biasH, biasO, weightsIH, weightsHO);
 
-        GUI.setHandler(handler);
+        GUI.setTranslator(translator);
         GUI.setNetwork(network);
         Application.launch(GUI.class, args);
     }
