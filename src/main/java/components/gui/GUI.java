@@ -28,6 +28,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.image.WritableImage;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
@@ -68,6 +69,7 @@ public class GUI extends Application {
     private static Network network;
 
     boolean ignore = false; /** Flagge fuer das Blockieren der Nutzereingabe */
+    boolean onlyonce = true; /** Flagge damit das Statistikfenster nur einmal geoeffnet wird*/
 
     /** Variablen fuer Timer */
     private static final int TIMERSTART = 30;
@@ -119,22 +121,39 @@ public class GUI extends Application {
         Label timerLabel = new Label("Time: " + time.toString());
         timerLabel.setFont(new Font("Arial", 24));
 
+        Label finalStatistic = new Label();
+        finalStatistic.setFont(new Font("Arial", 24));
+
         /** Buttons initialisieren */ 
+        final int ICONSIZE = 15;
+
         Image iconClear = new Image(getClass().getClassLoader().getResourceAsStream("bin.png"));
         Button buttonClear = new Button();
         ImageView iconClearView = new ImageView(iconClear);
-        iconClearView.setFitHeight(10);
-        iconClearView.setFitWidth(10);
+        iconClearView.setFitHeight(ICONSIZE);
+        iconClearView.setFitWidth(ICONSIZE);
         buttonClear.setGraphic(iconClearView);
 
-        Button buttonPaint = new Button("Paint");
-        buttonPaint.setFont(new Font("Arial", 12));
+        Image iconPen = new Image(getClass().getClassLoader().getResourceAsStream("pen.png"));
+        Button buttonPaint = new Button();
+        ImageView iconPenView = new ImageView(iconPen);
+        iconPenView.setFitHeight(ICONSIZE);
+        iconPenView.setFitWidth(ICONSIZE);
+        buttonPaint.setGraphic(iconPenView);
 
-        Button buttonErase = new Button("Erase");
-        buttonErase.setFont(new Font("Arial", 12));
+        Image iconEraser = new Image(getClass().getClassLoader().getResourceAsStream("eraser.png"));
+        Button buttonErase = new Button();
+        ImageView iconEraserView = new ImageView(iconEraser);
+        iconEraserView.setFitHeight(ICONSIZE);
+        iconEraserView.setFitWidth(ICONSIZE);
+        buttonErase.setGraphic(iconEraserView);
 
-        Button buttonNextWord = new Button("Next");
-        buttonNextWord.setFont(new Font("Arial", 12));
+        Image iconNext = new Image(getClass().getClassLoader().getResourceAsStream("next.png"));
+        Button buttonNextWord = new Button();
+        ImageView iconNextView = new ImageView(iconNext);
+        iconNextView.setFitHeight(ICONSIZE);
+        iconNextView.setFitWidth(ICONSIZE);
+        buttonNextWord.setGraphic(iconNextView);
 
         /** Gridpane mit allen Buttons und Labels verknuepft */ 
         GridPane gridPane = new GridPane();
@@ -171,11 +190,6 @@ public class GUI extends Application {
         Popup rightGuess = new Popup();
         rightGuess.setX(primaryStage.getWidth());
         rightGuess.setY(primaryStage.getHeight());
-
-        /** Popup fuer die finale Anzeige */
-        Popup finalData = new Popup();
-        finalData.setX(primaryStage.getWidth());
-        finalData.setY(primaryStage.getHeight());
 
         /** Handler fuer Input von der Maus. Erste Phase beim Druecken der linken Maustaste. */
         canvas.addEventHandler(MouseEvent.MOUSE_PRESSED, 
@@ -265,8 +279,8 @@ public class GUI extends Application {
                     guess.setText("Guess: " + guessLabelText);
 
                     /** Initalisierung der Sprachausgabe */
-                    Speech speech = new Speech();
-                    speech.text(guessLabelText);
+                    //Speech speech = new Speech();
+                    //speech.text(guessLabelText);
 
                     /** Zaehlt wie oft das Netzwerk geraten hat */
                     numberOfGuesses++; 
@@ -278,6 +292,7 @@ public class GUI extends Application {
                         timeline.stop(); /** Timer anhalten */
                         Text currentGuess = new Text("It is a/an " + guessLabelText);
                         currentGuess.setFont(new Font("Arial", 30));
+                        currentGuess.setFill(Color.RED);
                         rightGuess.getContent().add(currentGuess); 
                         rightGuess.show(primaryStage);
                         
@@ -332,30 +347,38 @@ public class GUI extends Application {
                 mode = "Erase";
             }
         });
-        
+
         /** Handler fuer den Button zum Weiterschalten der zu malenden Sache */
         buttonNextWord.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                if(!(toDrawList.getMeta().isEmpty()) || counter != maxTurns + 1) { /** Check, ob das Spiel zu ende ist */
+                if(!(toDrawList.getMeta().isEmpty()) || counter != maxTurns) { /** Check, ob das Spiel zu ende ist */
                 (ToDrawNow) = toDrawList.getRandomNext(true);
                     thingToDraw.setText(ToDrawNow);
                     count.setText("Try: " + Integer.toString(++counter));
-                    if (counter == maxTurns) { /** Im letzen Versuch wird der ButtonNextWord umbenannt */
-                        buttonNextWord.setText("Exit");
-                    }
                     buttonClear.fire(); /** Zuruecksetzen des Canvas */
 
                     setGuessLabelText("None");
                     guess.setText("Guess: " + guessLabelText);
 
                     time = TIMERSTART + 1; /** Zuruecksetzen des Timers */
-                } else {
-                    double proportionGuessesToRight = succesfulTries / numberOfGuesses * 100;
-                    String percentRightGuesses = String.format("The network guessed right in %f%% of cases. The total number of tries was: %d.", proportionGuessesToRight, numberOfGuesses);
-                    Text endData = new Text(percentRightGuesses);
-                    endData.setFont(new Font("Arial", 25));
-                    finalData.getContent().add(endData);
+                } else if(onlyonce) {
+                    onlyonce = false;
+                    primaryStage.close();
+                    double proportionGuessesToRight = (double) succesfulTries / numberOfGuesses * 100;
+                    String percentRightGuesses = String.format("The network guessed right in %.2f%% of cases. It tried a total of %d times. You got %d out of %d.", proportionGuessesToRight, numberOfGuesses, succesfulTries, maxTurns);
+                    finalStatistic.setText(percentRightGuesses);
+
+                    StackPane statisticsLayout = new StackPane();
+                    statisticsLayout.getChildren().add(finalStatistic);
+
+                    Scene scene2 = new Scene(statisticsLayout, 1500, 150);
+
+                    Stage statisticsWindow = new Stage();
+                    statisticsWindow.setTitle("Statistics");
+                    statisticsWindow.setScene(scene2);
+                    statisticsWindow.setResizable(false);
+                    statisticsWindow.show();
                 }
                 
             }
