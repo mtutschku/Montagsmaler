@@ -18,6 +18,8 @@ repositories {
 
 dependencies {
     implementation 'org.openjfx:javafx-swing:13.0.2'
+    // implementation group: 'javazoom.jl', name: 'JLayer', version: '1.0'
+    implementation 'javazoom:jlayer:1.0.1'
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.7.0'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.7.0'
 }
