@@ -46,7 +46,7 @@ import javafx.util.Duration;
  * Außerdem wird in dieser Klasse eine graphische Darstellung des Lernprozesses für das neuronale Netzwerkes implementiert.
  * Dabei wird die Genauigkeit des Netzwerkes in Prozent ueber die Anzahl der Lernepochen aufgetragen.
  * 
- * @version 10. Juli 2021
+ * @version 12. Juli 2021
  * @author Pascal Uhlendorff, Jakob Hiestermann, Moritz Klose
  */
 public class GUI extends Application {
