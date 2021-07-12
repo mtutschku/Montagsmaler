@@ -122,7 +122,10 @@ public class GUI extends Application {
         /** Buttons initialisieren */ 
         Image iconClear = new Image(getClass().getClassLoader().getResourceAsStream("bin.png"));
         Button buttonClear = new Button();
-        buttonClear.setGraphic(new ImageView(iconClear));
+        ImageView iconClearView = new ImageView(iconClear);
+        iconClearView.setFitHeight(10);
+        iconClearView.setFitWidth(10);
+        buttonClear.setGraphic(iconClearView);
 
         Button buttonPaint = new Button("Paint");
         buttonPaint.setFont(new Font("Arial", 12));
