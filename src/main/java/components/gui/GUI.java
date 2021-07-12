@@ -24,6 +24,7 @@ import javafx.scene.chart.XYChart;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.image.WritableImage;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
@@ -119,8 +120,9 @@ public class GUI extends Application {
         timerLabel.setFont(new Font("Arial", 24));
 
         /** Buttons initialisieren */ 
-        Button buttonClear = new Button("Clear");
-        buttonClear.setFont(new Font("Arial", 12));
+        Image iconClear = new Image(getClass().getClassLoader().getResourceAsStream("bin.png"));
+        Button buttonClear = new Button();
+        buttonClear.setGraphic(new ImageView(iconClear));
 
         Button buttonPaint = new Button("Paint");
         buttonPaint.setFont(new Font("Arial", 12));
