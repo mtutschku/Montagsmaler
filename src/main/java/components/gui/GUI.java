@@ -3,7 +3,6 @@ package components.gui;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
-import components.gui.Speech;
 import components.handler.*;
 import components.neuralnetwork.Matrix;
 import components.neuralnetwork.Network;
@@ -279,8 +278,8 @@ public class GUI extends Application {
                     guess.setText("Guess: " + guessLabelText);
 
                     /** Initalisierung der Sprachausgabe */
-                    //Speech speech = new Speech();
-                    //speech.text(guessLabelText);
+                    Speech speech = new Speech();
+                    
 
                     /** Zaehlt wie oft das Netzwerk geraten hat */
                     numberOfGuesses++; 
@@ -295,6 +294,7 @@ public class GUI extends Application {
                         currentGuess.setFill(Color.RED);
                         rightGuess.getContent().add(currentGuess); 
                         rightGuess.show(primaryStage);
+                        speech.text(guessLabelText);
                         
                         /** Popup wird mit Verzögerung ausgblendet */
                         PauseTransition delay = new PauseTransition(Duration.seconds(2));
