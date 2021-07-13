@@ -279,7 +279,7 @@ public class GUI extends Application {
 
                     /** Initalisierung der Sprachausgabe */
                     Speech speech = new Speech();
-                    speech.text(guessLabelText);
+                    
 
                     /** Zaehlt wie oft das Netzwerk geraten hat */
                     numberOfGuesses++; 
@@ -294,6 +294,7 @@ public class GUI extends Application {
                         currentGuess.setFill(Color.RED);
                         rightGuess.getContent().add(currentGuess); 
                         rightGuess.show(primaryStage);
+                        speech.text(guessLabelText);
                         
                         /** Popup wird mit Verzögerung ausgblendet */
                         PauseTransition delay = new PauseTransition(Duration.seconds(2));
