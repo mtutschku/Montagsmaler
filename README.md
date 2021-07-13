@@ -10,11 +10,16 @@ Morris Tutschku:
 	W5: Verschiedene Netzwerke mit unterschiedlichen Kategorien trainiert. Letztendliches Netzwerk steht noch aus. 
 
 Moritz Klose:
-	W1: Arbeit an der Network- und der Matrix-Klasse 
-	W2: Einbindung von Gradle 
-	W3: Visualisierung des Neuronalen Netzes 
-	W4: Netzworkplot in die GUI integriert. Erstellung von zwei Stages für GUI und Plot.
-	W5: Speech.java: Methode zur Sprachausgabe des, von dem Netzwerk, erratenen Wortes.
+	W1: Um die vollständige Funktion des neuronalen Netzwerkes zu erhalten waren Vorarbeiten nötig. Dabei war besonders die mathematische Grundlage von großer Bedeutung.
+	Den wichtigsten Punkt stellen hierbei Matrix Rechenoperationen dar um die Gewichte des Netzwerks zu bestimmten. Diese wurden dann in den Aufbau des Netzwerks eingebettet um ein nicht-lineares Netzwerk zu erhalten. 
+
+	W2: In dem Projekt kommt für die GUI das Package JavaFX zum Einsatz. Damit das Spiel auch für außenstehende spielbar ist, wurde das gesamte Projekt umstrukturiert und in die Form eines Gradle-Projekts gebracht. Das Build File von Gradle ermöglicht es externe Dependencies (wie JavaFX, später auch Javazoom) automatisch bei der Ausführung des Programms herunterzuladen. Dies macht das Programm wesentlich anwenderfreundlich, da keine Packages per Hand zugefügt werden müssen.
+
+	W3: Damit der Lernfortschritt des Netzwerkes verfolgt werden kann wurde eine graphische Darstellung über JavaFX erstellt. Hierbei wurde die Genauigkeit des Netzwerk über die Epochen dargestellt. Die Grafik zeigt ein nicht-lineares Netzwerk. In der finalen Form des Projekts wird diese Grafik nicht mehr dargestellt werden. Sie diente lediglich zur Überprüfung und zur Visualisierung des Lernfortschritts.
+	
+	W4: Die graphische Darstellung des Netzwerks wurde in die GUI eingebettet, damit bei Aufruf der GUI das zweite Fenster für die Grafik zeitgleich geöffnet wird. Es wurden zwei sogenannte Stages für die GUI und die Grafik implementiert. Dies verhindert Fehler in der Ausführung der beiden Fenster.
+
+	W5: Als Erweiterung der GUI wurde in dieser Woche eine Sprachausgabe implementiert. Diese gibt das Wort aus, wenn das Netzwerk das dazugehörige Bild richtig erkannt hat. Die Ausgabe wurde mithilfe des JavaZoom Packages realisiert. Damit auch hier keine externen Packete per Hand in das Projekt eingefügt werden müssen, kommt auch hier das Build-File von Gradle zum Einsatz und lädt bei Ausführung des Programms die benötigten Packages automatisch herunter.
 
 Pascal Uhlendorff: 
 	W1: Die GUI in ihrer Basisform per Hand mit JavaFX implementiert. Das Grundgerüst samt Buttons und Labels aufgestellt. 
