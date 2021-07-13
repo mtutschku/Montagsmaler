@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import components.handler.*;
 import components.neuralnetwork.Matrix;
 import components.neuralnetwork.Network;
-import components.neuralnetwork.NetworkStats;
+import components.neuralnetwork.ChartData;
 import javafx.animation.KeyFrame;
 import javafx.animation.PauseTransition;
 import javafx.animation.Timeline;
@@ -404,10 +404,10 @@ public class GUI extends Application {
         
         Stage stage = new Stage();
         /** Lernprozess in Prozent */
-        ArrayList<Double> percentData = NetworkStats.percentData;
+        ArrayList<Double> percentData = ChartData.getPercentData();
 
         /** Anzahl der Epochen bezogen auf den Lernprozess */
-        ArrayList<Integer> epochData = NetworkStats.epochData;
+        ArrayList<Integer> epochData = ChartData.getEpochData();
         
         HBox root = new HBox();
 
