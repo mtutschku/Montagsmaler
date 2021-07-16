@@ -3,11 +3,17 @@
 Tutor Niklas Friedrich
 
 Morris Tutschku:
-	W1: Grundgerüst neuronales Netzwerk, Matrix-Stuff, Data-Klasse
-	W2: Training.java: Trainieren des Netzwerks mit Trainingssets von quickdraw
-	W3: PyBuilder.java: Automatisches Python-Skript erstellen mit bestimmten Trainingssets
-	W4: Fehlerbehebung Schnittstelle, Training.java erweitert, PreTrained.java erstellt: Trainiertes Netzwerk kann integriert werden
-	W5: Verschiedene Netzwerke mit unterschiedlichen Kategorien trainiert. Letztendliches Netzwerk steht noch aus. 
+	W1: In der ersten Woche wurde direkt ein nicht-lineares Netzwerk implementiert, das mittels supervised learning trainiert wird. Die Gewichte des Netzwerks werden durch back-propagation angepasst. Gemeinsam mit Moritz Klose wurden die dazu nötigen Methoden entwickelt und verfeinert. Eine Data-Klasse wurde erschaffen, mit deren Inhalte das supervised learning vereinheitlicht wurde.
+
+	W2: Die Beschaffung der Trainingssets für das Netzwerk wurde angefangen. Eine Verbindung zwischen Googles "quickdraw" und unserem Projekt wurde durch python ermöglicht. Statistiken des Netzwerks (Genauigkeit, Schnelligkeit etc.) wurden implementiert und dienten als Kennzahlen, wie effizient das Netzwerk ist.
+
+	W3: Mit der PyBuilder-Klasse konnte man nach Belieben Kategorien und gewisse Parameter auswählen, mit denen das endgültige Netzwerk trainiert werden soll. Erste Testläufe des Netzwerks wurden durchgeführt. Infolgedessen wurde(n) kleinere Bugs behoben, Code optimiert und Feintuning betrieben. Die ersten Trainingssets wurden vorm Trainieren noch zusätzlich bearbeitet, damit das Netzwerk bessere Ergebnisse erzielt (u. a. algorithmisch zentriert).
+
+	W4: Fehlerbehebungen an der Schnittstelle (Translator), da das Canvas nicht sauber in eine Matrix umgewandelt wurde. Arbeiten an der Training-Klasse, die weitere relevante Methoden für das Netzwerk enthält. Die Klasse enthält gemeinsam mit der PreTrained-Klasse die für das letztendlich verwendete Netzwerk nötigen Matrizen. Erste Integration eines hardgecodeten Netzwerks ins Programm wurde durchgeführt und getestet.
+
+	W5: Verschiedene Netzwerke mit unterschiedlichen Kategorien wurden ausprobiert. Es wurden einige Kategorien ausgewählt, die das Netzwerk zuverlässig erkennen kann. Kleine Bugfixes und Codeoptimierungen. Vorbereitungen zur Präsentation des Programms wurden angefangen.
+
+	W6: 
 
 Moritz Klose:
 	W1: Um die vollständige Funktion des neuronalen Netzwerkes zu erhalten waren Vorarbeiten nötig. Dabei war besonders die mathematische Grundlage von großer Bedeutung.
