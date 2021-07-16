@@ -14,7 +14,9 @@ import javafx.application.Application;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
+import javafx.scene.SubScene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.chart.LineChart;
@@ -28,6 +30,7 @@ import javafx.scene.image.WritableImage;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
@@ -372,15 +375,61 @@ public class GUI extends Application {
                     StackPane statisticsLayout = new StackPane();
                     statisticsLayout.getChildren().add(finalStatistic);
 
-                    Scene scene2 = new Scene(statisticsLayout, 1500, 150);
+                    // TODO: Löschen falls nicht mehr benötigt 
 
-                    Stage statisticsWindow = new Stage();
-                    statisticsWindow.setTitle("Statistics");
-                    statisticsWindow.setScene(scene2);
-                    statisticsWindow.setResizable(false);
-                    statisticsWindow.show();
-                }
-                
+                    //Scene scene2 = new Scene(statisticsLayout, 1500, 150);
+
+                    //StackPane statisticsWindow = new StackPane();
+                    //Label statisticsLabel = new Label("Statistics");
+                    //statisticsWindow.setTitle("Statistics");
+                    //statisticsWindow.setScene(scene2);
+                    //statisticsWindow.setResizable(false);
+                    //statisticsWindow.show();
+                    //statisticsLayout.getChildren().add(statisticsLabel);
+                    SubScene subSceneTwo = new SubScene(statisticsLayout, 1500,150);
+                    
+
+                     /** Ab hier wird die graphische Darstellung des Netzwerks implementiert */
+        
+                    StackPane graphLayout = new StackPane();
+                    /** Lernprozess in Prozent */
+                    ArrayList<Double> percentData = ChartData.getPercentData();
+
+                    /** Anzahl der Epochen bezogen auf den Lernprozess */
+                    ArrayList<Integer> epochData = ChartData.getEpochData();
+
+                    NumberAxis xAxis = new NumberAxis();
+                    xAxis.setLabel("Epochs");
+                    xAxis.setTickLabelFont(new Font("Arial", 16));
+
+                    NumberAxis yAxis = new NumberAxis();
+                    yAxis.setLabel("Accuracy in Percent(%)");
+                    yAxis.setTickLabelFont(new Font("Arial", 16));
+
+                    LineChart<Number, Number> lineChart = new LineChart<Number, Number>(xAxis, yAxis);
+                    lineChart.setTitle("Accuracy of the Network");
+
+                    XYChart.Series<Number, Number> data = new XYChart.Series<>();
+                    data.setName("Network Accuracy");
+
+                    for(int i = 0; i < epochData.size(); i++) {
+                        data.getData().add(new XYChart.Data<Number, Number>(epochData.get(i), percentData.get(i)));
+                    }
+
+                    lineChart.getData().add(data);
+                    graphLayout.getChildren().add(lineChart);
+                    SubScene subSceneOne = new SubScene(graphLayout, 1500, 500);
+
+                    Stage secondaryStage = new Stage();
+                    VBox root = new VBox(10);
+                    root.setAlignment(Pos.CENTER);
+                    root.getChildren().addAll(subSceneOne,subSceneTwo);
+                    Scene mainScene = new Scene(root,1500,650);
+                    secondaryStage.setScene(mainScene);
+                    secondaryStage.setResizable(false);
+                    secondaryStage.getIcons().add(new Image(getClass().getClassLoader().getResourceAsStream("statistics.png")));
+                    secondaryStage.show();
+                }   
             }
         });
 
@@ -399,44 +448,6 @@ public class GUI extends Application {
         primaryStage.setScene(scene);
         primaryStage.show();
 
-
-        /** Ab hier wird die graphische Darstellung des Netzwerks implementiert */
-        
-        Stage stage = new Stage();
-        /** Lernprozess in Prozent */
-        ArrayList<Double> percentData = ChartData.getPercentData();
-
-        /** Anzahl der Epochen bezogen auf den Lernprozess */
-        ArrayList<Integer> epochData = ChartData.getEpochData();
-        
-        HBox root = new HBox();
-
-        NumberAxis xAxis = new NumberAxis();
-        xAxis.setLabel("Epochs");
-        xAxis.setTickLabelFont(new Font("Arial", 16));
-
-        NumberAxis yAxis = new NumberAxis();
-        yAxis.setLabel("Accuracy in Percent(%)");
-        yAxis.setTickLabelFont(new Font("Arial", 16));
-
-        LineChart<Number, Number> lineChart = new LineChart<Number, Number>(xAxis, yAxis);
-        lineChart.setTitle("Accuracy of the Learning Process");
-        //lineChart.setFont(new Font("Arial", 16));
-
-        XYChart.Series<Number, Number> data = new XYChart.Series<>();
-        data.setName("Network Accuracy");
-
-        for(int i = 0; i < epochData.size(); i++) {
-            data.getData().add(new XYChart.Data<Number, Number>(epochData.get(i), percentData.get(i)));
-        }
-
-        lineChart.getData().add(data);
-        root.getChildren().add(lineChart);
-
-        stage.setTitle("Accuracy of the Learning Process");
-        //stage.setFont("Arial", 16);
-        stage.setScene(new Scene(root, 550, 550));
-        stage.show();
     }
     
 }
