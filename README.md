@@ -13,7 +13,7 @@ Morris Tutschku:
 
 	W5: Verschiedene Netzwerke mit unterschiedlichen Kategorien wurden ausprobiert. Es wurden einige Kategorien ausgewählt, die das Netzwerk zuverlässig erkennen kann. Kleine Bugfixes und Codeoptimierungen. Vorbereitungen zur Präsentation des Programms wurden angefangen.
 
-	W6: 
+	W6: Netzwerk trainiert, verschiedene Werte für NW-Parameter ausprobiert. Präsentation vorbereitet.
 
 Moritz Klose:
 	W1: Um die vollständige Funktion des neuronalen Netzwerkes zu erhalten waren Vorarbeiten nötig. Dabei war besonders die mathematische Grundlage von großer Bedeutung.
