@@ -44,6 +44,8 @@ Pascal Uhlendorff:
 	W5: Den Code in der GUI-Klasse optimiert und mit zusätzlichen Kommentaren versehen. Weitere Bugs behoben, die zu doppeltem Raten und Überspringen von Wörtern führten. 
 	Eine kleine Ergänzung, um am Ende anzuzeigen, wie genau das Netzwerk geraten hat und wie viele Sachen vom Netzwerk erkannt wurden.
 
+	W6: Es wurden letzte Optimierungen und Anpassungen des GUI Codes vorgenommen. Des Weiteren wurde die Präsentation des Projekts vorbereitet und der Abschluss eben dessen besprochen.
+
 
 Jakob Hiestermann:
 	W1: Die Grundidee des Translators wird implementiert, es soll von der GUI ein Canvas übergeben werden, welches ausgelesen und in eine Matrix übersetzt werden. Außerdem wird in Meta.java eine Arrayliste erstellt, die der GUI die Rückübersetzung von Matrix in Begriff liefert.
