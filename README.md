@@ -27,6 +27,8 @@ Moritz Klose:
 
 	W5: Als Erweiterung der GUI wurde in dieser Woche eine Sprachausgabe implementiert. Diese gibt das Wort aus, wenn das Netzwerk das dazugehörige Bild richtig erkannt hat. Die Ausgabe wurde mithilfe des JavaZoom Packages realisiert. Damit auch hier keine externen Packete per Hand in das Projekt eingefügt werden müssen, kommt auch hier das Build-File von Gradle zum Einsatz und lädt bei Ausführung des Programms die benötigten Packages automatisch herunter.
 
+	W6: Der Code der GUI wurde noch etwas abgeändert und verbessert. Das Gradle Build File wurde in die finale Form gebracht. Außerdem wurde die Präsentation und der Abschlussbericht vorbereitet.
+
 Pascal Uhlendorff: 
 	W1: Die GUI in ihrer Basisform per Hand mit JavaFX implementiert. Das Grundgerüst samt Buttons und Labels aufgestellt. 
 	Zeichnen und radieren sind bereits möglich. Außerdem kann die Zeichenfläche zurückgesetzt werden und 
