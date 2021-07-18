@@ -58,4 +58,4 @@ Jakob Hiestermann:
 
 	W5: Da das Netzwerk Schwierigkeiten hat, kleine und nicht zentrierte Zeichnungen zu erkennen, muss der Translator noch das von der GUI übergebene BufferedImage nach der Zeichnung absuchen. Dies wird in der Methode subtractEmpty + Hilfsmethoden umgesetzt.
 
-	W6: 
+	W6:  Polishing und Bugfixing. Die von mir auf englisch verfasste Javadoc wird zu deutsch übersetzt. Außerdem verfasse ich die Programmanleitung und schließe den Bericht mit fehlenden Infos zu allgemeiner Vorgehensweise und Grundgedanken ab (beides in dieser README).
