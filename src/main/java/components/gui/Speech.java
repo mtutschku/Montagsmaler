@@ -37,6 +37,9 @@ public class Speech {
             case "Hourglass":
                 playText("Hourglass.mp3");
                 break;
+            case "Car":
+                playText("Car.mp3");
+                break;
             default:
                 playText("Eye.mp3");
         }

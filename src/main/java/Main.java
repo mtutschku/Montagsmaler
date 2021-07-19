@@ -13,12 +13,12 @@ public class Main {
 
         /** GUI setup and launch */
         Translator translator = new Translator(M);
-        Network network = new Network(M*M, 8, 4); // TODO: to be changed to actual number of categories
+        Network network = new Network(M*M, 8, 5); // TODO: to be changed to actual number of categories
 
-        Matrix biasH = PreTrained.getTrainedBiasH();
-        Matrix biasO = PreTrained.getTrainedBiasO();
-        Matrix weightsIH = PreTrained.getTrainedWeightsIH();
-        Matrix weightsHO = PreTrained.getTrainedWeightsHO();
+        Matrix biasH = PreTrained5C.getTrainedBiasH();
+        Matrix biasO = PreTrained5C.getTrainedBiasO();
+        Matrix weightsIH = PreTrained5C.getTrainedWeightsIH();
+        Matrix weightsHO = PreTrained5C.getTrainedWeightsHO();
 
         network.setParams(biasH, biasO, weightsIH, weightsHO);
 
