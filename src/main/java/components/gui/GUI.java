@@ -369,7 +369,7 @@ public class GUI extends Application {
                     onlyonce = false;
                     primaryStage.close();
                     double proportionGuessesToRight = (double) succesfulTries / numberOfGuesses * 100;
-                    String percentRightGuesses = String.format("The network guessed right in %.2f%% of cases. It tried a total of %d times. You got %d out of %d.", proportionGuessesToRight, numberOfGuesses, succesfulTries, maxTurns);
+                    String percentRightGuesses = String.format("The network guessed right in %.2f%% of cases. It tried a total of %d times. In the end it recognised %d out of %d correctly.", proportionGuessesToRight, numberOfGuesses, succesfulTries, maxTurns);
                     finalStatistic.setText(percentRightGuesses);
 
                     StackPane statisticsLayout = new StackPane();
