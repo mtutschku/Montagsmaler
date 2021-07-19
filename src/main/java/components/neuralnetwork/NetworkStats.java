@@ -1,10 +1,7 @@
 package components.neuralnetwork;
 
-import java.util.Random;
-import java.util.ArrayList;
-
 import components.handler.Data;
-import javafx.application.Application;
+import java.util.Random;
 
 
 /** Klasse für Statistiken und zum Testen eines Netzwerks.
@@ -17,14 +14,6 @@ import javafx.application.Application;
  * @author Morris Tutschku
  */
 public class NetworkStats {
-
-    /** Lernprozess des Netzwerks in Prozent */
-    public static ArrayList<Double> percentData = new ArrayList<Double>();
-    
-    /** Anzahl der Epochen bezogen auf den Lernprozess */
-    public static ArrayList<Integer> epochData = new ArrayList<Integer>();
-
-
 
     /** Outputs für verschiedene Statistiken regulieren */
     static boolean printGCA = true;
@@ -165,9 +154,6 @@ public class NetworkStats {
                 if(printGTS){
                     System.out.println("     " + NetworkStats.accuracy + "% Genauigkeit nach " + counter + " Epochen");
                     noResultCounter = 0;
-                    percentData.add(NetworkStats.accuracy);
-                    epochData.add(counter);
-
                 }
             } else {
                 noResultCounter++;

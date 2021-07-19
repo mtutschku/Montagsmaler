@@ -18,7 +18,7 @@ public class Meta {
 	private final Random rand = new Random();
 	
 	/** Hardcoded array holding training data objects, hence all objects that can potentially be drawn in general. */
-	private final static String[] META = {"Eiffel Tower", "Eye", "Giraffe", "Hourglass"};
+	private final static String[] META = {"Eiffel Tower", "Eye", "Giraffe", "Hourglass", "Car"};
 	
 	/**
 	 * Dynamic (i.e. alterable) array.
