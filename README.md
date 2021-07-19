@@ -30,6 +30,7 @@ ABSCHLUSSBERICHT:
 
 
 Morris Tutschku:
+
 	W1: In der ersten Woche wurde direkt ein nicht-lineares Netzwerk implementiert, das mittels supervised learning trainiert wird. Die Gewichte des Netzwerks werden durch back-propagation angepasst. Gemeinsam mit Moritz Klose wurden die dazu nötigen Methoden entwickelt und verfeinert. Eine Data-Klasse wurde erschaffen, mit deren Inhalte das supervised learning vereinheitlicht wurde.
 
 	W2: Die Beschaffung der Trainingssets für das Netzwerk wurde angefangen. Eine Verbindung zwischen Googles "quickdraw" und unserem Projekt wurde durch python ermöglicht. Statistiken des Netzwerks (Genauigkeit, Schnelligkeit etc.) wurden implementiert und dienten als Kennzahlen, wie effizient das Netzwerk ist.
@@ -42,7 +43,9 @@ Morris Tutschku:
 
 	W6: Netzwerk trainiert, verschiedene Werte für NW-Parameter ausprobiert. Präsentation vorbereitet.
 
+
 Moritz Klose:
+
 	W1: Um die vollständige Funktion des neuronalen Netzwerkes zu erhalten waren Vorarbeiten nötig. Dabei war besonders die mathematische Grundlage von großer Bedeutung.
 	Den wichtigsten Punkt stellen hierbei Matrix Rechenoperationen dar um die Gewichte des Netzwerks zu bestimmten. Diese wurden dann in den Aufbau des Netzwerks eingebettet um ein nicht-lineares Netzwerk zu erhalten. 
 
@@ -56,7 +59,9 @@ Moritz Klose:
 
 	W6: Der Code der GUI wurde noch etwas abgeändert und verbessert. Das Gradle Build File wurde in die finale Form gebracht. Außerdem wurde die Präsentation und der Abschlussbericht vorbereitet.
 
+
 Pascal Uhlendorff: 
+
 	W1: Die GUI in ihrer Basisform per Hand mit JavaFX implementiert. Das Grundgerüst samt Buttons und Labels aufgestellt. 
 	Zeichnen und radieren sind bereits möglich. Außerdem kann die Zeichenfläche zurückgesetzt werden und 
 	es kann die zu zeichnende Sache per Knopfdruck weitergeschaltet werden, sollte der Anwender die aktuell geforderte Sache nicht zeichnen können/wollen.
@@ -77,6 +82,7 @@ Pascal Uhlendorff:
 
 
 Jakob Hiestermann:
+
 	W1: Die Grundidee des Translators wird implementiert, es soll von der GUI ein Canvas übergeben werden, welches ausgelesen und in eine Matrix übersetzt werden. Außerdem wird in Meta.java eine Arrayliste erstellt, die der GUI die Rückübersetzung von Matrix in Begriff liefert.
 
 	W2: Arbeit an der Mainfunktion; Netzwerk und Translator werden zu diesem Zeitpunkt initailisert und es wird versucht die Bilddaten aus der GUI zu extrahieren. Dieser Ansatz wird später verworfen (-> W4).
