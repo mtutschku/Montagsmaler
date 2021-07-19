@@ -375,20 +375,8 @@ public class GUI extends Application {
                     StackPane statisticsLayout = new StackPane();
                     statisticsLayout.getChildren().add(finalStatistic);
 
-                    // TODO: Löschen falls nicht mehr benötigt 
-
-                    //Scene scene2 = new Scene(statisticsLayout, 1500, 150);
-
-                    //StackPane statisticsWindow = new StackPane();
-                    //Label statisticsLabel = new Label("Statistics");
-                    //statisticsWindow.setTitle("Statistics");
-                    //statisticsWindow.setScene(scene2);
-                    //statisticsWindow.setResizable(false);
-                    //statisticsWindow.show();
-                    //statisticsLayout.getChildren().add(statisticsLabel);
                     SubScene subSceneTwo = new SubScene(statisticsLayout, 1500,150);
                     
-
                      /** Ab hier wird die graphische Darstellung des Netzwerks implementiert */
         
                     StackPane graphLayout = new StackPane();
