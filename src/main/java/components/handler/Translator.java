@@ -51,7 +51,7 @@ public class Translator {
 	public Data translateImage(BufferedImage image) {
 		double[] cluster;
 		Double content;
-		Matrix mat = new Matrix(28, 28);
+		Matrix mat = new Matrix(this.matrixSideLength, this.matrixSideLength);
 
 		image = subtractEmpty(image);
 
