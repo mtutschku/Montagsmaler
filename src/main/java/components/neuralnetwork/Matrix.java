@@ -118,11 +118,11 @@ public class Matrix {
     }
 
     /**
-     * Scans a matrix for its highest value.
-     * Returns the row-index for the first instance of a value in case of multiple instances of the highest value.
+     * Scannt die Matrix nach dem höchsten enthaltenen Wert ab.
+     * Gibt den Reihenindex der ersten vorkommenden Instanz des höchsten Wertes zurück.
      * 
      * @author Jakob Hiestermann
-     * @return row-index of highest value position 
+     * @return Reihenindex des höchsten Wertes
      */
     public int getHighestValueRow() {
         double currentMax = -1.0;
@@ -139,11 +139,11 @@ public class Matrix {
     }
 
     /**
-     * Scans a matrix for its highest value.
-     * Returns the col-index for the first instance of a value in case of multiple instances of the highest value.
+     * Scannt die Matrix nach dem höchsten enthaltenen Wert ab.
+     * Gibt den Zeilenindex der ersten vorkommenden Instanz des höchsten Wertes zurück.
      * 
      * @author Jakob Hiestermann
-     * @return col-index of highest value position 
+     * @return Zeilenindex des höchsten Wertes 
      */
     public int getHighestValueCol() {
         transpose(this);
@@ -153,10 +153,10 @@ public class Matrix {
     }
 
     /**
-     * Scans a matrix for its highest value.
+     * Scannt die Matrix nach dem höchsten enthaltenen Wert ab.
      * 
      * @author Jakob Hiestermann
-     * @return the highest value inside a matrix
+     * @return der höchste Wert in der Matrix
      */
     public double getHighestValue() {
         return this.data[getHighestValueRow()][getHighestValueCol()];
