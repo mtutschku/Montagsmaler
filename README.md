@@ -2,16 +2,20 @@
 BEDIENUNGSANLEITUNG:
 Sobald des Programm gestartet wird, erscheint eine Benutzeroberfläche, mit einer großen Zeichenfläche, darüber vier Buttons sowie 4 Labels. Auf der Zeichenfläche kann an beliebiger Position in (nahezu) beliebiger Größe gezeichnet werden.
 Die vier Buttonfunktionen sind (von links):
+
 - Clear (Trashcan), entfernt alles Gemalte,
 - Draw, wählt die Zeichenstiftfunktion aus,
 - Erase, wählt die Radierfunktion aus,
 - Next word, wechselt zum nächsten Wort, das gezeichnet werden soll.
+
 Hierbei verhalten sich Draw und Erase wie Radioknöpfe, d.h es ist immer nur eine der beiden Funktionen derzeit aktiv.
 In den vier Labels wird (auch von links) folgendes ausgegeben:
+
 - ToDraw, d.h. welches Wort soll derzeit gemalt werden,
 - Try (x/y), beim wievielten Wort sich der Benutzer gerade befindet,
 - Guess, also welches Wort das Netzwerk derzeit hinter der Zeichnung vermutet,
 - Time, ein Timer von 30s, nach Ablauf wird zum nächsten Wort gewechselt.
+
 Sollte das Netzwerk das richtige Wort erraten, so wird dies per Sprachausgabe ausgegeben und per Label eingeblendet. In dieser kurzen Zeit können keine weiteren Benutzereingaben getätigt werden.
 Nach Ablauf des Spiels - es wurden alle Worte einmal zu zeichnen versucht - wird eine Infografik geöffnet, die den Lernprozess des Netzwerks in seiner Trainingsphase darstellt, und es werden ein paar statistische Informationen über den gerade beendeten Spieldurchlauf angezeigt.
 
