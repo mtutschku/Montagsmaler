@@ -1,10 +1,7 @@
 package components.neuralnetwork;
 
-import java.util.Random;
-import java.util.ArrayList;
-
 import components.handler.Data;
-import javafx.application.Application;
+import java.util.Random;
 
 
 /** Klasse für Statistiken und zum Testen eines Netzwerks.
