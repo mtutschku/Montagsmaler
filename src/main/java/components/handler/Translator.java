@@ -63,13 +63,6 @@ public class Translator {
 			}
 		}
 		mat = Training.center(mat);
-
-		///////
-		// TODO: maybe remove for finished program
-		mat.print();
-		System.out.println();
-		///////
-
 		mat = Matrix.toSingleColumn(mat);
 		Data translatedInput = new Data(mat);
 		return translatedInput;
@@ -128,7 +121,7 @@ public class Translator {
 	 */
 	private int scanYofX(BufferedImage image, Boolean first) {
 		int y = 0;
-		for (int i = 1; i < image.getHeight() - 1; i++) {	// TODO: maybe adapt to new GUI - currently from 1 to imagewidth - 1, because of gui border
+		for (int i = 1; i < image.getHeight() - 1; i++) {
 			for (int j = 1; j < image.getWidth() - 1; j++) {
 				if (Training.getGrayscale(image.getRGB(j, i)) == 1.0) {
 					y = i;
@@ -152,7 +145,7 @@ public class Translator {
 	 */
 	private int scanXofY(BufferedImage image, Boolean first) {
 		int x = 0;
-		for (int i = 1; i < image.getWidth() - 1; i++) {	// TODO: maybe adapt to new GUI - currently from 1 to imagewidth - 1, because of gui border
+		for (int i = 1; i < image.getWidth() - 1; i++) {
 			for (int j = 1; j < image.getHeight() - 1; j++) {
 				if (Training.getGrayscale(image.getRGB(i, j)) == 1.0) {
 					x = i;
