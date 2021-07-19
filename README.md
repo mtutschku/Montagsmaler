@@ -1,8 +1,42 @@
 # 19
+BEDIENUNGSANLEITUNG:
 
-Tutor Niklas Friedrich
+Sobald des Programm gestartet wird, erscheint eine Benutzeroberfläche, mit einer großen Zeichenfläche, darüber vier Buttons sowie 4 Labels. Auf der Zeichenfläche kann an beliebiger Position in (nahezu) beliebiger Größe gezeichnet werden.
+Die vier Buttonfunktionen sind (von links):
+
+- Clear (Trashcan), entfernt alles Gemalte,
+- Draw, wählt die Zeichenstiftfunktion aus,
+- Erase, wählt die Radierfunktion aus,
+- Next word, wechselt zum nächsten Wort, das gezeichnet werden soll.
+
+Hierbei verhalten sich Draw und Erase wie Radioknöpfe, d.h es ist immer nur eine der beiden Funktionen derzeit aktiv.
+In den vier Labels wird (auch von links) folgendes ausgegeben:
+
+- ToDraw, d.h. welches Wort soll derzeit gemalt werden,
+- Try (x/y), beim wievielten Wort sich der Benutzer gerade befindet,
+- Guess, also welches Wort das Netzwerk derzeit hinter der Zeichnung vermutet,
+- Time, ein Timer von 30s, nach Ablauf wird zum nächsten Wort gewechselt.
+
+Sollte das Netzwerk das richtige Wort erraten, so wird dies per Sprachausgabe ausgegeben und per Label eingeblendet. In dieser kurzen Zeit können keine weiteren Benutzereingaben getätigt werden.
+Nach Ablauf des Spiels - es wurden alle Worte einmal zu zeichnen versucht - wird eine Infografik geöffnet, die den Lernprozess des Netzwerks in seiner Trainingsphase darstellt, und es werden ein paar statistische Informationen über den gerade beendeten Spieldurchlauf angezeigt.
+
+ABSCHLUSSBERICHT:
+
+- Konzept:
+	Das Programm ist grob eingeteilt in drei Komponenten: GUI, Translator und Netzwerk.
+	Nach Veränderung des ursprünglichen Ansatzes, die Zeichnungsdaten aus der GUI zu exportieren und in der Main weiter zu verarbeiten, haben wir uns letztendlich dazu entschieden, die GUI nach dem Launch als Ausgansknoten zu benutzen; diese bekommt einen Translator und ein Netzwerk übergeben und greift auf deren Funktionen in Reaktion auf Benutzereingaben zu.
+	Der Translator übersetzt das Bild indem es ein möglichst kleines Subimage des tatsächlich eingefärbten Bereichs erstellt, dieses rastert und Information über den Inhalt dieser einzelnen Zellen in eine Matrix überträgt.
+	Das Netzwerk kann diese Matrix nun als Eingabedaten verwenden und entsprechend seiner antrainierten Weights und Biases eine Ausgabematrix erzeugen, aus der sich die Netzwerkantwort extrahieren lässt. Diese Antwort wird wiederum von der GUI ausgegeben.
+	Die grobe Verteilung der Aufgaben sah vor, dass Pascal an der GUI, Jakob am Translator, und Moritz und Morris am Netzwerk arbeiten. Die Grenzen dieser Einteilung sind im Laufe des Projekts allerdings etwas verwischt - so hat bspw. Moritz auch einen Teil der GUI implementiert oder Jakob auch Kleinigkeiten in der Matrixklasse erstellt.
+
+
+- Kommunikation:
+	Wir haben von Beginn der Gruppenphase an über Telegram schriftlich und neben der Tutoriumssitzung am Dienstag immer zweimal die Woche (für gewöhnlich DO und MO) über Discord im Sprachchat kommuniziert. Somit konnten wir alle einen guten Überblick über den aktuellen Stand des Projekts behalten und weitere Vorhaben und Ideen mitteilen. In den Besprechungen haben wir uns an manchen Tagen nur ausgetauscht aber einige Male auch gemeinsam Probleme gelöst bzw. Bugs gefixt.
+
+
 
 Morris Tutschku:
+
 	W1: In der ersten Woche wurde direkt ein nicht-lineares Netzwerk implementiert, das mittels supervised learning trainiert wird. Die Gewichte des Netzwerks werden durch back-propagation angepasst. Gemeinsam mit Moritz Klose wurden die dazu nötigen Methoden entwickelt und verfeinert. Eine Data-Klasse wurde erschaffen, mit deren Inhalte das supervised learning vereinheitlicht wurde.
 
 	W2: Die Beschaffung der Trainingssets für das Netzwerk wurde angefangen. Eine Verbindung zwischen Googles "quickdraw" und unserem Projekt wurde durch python ermöglicht. Statistiken des Netzwerks (Genauigkeit, Schnelligkeit etc.) wurden implementiert und dienten als Kennzahlen, wie effizient das Netzwerk ist.
@@ -15,7 +49,9 @@ Morris Tutschku:
 
 	W6: Netzwerk trainiert, verschiedene Werte für NW-Parameter ausprobiert. Präsentation vorbereitet.
 
+
 Moritz Klose:
+
 	W1: Um die vollständige Funktion des neuronalen Netzwerkes zu erhalten waren Vorarbeiten nötig. Dabei war besonders die mathematische Grundlage von großer Bedeutung.
 	Den wichtigsten Punkt stellen hierbei Matrix Rechenoperationen dar um die Gewichte des Netzwerks zu bestimmten. Diese wurden dann in den Aufbau des Netzwerks eingebettet um ein nicht-lineares Netzwerk zu erhalten. 
 
@@ -29,7 +65,9 @@ Moritz Klose:
 
 	W6: Der Code der GUI wurde noch etwas abgeändert und verbessert. Das Gradle Build File wurde in die finale Form gebracht. Außerdem wurde die Präsentation und der Abschlussbericht vorbereitet.
 
+
 Pascal Uhlendorff: 
+
 	W1: Die GUI in ihrer Basisform per Hand mit JavaFX implementiert. Das Grundgerüst samt Buttons und Labels aufgestellt. 
 	Zeichnen und radieren sind bereits möglich. Außerdem kann die Zeichenfläche zurückgesetzt werden und 
 	es kann die zu zeichnende Sache per Knopfdruck weitergeschaltet werden, sollte der Anwender die aktuell geforderte Sache nicht zeichnen können/wollen.
@@ -50,6 +88,7 @@ Pascal Uhlendorff:
 
 
 Jakob Hiestermann:
+
 	W1: Die Grundidee des Translators wird implementiert, es soll von der GUI ein Canvas übergeben werden, welches ausgelesen und in eine Matrix übersetzt werden. Außerdem wird in Meta.java eine Arrayliste erstellt, die der GUI die Rückübersetzung von Matrix in Begriff liefert.
 
 	W2: Arbeit an der Mainfunktion; Netzwerk und Translator werden zu diesem Zeitpunkt initailisert und es wird versucht die Bilddaten aus der GUI zu extrahieren. Dieser Ansatz wird später verworfen (-> W4).
@@ -61,3 +100,5 @@ Jakob Hiestermann:
 	W5: Da das Netzwerk Schwierigkeiten hat, kleine und nicht zentrierte Zeichnungen zu erkennen, muss der Translator noch das von der GUI übergebene BufferedImage nach der Zeichnung absuchen. Dies wird in der Methode subtractEmpty + Hilfsmethoden umgesetzt.
 
 	W6:  Polishing und Bugfixing. Die von mir auf englisch verfasste Javadoc wird zu deutsch übersetzt. Außerdem verfasse ich die Programmanleitung und schließe den Bericht mit fehlenden Infos zu allgemeiner Vorgehensweise und Grundgedanken ab (beides in dieser README).
+
+Tutor Niklas Friedrich

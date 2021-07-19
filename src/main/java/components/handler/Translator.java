@@ -7,30 +7,31 @@ import java.awt.image.BufferedImage;
 import java.lang.Double;
 
 /**
- * This class is responible for translating a BufferedImage into a Data object, hence
- * scanning the image for black drawing data and collecting corresponding values inside a square Matrix.
+ * Diese Klasse ist verantwortlich für das Übersetzen eines BufferedImage in ein Data-Objekt, also das Bild
+ * nach einem in schwarzer Farbe bemalten Bereich abzusuchen und entsprechende Informationen in eine quadratische
+ * Matrix zu übertragen.
  * 
  * @author Jakob Hiestermann
- * @version July 12th 2021
+ * @version 19.Juli 2021
  * 
  */
 public class Translator {
 
-	/** holds sidelength m of mxm matrix mat */
+	/** Beinhaltet Seitenlänge m der mxm matrix mat (in translateImage). */
 	private int matrixSideLength;
 	
-	/** holds the value used for width and height of a cluster */
+	/** Beinhaltet den Wert der für Höhe und Breite eines Clusters entsprechend der Größe des Subimages, welches in subtractEmpty erstellt wird. */
 	private int clusterSideLength;
 
-	/** holds overall amount of pixels inside a cluster */
+	/** Beinhaltet die Gesamtzahl an Pixeln in einem Cluster - clusterSideLength * clusterSideLength */
 	private int clusterSize;
 
 
 	/**
-	 * Constructor method.
+	 * Konstruktor
 	 * 
 	 * @author 	Jakob Hiestermann
-	 * @param matrixSideLength needs to be greater than zero.
+	 * @param matrixSideLength notwendigerweise größer als Null.
 	 */
 	public Translator(int matrixSideLength_) {
 		if (matrixSideLength_ <= 0) {
@@ -41,17 +42,18 @@ public class Translator {
 	}
 
 	/**
-	 * Translates an image into a matrix of doubles. 
-	 * These doubles each represent the average darkness inside a cluster.
+	 * Übersetzt ein BufferedImage in eine Matrix mit Doubles bzw. ein Data-Objekt, welches
+	 * diese Matrix als Inputmatrix enthält. Eine Position der Matrix ist = 1.0, wenn in dem entsprechenden Cluster mindestens
+	 * ein schwarzes Pixel vorlag, andernfalls ist steht dort eine 0.0 .
 	 * 
 	 * @author 	Jakob Hiestermann
-	 * @param 	image a black drawing on white background
-	 * @return	Data object with translated image (-> matrix) as input-parameter and empty output-parameter
+	 * @param 	image eine schwarze Zeichnung auf weißem Grund
+	 * @return	Data-Objekt mit übersetzten BufferedImage (sprich Matrix) als Input-parameter und leerem Output-parameter
 	 */
 	public Data translateImage(BufferedImage image) {
 		double[] cluster;
 		Double content;
-		Matrix mat = new Matrix(28, 28);
+		Matrix mat = new Matrix(this.matrixSideLength, this.matrixSideLength);
 
 		image = subtractEmpty(image);
 
@@ -63,13 +65,6 @@ public class Translator {
 			}
 		}
 		mat = Training.center(mat);
-
-		///////
-		// TODO: maybe remove for finished program
-		mat.print();
-		System.out.println();
-		///////
-
 		mat = Matrix.toSingleColumn(mat);
 		Data translatedInput = new Data(mat);
 		return translatedInput;
@@ -77,11 +72,11 @@ public class Translator {
 
 
 	/**
-	 * This method scans through a BufferedImage removing empty (white) parts around black drawing,
-	 * effectively zooming into the images parts that actually contain the drawing.
-	 * Returns a new BufferedImage that in case of data removal has a different size,
-	 * however the new sidelength will still be divisible by matrixSideLength without remainder,
-	 * in order to secure the reduced image can be clustered completely.
+	 * Diese Methode scannt ein BufferedImage und entfernt leere (weiße) Bereiche um einen quadratischen Bereich, der
+	 * schwarzes Gezeichnetes enthält - effektiv wird auf den eingefärbten Bereich herangezoomt.
+	 * Zurückgegeben wird ein neues BufferedImage, welches - falls Daten entfernt wurden - von geringerer Größe ist, als
+	 * das Ausgangsbild. Die neue Seitenlänge wird jedoch ohne Rest durch matrixSideLength teilbar sein, so dass ohne Verlust
+	 * geclustert werden kann. Die korrekte Clustergröße wird in clusterSideLength und clusterSize gespeichert.
 	 * 
 	 * @author Jakob Hiestermann
 	 * @param image
@@ -99,14 +94,14 @@ public class Translator {
 		minSidelength += minSidelength % this.matrixSideLength;
 
 		int boxInitX = drawingCenterX - (minSidelength / 2);
-		if (boxInitX < 0) {		// checking for cases where the new image would try to exceed the original image's borders x-wise
+		if (boxInitX < 0) {		// überprüfen von Fällen in denen die Grenze des Originalbildes in x-Richtung überschritten werden würde
 			boxInitX = 0;
 		} else if (boxInitX + minSidelength > image.getWidth()) {
 			boxInitX -= (drawingCenterX + (minSidelength / 2) - image.getWidth()); 
 		}
 
 		int boxInitY = drawingCenterY - (minSidelength / 2);
-		if (boxInitY < 0) {		// checking for cases where the new image would try to exceed the original image's borders x-wise
+		if (boxInitY < 0) {		// überprüfen von Fällen in denen die Grenze des Originalbildes in y-Richtung überschritten werden würde
 			boxInitY = 0;
 		} else if (boxInitY + minSidelength > image.getHeight()) {
 			boxInitY -= (drawingCenterY + (minSidelength / 2) - image.getHeight()); 
@@ -119,20 +114,20 @@ public class Translator {
 	}
 
 	/**
-	 * This method scans a BufferedImage for either the first or last instance of a black pixel from top to bottom.
-	 * Returns the corresponding y-value, to determine drawing borders.
+	 * Diese Methode durchsucht ein BufferedImage nach entweder dem ersten oder letzten schwarzen Pixel von oben nach unten (reihenweise).
+	 * Gibt den korrespondierenden y-Wert zurück um die obere bzw. untere Grenzen des gemalten herausfinden zu können.
 	 * 
 	 * @author Jakob Hiestermann
 	 * @param image
-	 * @param first if true, the first instance of black pixel is returned, else the last
+	 * @param first wenn true, wird der y-Wert des ersten gefundenen schwarzen Pixels zurückgegeben, wenn false der des letzten
 	 */
 	private int scanYofX(BufferedImage image, Boolean first) {
 		int y = 0;
-		for (int i = 1; i < image.getHeight() - 1; i++) {	// TODO: maybe adapt to new GUI - currently from 1 to imagewidth - 1, because of gui border
+		for (int i = 1; i < image.getHeight() - 1; i++) {
 			for (int j = 1; j < image.getWidth() - 1; j++) {
 				if (Training.getGrayscale(image.getRGB(j, i)) == 1.0) {
 					y = i;
-					if(first) {		// returns first encounter if first is true, else keeps iterating
+					if(first) {
 						return y;
 					}
 				}
@@ -143,20 +138,20 @@ public class Translator {
 
 
 	/**
-	 * This method scans a BufferedImage for either the first or last instance of a black pixel from left to right.
-	 * Returns the corresponding x-value, to determine drawing borders.
+	 * Diese Methode durchsucht ein BufferedImage nach entweder dem ersten oder letzten schwarzen Pixel von links nach rechts (zeilenweise).
+	 * Gibt den korrespondierenden x-Wert zurück um die linke bzw. rechte Grenzen des gemalten herausfinden zu können.
 	 * 
 	 * @author Jakob Hiestermann
 	 * @param image
-	 * @param first if true, the first instance of black pixel is returned, else the last
+	 * @param first wenn true, wird der x-Wert des ersten gefundenen schwarzen Pixels zurückgegeben, wenn false der des letzten
 	 */
 	private int scanXofY(BufferedImage image, Boolean first) {
 		int x = 0;
-		for (int i = 1; i < image.getWidth() - 1; i++) {	// TODO: maybe adapt to new GUI - currently from 1 to imagewidth - 1, because of gui border
+		for (int i = 1; i < image.getWidth() - 1; i++) {
 			for (int j = 1; j < image.getHeight() - 1; j++) {
 				if (Training.getGrayscale(image.getRGB(i, j)) == 1.0) {
 					x = i;
-					if(first) {		// returns first encounter if first is true, else keeps iterating
+					if(first) {
 						return x;
 					}
 				}
@@ -168,14 +163,14 @@ public class Translator {
 	
 
 	/**
-	 * Constructs array/cluster of sidelength currently saved in clusterSideLength.
-	 * A cluster is a square region of an image to be examined as a subunit.
+	 * Konstruiert ein Array/Cluster der Seitenlänge, die in clusterSideLength gespeichert ist.
+	 * Ein Cluster meint eine quadratische Region eines Bildes, das als Untereinheit einzeln weiter untersucht werden soll.
 	 * 
 	 * @author 	Jakob Hiestermann
-	 * @param	x		x-coordinate to start clustering from
-	 * @param	y		y-coordinate to start clustering from	
+	 * @param	x		x-Koordinate, von der aus geclustert wird
+	 * @param	y		y-Koordinate, von der aus geclustert wird	
 	 * @param	image	
-	 * @return	array holding pixeldata (0.0 for White, 1.0 for Black);
+	 * @return	Array, der Pixeldaten enthält (1.0 für schwarz, 0.0 für weiß)
 	 */
 	private double[] makeCluster(int x, int y, BufferedImage image) {
 		double[] cluster = new double[this.clusterSize];
@@ -191,11 +186,11 @@ public class Translator {
 	}
 
 	/**
-	 * Scans an array of doubles, checking whether it contains at least one instance of the value "1.0".
+	 * Scannt ein Array mit Double-Werten, überpruft ob mindestens einmal eine "1.0" vorkommt.
 	 * 
 	 * @author Jakob Hiestermann
 	 * @param	cluster	
-	 * @return	0.0 if cluster contained only zeros, 1.0 if cluster contained at least a single "1.0"
+	 * @return	0.0 wenn keine "1.0" in Cluster enthalten, 1.0 wenn mindestens eine "1.0" vorkommt
 	 */
 	private double checkForContent(double[] cluster) {
 		for(int i = 0; i < cluster.length; i++) {
