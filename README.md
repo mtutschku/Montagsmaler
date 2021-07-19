@@ -1,5 +1,6 @@
 # 19
 BEDIENUNGSANLEITUNG:
+
 Sobald des Programm gestartet wird, erscheint eine Benutzeroberfläche, mit einer großen Zeichenfläche, darüber vier Buttons sowie 4 Labels. Auf der Zeichenfläche kann an beliebiger Position in (nahezu) beliebiger Größe gezeichnet werden.
 Die vier Buttonfunktionen sind (von links):
 
@@ -20,6 +21,7 @@ Sollte das Netzwerk das richtige Wort erraten, so wird dies per Sprachausgabe au
 Nach Ablauf des Spiels - es wurden alle Worte einmal zu zeichnen versucht - wird eine Infografik geöffnet, die den Lernprozess des Netzwerks in seiner Trainingsphase darstellt, und es werden ein paar statistische Informationen über den gerade beendeten Spieldurchlauf angezeigt.
 
 ABSCHLUSSBERICHT:
+
 - Konzept:
 	Das Programm ist grob eingeteilt in drei Komponenten: GUI, Translator und Netzwerk.
 	Nach Veränderung des ursprünglichen Ansatzes, die Zeichnungsdaten aus der GUI zu exportieren und in der Main weiter zu verarbeiten, haben wir uns letztendlich dazu entschieden, die GUI nach dem Launch als Ausgansknoten zu benutzen; diese bekommt einen Translator und ein Netzwerk übergeben und greift auf deren Funktionen in Reaktion auf Benutzereingaben zu.
